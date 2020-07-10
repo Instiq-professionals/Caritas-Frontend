@@ -19,7 +19,7 @@ import { useLocation, useHistory, Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { PrimaryAppBar, MyTextField } from "../commons";
-import { yourCauses, trendingCauses, followedCauses, user } from "../mock";
+import { yourCauses, trendingCauses, followedCauses} from "../mock";
 import { SlideableGridList, AddImage, AddCauseImage, AddVideo } from "../components";
 import {
   isValidCauseTitle,
@@ -139,6 +139,13 @@ const AddCause = () => {
   let [terms, setTerms] = useState(false);
   let [selectedType, setSelectedType] = useState("Food");
   let [selectedOwner, setSelectedOwner] = useState("Self");
+  let [thirdParty,  setThirdParty] = useState({
+    first_name: "",
+    middle_name: "",
+    last_name: "",
+    bank: "",
+    address: ""
+  })
 
   // const handleCategoryChange = (event) => {
   //   setCategory(event.target.value);
@@ -147,6 +154,26 @@ const AddCause = () => {
   const handleCauseTitleChange = (event) => {
     setCauseTitle(event.target.value);
   };
+
+  const handleFirstNameChange = (event) => {
+    setThirdParty({...thirdParty, first_name: event.target.value});
+  }
+
+  const handleMiddleNameChange = (event) => {
+    setThirdParty({...thirdParty, middle_name: event.target.value});
+  }
+
+  const handleLastNameChange = (event) => {
+    setThirdParty({...thirdParty, last_name: event.target.value});
+  }
+
+  const handleAddressChange = (event) => {
+    setThirdParty({...thirdParty, address: event.target.value});
+  }
+
+  const handleBankChange = (event) => {
+    setThirdParty({...thirdParty, bank: event.target.value});
+  }
 
   const handleAmountRequiredChange = (event) => {
     setAmountRequired(event.target.value);
@@ -243,6 +270,9 @@ const AddCause = () => {
     cause.additionalInformation = additionalInformation;
     cause.causeOptions = causeOptions;
     cause.uploadFiles = uploadFiles;
+    if(selectedOwner == "Third Party"){
+      cause.thirdParty = thirdParty;
+    }
 
     if (cause.uploadFiles.image1 == null) {
       setPositiveDialog(false);
@@ -979,6 +1009,75 @@ const AddCause = () => {
                      onChange={handleBriefDescriptionChange}
                    />
                  </FormControl>
+
+                {selectedOwner == "Third Party" && (
+                  <>
+                    <Typography variant="h4" component="h4" className={classes.sectionHead}>
+                      Third party Information
+                    </Typography>
+                    <FormControl className={classes.formControl}>
+                      <MyTextField
+                        id="first_name"
+                        type="text"
+                        name="first_name"
+                        required="required"
+                        label="First name"
+                        placeholder="First name"
+                        value={thirdParty.first_name}
+                        onChange={handleFirstNameChange}
+                      />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                      <MyTextField
+                        id="middle_name"
+                        type="text"
+                        name="middle_name"
+                        required="required"
+                        label="Middle name (optional)"
+                        placeholder="Middle name (optional)"
+                        value={thirdParty.middle_name}
+                        onChange={handleMiddleNameChange}
+                      />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                      <MyTextField
+                        id="last_name"
+                        type="text"
+                        name="last_name"
+                        required="required"
+                        label="Last name"
+                        placeholder="Last name"
+                        value={thirdParty.last_name}
+                        onChange={handleLastNameChange}
+                      />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                      <MyTextField
+                        id="address"
+                        type="text"
+                        name="address"
+                        required="required"
+                        label="Address"
+                        placeholder="Address"
+                        value={thirdParty.address}
+                        onChange={handleAddressChange}
+                      />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                      <MyTextField
+                        id="bank"
+                        type="text"
+                        name="bank"
+                        required="required"
+                        label="Bank"
+                        placeholder="Bank name"
+                        value={thirdParty.bank}
+                        onChange={handleBankChange}
+                      />
+                    </FormControl>
+                  </>
+                )}
+
                  <FormControlLabel
                     className={classes.checkbox}
                     style={{ marginTop: "20px" }}

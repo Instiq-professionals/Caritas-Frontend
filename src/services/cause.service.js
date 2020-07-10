@@ -132,6 +132,21 @@ const createCause = async (cause) => {
     formData.append("cause_photos", cause.uploadFiles.image6);
   }
 
+  if(cause.thirdParty){
+    let first_name = cause.thirdParty.first_name;
+    let middle_name = cause.thirdParty.middle_name;
+    let last_name = cause.thirdParty.last_name;
+    let bank = cause.thirdParty.bank;
+    let address = cause.thirdParty.address;
+
+    formData.append("first_name", first_name);
+    formData.append("middle_name", middle_name);
+    formData.append("last_name", last_name);
+    formData.append("bank", bank);
+    formData.append("address", address);
+
+  }
+
   // formData.append("cause_video", cause.uploadFiles.video1);
   // formData.append("account_number", 1000000000);
   // formData.append(
@@ -144,6 +159,8 @@ const createCause = async (cause) => {
   //   "share_on_social_media",
   //   cause.causeOptions.socialMediaSharing
   // );
+
+
 
   return await axios({
     method: "post",
