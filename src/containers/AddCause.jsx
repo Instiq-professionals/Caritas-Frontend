@@ -140,11 +140,18 @@ const AddCause = () => {
   let [selectedType, setSelectedType] = useState("Food");
   let [selectedOwner, setSelectedOwner] = useState("Self");
   let [thirdParty,  setThirdParty] = useState({
+    title: "Select Title",
     first_name: "",
     middle_name: "",
     last_name: "",
+    gender: "Select Gender",
+    phone_no: "",
     bank: "",
-    address: ""
+    account_number: "",
+    amount_required: "",
+    address: "",
+    local_government: "",
+    occupation: ""
   })
 
   // const handleCategoryChange = (event) => {
@@ -153,6 +160,10 @@ const AddCause = () => {
 
   const handleCauseTitleChange = (event) => {
     setCauseTitle(event.target.value);
+  };
+
+  const handleTitleChange = (event) => {
+    setThirdParty({ ...thirdParty, title: event.target.value });
   };
 
   const handleFirstNameChange = (event) => {
@@ -167,16 +178,40 @@ const AddCause = () => {
     setThirdParty({...thirdParty, last_name: event.target.value});
   }
 
+  const handleGenderChange = (event) => {
+    setThirdParty({ ...thirdParty, gender: event.target.value });
+  };
+
+  const handlePhoneNumChange = (event) => {
+    setThirdParty({...thirdParty, phone_no: event.target.value});
+  }
+
+  const handleEmailChange = (event) => {
+    setThirdParty({...thirdParty, email: event.target.value});
+  }
+
   const handleAddressChange = (event) => {
     setThirdParty({...thirdParty, address: event.target.value});
+  }
+
+  const handleLocalGovernmentChange = (event) => {
+    setThirdParty({...thirdParty, local_government: event.target.value});
   }
 
   const handleBankChange = (event) => {
     setThirdParty({...thirdParty, bank: event.target.value});
   }
 
+  const handleAccountNumChange = (event) => {
+    setThirdParty({...thirdParty, account_number: event.target.value});
+  }
+
+  const handleOccupationChange = (event) => {
+    setThirdParty({...thirdParty, occupation: event.target.value});
+  }
+
   const handleAmountRequiredChange = (event) => {
-    setAmountRequired(event.target.value);
+    setThirdParty({...thirdParty, amount_required: event.target.value});
   };
 
   const handleCharityInformationChange = (event) => {
@@ -256,6 +291,106 @@ const AddCause = () => {
       setDialogTitle("Hold on!");
       setDialogMessage(
         `Please enter a brief description for your cause to continue.`
+      );
+      setOpenDialog(true);
+      return;
+    }
+
+    if(thirdParty.first_name == ''){
+      setPositiveDialog(false);
+      setDialogTitle("Hold on!");
+      setDialogMessage(
+        `Please enter your first name for your cause to continue.`
+      );
+      setOpenDialog(true);
+      return;
+    }
+
+    if(thirdParty.last_name == ''){
+      setPositiveDialog(false);
+      setDialogTitle("Hold on!");
+      setDialogMessage(
+        `Please enter your last name for your cause to continue.`
+      );
+      setOpenDialog(true);
+      return;
+    }
+
+    if(thirdParty.gender == 'Select Gender'){
+      setPositiveDialog(false);
+      setDialogTitle("Hold on!");
+      setDialogMessage(
+        `Please select your gender for your cause to continue.`
+      );
+      setOpenDialog(true);
+      return;
+    }
+
+    if(thirdParty.title == 'Select Title'){
+      setPositiveDialog(false);
+      setDialogTitle("Hold on!");
+      setDialogMessage(
+        `Please select your title for your cause to continue.`
+      );
+      setOpenDialog(true);
+      return;
+    }
+
+    if(thirdParty.account_number == ''){
+      setPositiveDialog(false);
+      setDialogTitle("Hold on!");
+      setDialogMessage(
+        `Please enter your account number.`
+      );
+      setOpenDialog(true);
+      return;
+    }
+
+    if(thirdParty.bank == ''){
+      setPositiveDialog(false);
+      setDialogTitle("Hold on!");
+      setDialogMessage(
+        `Please enter your bank name`
+      );
+      setOpenDialog(true);
+      return;
+    }
+
+    if(thirdParty.amount_required == ''){
+      setPositiveDialog(false);
+      setDialogTitle("Hold on!");
+      setDialogMessage(
+        `Enter your amount.`
+      );
+      setOpenDialog(true);
+      return;
+    }
+
+    if(thirdParty.address == ''){
+      setPositiveDialog(false);
+      setDialogTitle("Hold on!");
+      setDialogMessage(
+        `Address is requirred..`
+      );
+      setOpenDialog(true);
+      return;
+    }
+
+    if(thirdParty.local_government== ''){
+      setPositiveDialog(false);
+      setDialogTitle("Hold on!");
+      setDialogMessage(
+        `Local government is requirred..`
+      );
+      setOpenDialog(true);
+      return;
+    }
+
+    if(thirdParty.occupation == ''){
+      setPositiveDialog(false);
+      setDialogTitle("Hold on!");
+      setDialogMessage(
+        `Occupation is requirred.`
       );
       setOpenDialog(true);
       return;
@@ -1015,6 +1150,27 @@ const AddCause = () => {
                     <Typography variant="h4" component="h4" className={classes.sectionHead}>
                       Third party Information
                     </Typography>
+                  <FormControl className={classes.formControl}>
+                  <Select
+                    labelId="title-type"
+                    id="title"
+                    value={thirdParty.title}
+                    onChange={handleTitleChange}
+                    variant="outlined"
+                    //style={{ width: "100% !important" }}
+                    // margin="dense"
+                    fullWidth
+                  >
+                    <MenuItem value="Select Title">Select Title</MenuItem>
+                    <MenuItem value="Mr.">Mr.</MenuItem>
+                    <MenuItem value="Mrs.">Mrs.</MenuItem>
+                    <MenuItem value="Miss">Miss</MenuItem>
+                    <MenuItem value="Dr.">Dr.</MenuItem>
+                    <MenuItem value="Prof.">Prof.</MenuItem>
+                    <MenuItem value="Engr.">Engr.</MenuItem>
+                    <MenuItem value="Pastor">Pastor</MenuItem>
+                  </Select>
+                </FormControl>
                     <FormControl className={classes.formControl}>
                       <MyTextField
                         id="first_name"
@@ -1029,18 +1185,6 @@ const AddCause = () => {
                     </FormControl>
                     <FormControl className={classes.formControl}>
                       <MyTextField
-                        id="middle_name"
-                        type="text"
-                        name="middle_name"
-                        required="required"
-                        label="Middle name (optional)"
-                        placeholder="Middle name (optional)"
-                        value={thirdParty.middle_name}
-                        onChange={handleMiddleNameChange}
-                      />
-                    </FormControl>
-                    <FormControl className={classes.formControl}>
-                      <MyTextField
                         id="last_name"
                         type="text"
                         name="last_name"
@@ -1051,6 +1195,24 @@ const AddCause = () => {
                         onChange={handleLastNameChange}
                       />
                     </FormControl>
+                    <FormControl
+                  className={classes.formControl}
+                >
+                  <Select
+                    labelId="gender-type"
+                    id="gender"
+                    value={thirdParty.gender}
+                    onChange={handleGenderChange}
+                    variant="outlined"
+                    // margin="dense"
+                    fullWidth
+                  >
+                    <MenuItem value="Select Gender">Select Gender</MenuItem>
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
                     <FormControl className={classes.formControl}>
                       <MyTextField
                         id="address"
@@ -1065,14 +1227,62 @@ const AddCause = () => {
                     </FormControl>
                     <FormControl className={classes.formControl}>
                       <MyTextField
+                        id="local_government"
+                        type="text"
+                        name="local_government"
+                        required="required"
+                        label="local government"
+                        placeholder="local government"
+                        value={thirdParty.local_government}
+                        onChange={handleLocalGovernmentChange}
+                      />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                      <MyTextField
+                        id="occupation"
+                        type="text"
+                        name="occupation"
+                        required="required"
+                        label="occupation"
+                        placeholder="occupation"
+                        value={thirdParty.occupation}
+                        onChange={handleOccupationChange}
+                      />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                      <MyTextField
                         id="bank"
                         type="text"
                         name="bank"
                         required="required"
-                        label="Bank"
-                        placeholder="Bank name"
+                        label="bank"
+                        placeholder="bank"
                         value={thirdParty.bank}
                         onChange={handleBankChange}
+                      />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                      <MyTextField
+                        id="account_number"
+                        type="text"
+                        name="account_number"
+                        required="required"
+                        label="account number"
+                        placeholder="account_no"
+                        value={thirdParty.account_number}
+                        onChange={handleAccountNumChange}
+                      />
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                      <MyTextField
+                        id="amount_required"
+                        type="Number"
+                        name="amount_required"
+                        required="required"
+                        label="amount required"
+                        placeholder="amount required"
+                        value={thirdParty.amount_required}
+                        onChange={handleAmountRequiredChange}
                       />
                     </FormControl>
                   </>

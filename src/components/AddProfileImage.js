@@ -101,7 +101,7 @@ class AddProfileImage extends Component {
       <div
         style={{
           width: "100%",
-          height: "100%",
+          height: "336px",
           backgroundImage: this.state.backgroundImage,
           backgoundSize: "cover",
           backgroundRepeat: "no-repeat",

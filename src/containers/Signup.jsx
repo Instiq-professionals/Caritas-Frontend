@@ -6,6 +6,10 @@ import {
   Container,
   TextField,
   FormControl,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormLabel,
   Typography,
   Button,
   Zoom,
@@ -150,15 +154,15 @@ const Signup = () => {
     firstName: "",
     middleName: "",
     lastName: "",
-    email: "",
+    email: "abc@gmail.com",
     phone: "",
     accountType: "",
     address: "",
     bankName: "",
     accountName: "",
     accountNumber: "",
-    password: "",
-    confirmPassword: "",
+    password: "123456",
+    confirmPassword: "123456",
     dateOfBirth: "",
     title: "Select Title",
     gender: "Select Gender",
@@ -201,6 +205,7 @@ const Signup = () => {
   let [page, setPage] = useState(1);
   let [selectedType, setSelectedType] = useState("User");
   let [partnerType, setPartnerType] = useState("Individual Partner");
+  let [volunteerType, setVolunteerType] = useState("Food");
   let [uploadFiles, setUploadFiles] = useState({
     image: null,
   });
@@ -216,6 +221,8 @@ const Signup = () => {
     state: "",
     lga: "",
   });
+
+  let [volunteer, setVolunteer] = useState('');
 
   const handleSubmit = async (event) => {
 
@@ -283,6 +290,7 @@ const Signup = () => {
         setTimeout(() => (window.location = "/signin"), 5000);
       } else if (outcome.message) {
         setDialogTitle("Registration failed");
+        console.log('error point'+ outcome.message)
         setDialogMessage(
           outcome.message.includes("400")
             ? "Email is already taken"
@@ -369,6 +377,14 @@ const Signup = () => {
   const handleInstitutionAddressChange = (event) => {
     setInstitution({ ...institution, address: event.target.value });
   };
+
+  const handleChangeVolunteer =  name => (e) => { 
+    setVolunteer({
+      ...volunteer,
+      [name]: e.target.value
+    });
+    console.log(volunteer)
+ };
 
   const handleAddImageClick = (event) => {
     event.stopPropagation();
@@ -481,7 +497,8 @@ const Signup = () => {
     setPage(2);
   }
 
-  const TypeSelection = (props) => {
+  const TypeSelection = 
+  (props) => {
     const useStyles = makeStyles((theme) => ({
       root: {
         display: "flex",
@@ -490,11 +507,11 @@ const Signup = () => {
         alignItems: "center",
         cursor: "pointer",
         boxShadow:
-          props.type == selectedType || props.type == partnerType
+          props.type == selectedType || props.type == volunteerType || props.type == partnerType
             ? "0px 0px 20px rgba(252, 99, 107, 0.7)"
             : "none",
         backgroundColor:
-          props.type == selectedType || props.type == partnerType
+          props.type == selectedType || props.type == volunteerType || props.type == partnerType
             ? "rgba(255,255,255,.7)"
             : "transparent",
 
@@ -2107,6 +2124,659 @@ const Signup = () => {
             </div>
           </Container>
         )}
+        {page === 3 && selectedType === "Volunteer" && (
+         <Container style={{ marginTop: "100px" }}>
+         <Grid item xs={12} md={6}>
+           <Typography
+             variant="h4"
+             component="h4"
+             className={classes.sectionHead}
+           >
+             What Category are you interested in?
+           </Typography>
+           <Typography
+             variant="body1"
+             component="p"
+             className={classes.sectionSubhead}
+             style={{ width: "300px" }}
+           >
+             Kindly select what category you are signing up for To finish your
+             registration.
+           </Typography>
+         </Grid>
+         <Grid container spacing={5} style={{ marginTop: "100px" }}>
+           <Grid item xs={6} md={3} >
+             <TypeSelection
+               image={"/assets/images/icons/food-help.png"}
+               type="Food"
+                action={setVolunteerType}
+             />
+           </Grid>
+           <Grid item xs={6} md={3}>
+             <TypeSelection
+               image={"/assets/images/icons/education-help.png"}
+               type="Education"
+               action={setVolunteerType}
+             />
+           </Grid>
+           <Grid item xs={6} md={3}>
+             <TypeSelection
+               image={"/assets/images/icons/health-help.png"}
+               type="Health"
+               action={setVolunteerType}
+             />
+           </Grid>
+           <Grid item xs={6} md={3}>
+             <TypeSelection
+               image={"/assets/images/icons/human-rights-help.png"}
+               type="Human right"
+               action={setVolunteerType}
+             />
+           </Grid>
+         </Grid>
+         {(volunteerType !== undefined || volunteerType  !== "") && (
+           <div>
+             <Button
+               onClick={() => setPage(2)}
+               variant="contained"
+               color="default"
+               style={{
+                 marginTop: "100px",
+                 marginBottom: "100px",
+               }}
+             >
+               Back
+             </Button>
+             <Button
+               onClick={() => setPage(4)}
+               variant="contained"
+               color="primary"
+               style={{
+                 marginTop: "100px",
+                 marginBottom: "100px",
+                 marginLeft: "auto",
+                 color: "white",
+                 float: "right",
+               }}
+             >
+               Continue
+             </Button>
+           </div>
+         )}
+       </Container>
+      )}
+      {page === 4 &&
+        selectedType === "Volunteer" &&
+        volunteerType=== "Food" && (
+          <Container style={{ marginTop: "100px" }}>
+            <Typography
+              variant="h4"
+              component="h4"
+              className={classes.sectionHead}
+              style={{ textAlign: "center" }}
+            >
+              Complete Volunteer Registration
+            </Typography>
+            <Typography
+              variant="body1"
+              component="p"
+              className={classes.sectionSubhead}
+              style={{ width: "300px", textAlign: "center", margin: "auto" }}
+            >
+              Kindly provide all neccesary details to finish Your registration
+              as a volunteer.
+            </Typography>
+
+            <div style={{ color: "red", textAlign: "center", margin: 16 }}>
+              {errorMessage}
+            </div>
+            <div className={classes.regForm}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <Grid
+                    item
+                    xs={12}
+                    style={{
+                      border: `2px dashed ${Colors.appRed}`,
+                      marginTop: "10px",
+                    }}
+                  >
+                    <AddProfileImage
+                      image="/assets/images/icons/upload-image.png"
+                      title="Upload picture*"
+                      // text="This is image that will portray the cause."
+                      style={{ alignSelf: "flex-start" }}
+                      filename="image"
+                      onClick={handleAddImageClick}
+                      backgroundImage={uploadFiles.image}
+                      setImage={(file) => {
+                        setUploadFiles({
+                          ...uploadFiles,
+                          image: file,
+                        });
+                      }}
+                    />
+                  </Grid>
+                  <FormControl
+                    className={classes.formControl}
+                    style={{ margin: "10px 0px" }}
+                  >
+                    <Select
+                      labelId="gender-type"
+                      id="gender"
+                      value={volunteer.gender}
+                      onChange={handleChangeVolunteer("gender")}
+                      variant="outlined"
+                      style={{ width: "100% !important" }}
+                      // margin="dense"
+                      fullWidth
+                    >
+                      <MenuItem value="Select Gender">Select Gender</MenuItem>
+                      <MenuItem value="Male">Male</MenuItem>
+                      <MenuItem value="Female">Female</MenuItem>
+                      <MenuItem value="Other">Other</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <FormControl className={classes.formControl}>
+                    <MyTextField
+                      id="phone_number"
+                      type="phone"
+                      name="phone_number"
+                      required="required"
+                      label="Phone Number"
+                      placeholder="Provide Phone Number"
+                      value={volunteer.phone_number}
+                      onChange={handleChangeVolunteer("phone_number")}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                <FormControl
+                  className={classes.formControl}
+                  style={{ margin: "10px 0px" }}
+                >
+                  <Select
+                    labelId="title-type"
+                    id="title"
+                    value={volunteer.title}
+                    onChange={handleChangeVolunteer("title")}
+                    variant="outlined"
+                    style={{ width: "100% !important" }}
+                    // margin="dense"
+                    fullWidth
+                  >
+                    <MenuItem value="Select Title">Select Title</MenuItem>
+                    <MenuItem value="Mr.">Mr.</MenuItem>
+                    <MenuItem value="Mrs.">Mrs.</MenuItem>
+                    <MenuItem value="Miss">Miss</MenuItem>
+                    <MenuItem value="Dr.">Dr.</MenuItem>
+                    <MenuItem value="Prof.">Prof.</MenuItem>
+                    <MenuItem value="Engr.">Engr.</MenuItem>
+                    <MenuItem value="Pastor">Pastor</MenuItem>
+                  </Select>
+                </FormControl>
+                  <FormControl className={classes.formControl}>
+                    <MyTextField
+                      id="first_name"
+                      type="text"
+                      name="first_name"
+                      required="required"
+                      label="First name"
+                      placeholder="Enter your first name"
+                      value={volunteer.first_name}
+                      onChange={handleChangeVolunteer("first_name")}
+                    />
+                  </FormControl>
+
+                  <FormControl className={classes.formControl}>
+                    <MyTextField
+                      id="last_name"
+                      type="text"
+                      name="last_name"
+                      required="required"
+                      label="Last name"
+                      placeholder="Enter your last name"
+                      value={volunteer.last_name}
+                      onChange={handleChangeVolunteer("last_name")}
+                    />
+                  </FormControl>
+                  <FormControl className={classes.formControl}>
+                    <MyTextField
+                      id="email"
+                      type="email"
+                      name="email"
+                      required="required"
+                      label="Provide Email"
+                      placeholder="Provide Email"
+                      value={volunteer.email}
+                      onChange={handleChangeVolunteer("email")}
+                    />
+                  </FormControl>
+                  <FormControl className={classes.formControl}>
+                    <MyTextField
+                      id="state"
+                      type="text"
+                      name="state"
+                      required="required"
+                      label="Provide State"
+                      placeholder="Provide State"
+                      value={volunteer.address}
+                      onChange={handleChangeVolunteer("address")}
+                    />
+                  </FormControl>
+                  <FormControl className={classes.formControl}>
+                    <MyTextField
+                      id="lga"
+                      type="text"
+                      name="lga"
+                      required="required"
+                      label="LGA"
+                      placeholder="Provide LGA"
+                      value={volunteer.lga}
+                      onChange={handleChangeVolunteer("lga")}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <div>
+                    <Button
+                      onClick={() => setPage(3)}
+                      variant="contained"
+                      color="default"
+                      style={{
+                        marginTop: "50px",
+                        marginBottom: "100px",
+                        padding: "10px 50px",
+                      }}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      onClick={() => setPage(5)}
+                      variant="contained"
+                      color="primary"
+                      style={{
+                        marginTop: "50px",
+                        marginBottom: "100px",
+                        marginLeft: "auto",
+                        color: "white",
+                        float: "right",
+                        padding: "10px 50px",
+                      }}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                </Grid>
+              </Grid>
+            </div>
+          </Container>
+        )}
+        {page === 5 &&
+        selectedType === "Volunteer" &&
+        volunteerType=== "Food" && (
+        <Container style={{ marginTop: "100px" }}>
+          <Typography
+            variant="h4"
+            component="h4"
+            className={classes.sectionHead}
+            style={{ textAlign: "center" }}
+          >
+            Complete Volunteer Registration
+          </Typography>
+          <Typography
+            variant="body1"
+            component="p"
+            className={classes.sectionSubhead}
+            style={{ width: "300px", textAlign: "center", margin: "auto" }}
+          >
+            Kindly provide all neccesary details to finish Your registration as
+            a volunteer.
+          </Typography>
+
+          <div style={{ color: "red", textAlign: "center", margin: 16 }}>
+            {errorMessage}
+          </div>
+          <div className={classes.regForm}>
+            <Typography
+              variant="body1"
+              component="p"
+              className={classes.sectionHead}
+            >
+              More Personal Details
+            </Typography>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+              <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id=" eduction_level"
+                    type="text"
+                    name="eduction_level"
+                    required="required"
+                    label=" Eduction Level"
+                    placeholder="Enter your highest Eduction Level"
+                    value={volunteer.eduction_level}
+                    onChange={handleChangeVolunteer("eduction_level")}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+              <FormControl className={classes.formControl}>
+                  <Select
+                    labelId="employment_status"
+                    id="employment_status"
+                    value={volunteer.employment_status}
+                    onChange={handleChangeVolunteer("employment_status")}
+                    variant="outlined"
+                    style={{ width: "100% !important" }}
+                    // margin="dense"
+                    fullWidth
+                  >
+                    <MenuItem value="Select Title">What is your employment status</MenuItem>
+                    <MenuItem value="Mr.">Employed</MenuItem>
+                    <MenuItem value="Mrs.">Unemployed.</MenuItem>
+                    <MenuItem value="Miss">Self Employed</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <Typography
+              variant="body1"
+              component="p"
+              className={classes.sectionHead}
+            >
+              Guarantor Details
+            </Typography>
+            <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+                <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="guarantor_first_name"
+                    type="text"
+                    name="guarantor_first_name"
+                    required="required"
+                    label="First name"
+                    placeholder="Enter your guarantor's first name"
+                    value={volunteer.guarantor_first_name}
+                    onChange={handleChangeVolunteer("guarantor_first_name")}
+                  />
+                </FormControl>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="guarantor_last_name"
+                    type="text"
+                    name="guarantor_last_name"
+                    required="required"
+                    label="Last name"
+                    placeholder="Enter your guarantor's last name"
+                    value={volunteer.guarantor_last_name}
+                    onChange={handleChangeVolunteer("guarantor_last_name")}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+              <FormControl className={classes.formControl}>
+                  <Select
+                    labelId="relationship_with_guarantor"
+                    id="relationship_with_guarantor"
+                    value={volunteer.relationship_with_guarantor}
+                    onChange={handleChangeVolunteer("relationship_with_guarantor")}
+                    variant="outlined"
+                    style={{ width: "100% !important" }}
+                    // margin="dense"
+                    fullWidth
+                  >
+                    <MenuItem value="Select Title">Relationship With Guarantor</MenuItem>
+                    <MenuItem value="Mr.">Employer</MenuItem>
+                    <MenuItem value="Mrs.">Family</MenuItem>
+                    <MenuItem value="Miss">Others</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="guarantor_email"
+                    type="email"
+                    name="guarantor_email"
+                    required="required"
+                    label=" Email Address"
+                    placeholder="Provide email address"
+                    value={volunteer.guarantor_email}
+                    onChange={handleChangeVolunteer("guarantor_email")}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="guarantor_phone_number"
+                    type="phone"
+                    name="phone_number"
+                    required="required"
+                    label=" Phone number"
+                    placeholder="Provide Phone number"
+                    value={volunteer.guarantor_phone_number}
+                    onChange={handleChangeVolunteer("guarantor_phone_number")}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="guarantor's_address"
+                    type="text"
+                    name="guarantor's_address"
+                    required="required"
+                    label="Guarantor's Address"
+                    placeholder="Provide Phone Number"
+                    value={volunteer.guarantor_address}
+                    onChange={handleChangeVolunteer("guarantor's_address")}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="guarantor_position"
+                    type="text"
+                    name="position"
+                    required="required"
+                    label="Position"
+                    placeholder="What is this persons position"
+                    value={volunteer.guarantor_position}
+                    onChange={handleChangeVolunteer("guarantor_position")}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="guarantor_work_details"
+                    type="text"
+                    name="work_details"
+                    required="required"
+                    label="Work Details"
+                    placeholder="What type of work does this person do"
+                    value={volunteer.guarantor_work_details}
+                    onChange={handleChangeVolunteer("guarantor_work_details")}
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                {/* <Link to="/dashboard">
+                  <MyButton progress={progress} style={{ margin: "100px 0px" }}>
+                    Sign up
+                  </MyButton>
+                </Link> */}
+                <div>
+                  <Button
+                    onClick={() => setPage(4)}
+                    variant="contained"
+                    color="default"
+                    style={{
+                      marginTop: "50px",
+                      marginBottom: "100px",
+                      padding: "10px 50px",
+                    }}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    onClick={() => setPage(6)}
+                    variant="contained"
+                    color="primary"
+                    style={{
+                      marginTop: "50px",
+                      marginBottom: "100px",
+                      marginLeft: "auto",
+                      color: "white",
+                      float: "right",
+                      padding: "10px 50px",
+                    }}
+                  >
+                    Next
+                  </Button>
+                </div>
+              </Grid>
+            </Grid>
+          </div>
+        </Container>
+      )}
+       {page === 6 &&
+        selectedType === "Volunteer" &&
+        volunteerType=== "Food" && (
+        <Container style={{ marginTop: "100px" }}>
+          <Typography
+            variant="h4"
+            component="h4"
+            className={classes.sectionHead}
+            style={{ textAlign: "center" }}
+          >
+            Just some Extra Information and we are good
+          </Typography>
+          <Typography
+            variant="body1"
+            component="p"
+            className={classes.sectionSubhead}
+            style={{ width: "300px", textAlign: "center", margin: "auto" }}
+          >
+            Kindly provide all neccesary details to finish Your registration as
+            a volunteer.
+          </Typography>
+
+          <div style={{ color: "red", textAlign: "center", margin: 16 }}>
+            {errorMessage}
+          </div>
+          <div className={classes.regForm} >
+           <Grid container spacing={3} >
+             <Grid item xs={12}>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Do you belong to any social or religious group?</FormLabel>
+                  <RadioGroup aria-label="group" name="religious_group" 
+                  value={volunteer.religious_group} 
+                  onChange={handleChangeVolunteer("religious_group")}>
+                    <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+                    <FormControlLabel value="No" control={<Radio />} label="No" />
+                  </RadioGroup>
+              </FormControl>
+             </Grid>
+             <Grid item xs={12} md={6}>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="religious_group_name"
+                    type="text"
+                    name="religious_group_name"
+                    required="required"
+                    label="Provide groups name"
+                    placeholder="If yes provide groups name"
+                    value={volunteer.religious_group_name}
+                    onChange={handleChangeVolunteer("religious_group_name")}
+                  />
+                </FormControl>
+              </Grid>
+             <Grid item xs={12}>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Are you above 18 years of age?</FormLabel>
+                  <RadioGroup aria-label="age" name="above_18"
+                  value={volunteer.above_18} 
+                  onChange={handleChangeVolunteer("above_18")}
+                   >
+                    <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+                    <FormControlLabel value="No" control={<Radio />} label="No" />
+                  </RadioGroup>
+              </FormControl>
+             </Grid>
+             <Grid item xs={12}>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Have you been involved in any criminal activities?</FormLabel>
+                  <RadioGroup aria-label="criminal record" name="criminal_record" 
+                  value={volunteer.criminal_record} 
+                  onChange={handleChangeVolunteer("criminal_record")}
+                  >
+                    <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+                    <FormControlLabel value="No" control={<Radio />} label="No" />
+                  </RadioGroup>
+              </FormControl>
+             </Grid>
+             <Grid item xs={12}>
+              <FormControl component="fieldset">
+                  <RadioGroup aria-label="agreed" name="agreed"
+                  value={volunteer.agreed} 
+                  onChange={handleChangeVolunteer("agreed")}
+                  >
+                    <FormControlLabel value="yes" control={<Radio />} label="Agree to Terms and Conditions." />
+                  </RadioGroup>
+              </FormControl>
+             </Grid>
+           </Grid>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                {/* <Link to="/dashboard">
+                  <MyButton progress={progress} style={{ margin: "100px 0px" }}>
+                    Sign up
+                  </MyButton>
+                </Link> */}
+                <div>
+                  <Button
+                    onClick={() => setPage(4)}
+                    variant="contained"
+                    color="default"
+                    style={{
+                      marginTop: "50px",
+                      marginBottom: "100px",
+                      padding: "10px 50px",
+                    }}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    onClick={() => handleSubmit(window.event)}
+                    variant="contained"
+                    color="primary"
+                    style={{
+                      marginTop: "50px",
+                      marginBottom: "100px",
+                      marginLeft: "auto",
+                      color: "white",
+                      float: "right",
+                      padding: "10px 50px",
+                    }}
+                  >
+                    Signup
+                  </Button>
+                </div>
+              </Grid>
+            </Grid>
+          </div>
+        </Container>
+      )}
 
       {/* <div className={classes.copyright}>
           <Container>
