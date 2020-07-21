@@ -224,7 +224,6 @@ const Signup = () => {
   });
 
   let [volunteer, setVolunteer] = useState({
-    category : volunteerType,
     agreeToTandC : false,
     title: "Select Title",
     gender: "Select Gender",
@@ -636,13 +635,13 @@ const Signup = () => {
   }
   const handleVolunteerFoodFirstPageClick = (event) => {
     if (event) event.preventDefault();
-    if (page === 4 && selectedType === "Volunteer" ){
+    if (page === 4 && selectedType === "Volunteer" && volunteerType=== "Food"){
       if (validateVolunteerClick1()){
         setErrorMessage("");
         setPage(5)
       } 
     } 
-    if (page === 5 && selectedType === "Volunteer" ){
+    if (page === 5 && selectedType === "Volunteer" && volunteerType=== "Food"){
       if (validateVolunteerClick2()){
         setErrorMessage("");
         setPage(6)
@@ -2320,40 +2319,28 @@ const Signup = () => {
            </Typography>
          </Grid>
          <Grid container spacing={5} style={{ marginTop: "100px" }}>
-           <Grid item xs={6} md={3} onClick={()=>setVolunteer({
-             ...volunteer,
-             category:'Food'
-           })}>
+           <Grid item xs={6} md={3} >
              <TypeSelection
                image={"/assets/images/icons/food-help.png"}
                type="Food"
                 action={setVolunteerType}
              />
            </Grid>
-           <Grid item xs={6} md={3} onClick={()=>setVolunteer({
-             ...volunteer,
-             category:'Education'
-           })}>
+           <Grid item xs={6} md={3}>
              <TypeSelection
                image={"/assets/images/icons/education-help.png"}
                type="Education"
                action={setVolunteerType}
              />
            </Grid>
-           <Grid item xs={6} md={3} onClick={()=>setVolunteer({
-             ...volunteer,
-             category:'Health'
-           })}>
+           <Grid item xs={6} md={3}>
              <TypeSelection
                image={"/assets/images/icons/health-help.png"}
                type="Health"
                action={setVolunteerType}
              />
            </Grid>
-           <Grid item xs={6} md={3} onClick={()=>setVolunteer({
-             ...volunteer,
-             category:'Human right'
-           })}>
+           <Grid item xs={6} md={3}>
              <TypeSelection
                image={"/assets/images/icons/human-rights-help.png"}
                type="Human right"
@@ -2393,7 +2380,8 @@ const Signup = () => {
        </Container>
       )}
       {page === 4 &&
-        selectedType === "Volunteer" && (
+        selectedType === "Volunteer" &&
+        volunteerType=== "Food" && (
           <Container style={{ marginTop: "100px" }}>
             <Typography
               variant="h4"
@@ -2611,7 +2599,8 @@ const Signup = () => {
           </Container>
         )}
         {page === 5 &&
-        selectedType === "Volunteer" && (
+        selectedType === "Volunteer" &&
+        volunteerType=== "Food" && (
         <Container style={{ marginTop: "100px" }}>
           <Typography
             variant="h4"
@@ -2847,7 +2836,8 @@ const Signup = () => {
         </Container>
       )}
        {page === 6 &&
-        selectedType === "Volunteer" && (
+        selectedType === "Volunteer" &&
+        volunteerType=== "Food" && (
         <Container style={{ marginTop: "100px" }}>
           <Typography
             variant="h4"
