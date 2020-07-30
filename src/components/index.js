@@ -13,6 +13,9 @@ import CausesTable from "./CausesTable";
 import AddVideo from "./AddVideo";
 import AddProfileImage from "./AddProfileImage";
 import UsersTable from "./UsersTable";
+import ReviewCauseTable from "./ReviewCauseTable";
+import ApproveCauseTable from './ApproveCauseTable';
+import ApproveVolunteerTable from './ApproveVolunteerTable';
 
 export {
   CauseItem,
@@ -29,5 +32,8 @@ export {
   UsersTable,
   AddVideo,
   AddProfileImage,
-  AddCauseImage
+  AddCauseImage,
+  ReviewCauseTable,
+  ApproveCauseTable,
+  ApproveVolunteerTable
 };

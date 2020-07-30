@@ -23,6 +23,14 @@ const Routes = {
   register: host + "users/register",
   login: host + "users/login",
 
+  get_all_volunteers_for_approval: host + "users/volunteer_applicants",
+  get_volunteer_details_for_approval: host + "users/volunteer_profile/",
+  approve_volunteer: host + "users/approve/",
+  disapprove_volunteer: host + "users/disapprove/",
+
+  review_cause: host + "cause/review_causes",
+  review_a_single_cause: host + "cause/review/",
+
   create_cause: host + "cause/create",
   all_causes: host + "cause",
   get_cause: host + "cause/", //the cause id must be appended

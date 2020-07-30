@@ -1,0 +1,36 @@
+{
+    "success": true,
+    "message": "User retrieved successfully",
+    "data": {
+        "photo": "uploads/1596070839714-8c05c129-79f0-489a-aaa6-21a89b124a9b.JPG",
+        "written_application": "",
+        "role": [
+            "Volunteer"
+        ],
+        "isEmailVerified": true,
+        "_id": "5f221bb703f9de049b03a34e",
+        "first_name": "Habbeb",
+        "last_name": "Davids",
+        "middle_name": "",
+        "address": "35 Suramogaji Str,Ilupeju\nEstate, Lagos State.",
+        "phone_number": "08034960776",
+        "date_of_birth": "1990-01-01T12:09:20.890Z",
+        "local_govt": "Odi-Olowo",
+        "state": "Lagos",
+        "email": "abcdefgh@gmail.com",
+        "title": "Mrs",
+        "staff_strength": "30000",
+        "type_of_institution": "Banking and Finance",
+        "category": "Health",
+        "company": "Shell petroleum company",
+        "position": "Senior man",
+        "guarantor_name": "Mr. Giveaway Moneybag Sinzumoney",
+        "relationship_with_guarantor": "Mentor",
+        "guarantor_address": "N0 25 I have forgotten street, Lagos",
+        "guarantor_company": "InstiQ",
+        "guarantor_position": "COO",
+        "highest_education_level": "Common entrance",
+        "criminal_record": "None",
+        "isApproved_volunteer": false
+    }
+}

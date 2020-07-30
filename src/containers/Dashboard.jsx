@@ -13,7 +13,7 @@ import {
   FormControlLabel,
 } from "@material-ui/core";
 import { useStyles } from "../helpers";
-import { userIsUser, userIsModerator, userIsAnAdmin } from "../helpers/utils";
+import { userIsUser,cLeader,Volunteer, userIsModerator, userIsAnAdmin } from "../helpers/utils";
 
 import { Colors } from "../constants";
 import { useLocation, useHistory, Link } from "react-router-dom";
@@ -278,7 +278,75 @@ const Summary = () => {
         </>
       )}
 
-      {userIsModerator() && (
+      {(userIsAnAdmin() || cLeader() || Volunteer())  && (
+        <>
+        <Grid container spacing={10}>
+           <Grid item xs={12}>
+
+             <Typography
+               variant="h4"
+               component="h4"
+               className={classes.sectionHead}
+             >
+               Activity Summary
+             </Typography>
+                          
+           </Grid>
+           <Grid item xs={6} md={3}>
+              <SummaryCard title="Total Causes" value="50" />
+           </Grid>
+           <Grid item xs={6} md={3}>
+              <SummaryCard title="Pending Causes" value="20" />
+           </Grid>
+           <Grid item xs={6} md={3}>
+              <SummaryCard title="Approved Causes" value="30" />
+           </Grid>
+           {Volunteer() && (
+            <Grid item xs={6} md={3}>
+              <SummaryCard title="Review causes" value="30" />
+           </Grid>
+           )}
+           {(userIsAnAdmin() || cLeader()) && (
+             <Grid item xs={6} md={3}>
+             <SummaryCard title="volunteer Registration Pending" value="10" />
+          </Grid>
+           )}
+
+        </Grid>
+
+        <Grid container spacing={10}>
+           
+          <Grid item xs={12}>
+
+             <Typography
+               variant="h4"
+               component="h4"
+               className={classes.sectionHead}
+             >
+               Ongoing  Causes
+             </Typography>
+             <Typography
+               variant="body1"
+               component="p"
+               className={classes.sectionSubhead}
+             >
+               Here are the causes pioneered by you
+             </Typography>
+                                       
+           </Grid>
+
+          
+             <SlideableGridList
+               causes={allCauses}
+               label="Glad you are here. Create a new cause."
+               cols={4}
+             />
+           
+        </Grid>
+        </>
+      )}
+
+      {(userIsModerator())&& (
         <>
           <Typography
             variant="h6"
@@ -296,7 +364,7 @@ const Summary = () => {
           </Grid>
         </>
       )}
-      {userIsAnAdmin() && (
+      {userIsAnAdmin()  && (
         <>
           <Typography
             variant="h6"

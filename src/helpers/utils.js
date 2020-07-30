@@ -31,6 +31,18 @@ const userIsModerator = () => {
   return user.role.find((role) => role === "Moderator") != null;
 };
 
+const cLeader = () => {
+  const user = getAuthenticatedUser();
+  //return user.role[0] === "Moderator";
+  return user.role.find((role) => role === "C.Leader") != null;
+};
+
+const Volunteer = () => {
+  const user = getAuthenticatedUser();
+  //return user.role[0] === "Moderator";
+  return user.role.find((role) => role === "Volunteer") != null;
+};
+
 const userIsAnAdmin = () => {
   const user = getAuthenticatedUser();
   return (
@@ -45,12 +57,12 @@ const signout = () => {
 };
 
 const processPhoto = (photo) => {
-  const result =
-    process.env.NODE_ENV === "development"
-      ? photo.replace(/^uploads\\/, baseUrl)
-      : "/" + photo;
+  // const result =
+  //   process.env.NODE_ENV === "development"
+  //     ? photo.replace(/^uploads\\/, baseUrl)
+  //     : "/" + photo;
 
-  return result;
+  // return result;
 };
 
 export {
@@ -62,4 +74,6 @@ export {
   userIsModerator,
   processPhoto,
   userIsAnAdmin,
+  cLeader,
+  Volunteer
 };

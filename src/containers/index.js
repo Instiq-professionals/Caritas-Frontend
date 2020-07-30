@@ -13,6 +13,12 @@ import Profile from "./Profile";
 import ModeratorCausePage from "./ModeratorCausePage";
 import VerifyEmailPage from "./VerifyEmailPage";
 import ResetPassword from "./ResetPassword";
+import ReviewCauses from "./ReviewCauses";
+import RecommendAcause from './recommendAcause';
+import ApproveCause from "./ApproveCause";
+import CauseDetailsToBeApproved from "./causeDetailsToBeApproved";
+import ViewVolunteerRegPending from "./ViewVolunteerRegPending";
+import ApproveVolunteer from "./approveVolunteer";
 
 export {
   Home,
@@ -20,6 +26,12 @@ export {
   FAQ,
   Signin,
   Dashboard,
+  ReviewCauses,
+  RecommendAcause,
+  ApproveCause,
+  CauseDetailsToBeApproved,
+  ViewVolunteerRegPending ,
+  ApproveVolunteer,
   Causes,
   HowItWorks,
   Signup,

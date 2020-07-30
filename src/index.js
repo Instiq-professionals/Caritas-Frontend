@@ -7,6 +7,12 @@ import {
   FAQ,
   Signin,
   Dashboard,
+  ReviewCauses,
+  RecommendAcause,
+  ApproveCause,
+  CauseDetailsToBeApproved,
+  ViewVolunteerRegPending ,
+  ApproveVolunteer,
   Causes,
   HowItWorks,
   Signup,
@@ -22,11 +28,55 @@ import * as serviceWorker from "./serviceWorker";
 import "./index.css";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
-import store from "./store";
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import ReduxThunk from 'redux-thunk';
+import {
+  signUpreducer,
+  getVolunteersForApproval,
+  getVolunteerForApproval,
+  makeDecisionOnVolunteer,
+  displayCausesForReview,
+  displayCause,
+  recommendCause
+} from './store/reducers/index'
+//import signUpreducer from './store/reducers/signupreducers';
+//import displayCausesForReview from './store/reducers/reviewCauses';
+//import displayCause from './store/reducers/causeDetails';
+//import recommendCause from './store/reducers/recommendAcause';
+//import store from "./store";
 import { Colors } from "./constants";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import ModeratorRoute from "./components/ModeratorRoute";
+
+function logger({ getState }) {
+  return next => action => {
+    //console.log('will dispatch', action)
+
+    // Call the next dispatch method in the middleware chain.
+    const returnValue = next(action)
+
+    //console.log('state after dispatch', getState())
+
+    // This will likely be the action itself, unless
+    // a middleware further in chain changed it.
+    return returnValue
+  }
+}
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const rootReducer = combineReducers({
+signup : signUpreducer,
+getVolunteersForApproval : getVolunteersForApproval,
+getVolunteerForApproval,
+makeDecisionOnVolunteer,
+reviewCauses : displayCausesForReview,
+displayCause : displayCause,
+recommend : recommendCause
+})
+
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger, ReduxThunk)))
 
 const App = () => {
   const theme = createMuiTheme({
@@ -47,6 +97,7 @@ const App = () => {
       },
     },
   });
+
 
   return (
     <Provider store={store}>
@@ -75,6 +126,12 @@ const App = () => {
               component={AddCause}
             />
             <ProtectedRoute path="/dashboard/profile" component={Profile} />
+            <ProtectedRoute path="/dashboard/approveVolunteer" component={ViewVolunteerRegPending} exact/>
+            <ProtectedRoute path="/dashboard/approveVolunteer/:id" component={ApproveVolunteer} />
+            <ProtectedRoute path="/dashboard/review" component={ReviewCauses } exact/>
+            <ProtectedRoute path="/dashboard/review/:id" component={RecommendAcause }/>
+            <ProtectedRoute exact path="/dashboard/approve" component={ApproveCause}/>
+            <ProtectedRoute path="/dashboard/approve/:id" component={CauseDetailsToBeApproved}/>
             <Route path="/cause/:id" component={ACausePage} />
             <ModeratorRoute
               path="/dashboard/cause/:id"

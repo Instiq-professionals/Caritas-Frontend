@@ -28,7 +28,7 @@ const registerUser = async (user, image, role) => {
       return res;
     })
     .catch((err) => {
-      console.log(err.response);
+      console.log(err.response.data.message);
       return err;
     });
 };

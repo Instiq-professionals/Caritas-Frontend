@@ -157,15 +157,15 @@ const Signup = (props) => {
     firstName: "",
     middleName: "",
     lastName: "",
-    email: "",
+    email: "gakin01@gmail.com",
     phone: "",
     accountType: "",
     address: "",
     bankName: "",
     accountName: "",
     accountNumber: "",
-    password: "",
-    confirmPassword: "",
+    password: "123456",
+    confirmPassword: "123456",
     dateOfBirth: "",
     title: "Select Title",
     gender: "Select Gender",
@@ -225,28 +225,26 @@ const Signup = (props) => {
     lga: "",
   });
 
-  const  reg_credential =  user.email !== "" ? user.email : user.phone;
-  const password = user.password;
-
-  const [volunteer, setVolunteer] = useState({
-    first_name: "",
-    last_name: "",
-    address:"",
+  let [volunteer, setVolunteer] = useState({
+    reg_credential : user.email !== "" ? user.email : user.phone,
+    first_name: "ade",
+    last_name: "ahmed",
+    address:"9 toluwani street",
     date_of_birth:"",
-    local_govt:"",
-    state:"",
-    staff_strength:"",
-    company:"",
-    position:"",
-    guarantor_name:"",
-    relationship_with_guarantor:"",
-    guarantor_address:"",
-    guarantor_company:"",
-    guarantor_position:"",
-    highest_education_level:"",
+    local_govt:"alimosho",
+    state:"ondo",
+    staff_strength:"35-50",
+    company:"instiq",
+    position:"chairma/ceo",
+    guarantor_name:"abiodun",
+    relationship_with_guarantor:"brother",
+    guarantor_address:"37 dele",
+    guarantor_company:"first bank",
+    guarantor_position:"boss",
+    highest_education_level:"bsc",
     role: "Volunteer",
     photo:uploadFiles.image,
-    phone_number:"",
+    phone_number:"08067543212",
     password:user.password,
     confirmPassword:user.confirmPassword,
     category : volunteerType,
@@ -265,6 +263,18 @@ const Signup = (props) => {
 
     if (validateSignup()) {
       //Here we submit shit...
+
+      // if (!verified) {
+      //   setDialogTitle("Hold on!");
+      //   setDialogMessage("Please verify you are human");
+
+      //   setPositiveDialog(false);
+
+      //   setOpenDialog(true);
+
+      //   return;
+      // }
+      console.log("Sending...");
 
       let outcome = await registerUser(user, uploadFiles.image, selectedType);
 
@@ -403,6 +413,7 @@ const Signup = (props) => {
       ...volunteer,
       [name]: e.target.value
     });
+    console.log(volunteer)
  };
 
   const handleAddImageClick = (event) => {
@@ -530,11 +541,6 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (volunteer.date_of_birth.length<3) {
-      setErrorMessage("Ïnvalid date of birth");
-      setProgress(false);
-      return;
-    }
     if (!isValidPhoneNumber(volunteer.phone_number) || volunteer.phone_number == undefined ) {
       setErrorMessage("Ïnvalid phone number");
       setProgress(false);
@@ -649,11 +655,12 @@ const Signup = (props) => {
   }
 
   const handleVolunteerSubmit = async (event) => {
-    const {email,first_name,last_name,role,address,phone_number,
-      date_of_birth,local_govt,state,title,staff_strength,photo,
+    const {email,password,first_name,last_name,role,address,phone_number,
+      date_of_birth,local_govt,state,title,staff_strength,photo,reg_credential,
       category,company,position,religion,guarantor_name,relationship_with_guarantor,
       guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record} = volunteer;
     if (event) event.preventDefault();
+    await props.signUpUser(reg_credential,user.email,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,photo,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record);
     progress === false ? setProgress(true) : setProgress(progress);
     if (validateVolunteerClick3()) {
      await props.signUpUser(reg_credential,user.email,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,photo,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record);

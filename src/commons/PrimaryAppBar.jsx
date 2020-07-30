@@ -22,6 +22,7 @@ import { LoggedInAvatar } from "../components";
 import {
   isAuthenticated,
   getAuthenticatedUser,
+  userIsUser,cLeader,Volunteer, userIsModerator, userIsAnAdmin,
   signout,
 } from "../helpers/utils";
 
@@ -422,9 +423,28 @@ export default function PrimarySearchAppBar() {
                 {location.pathname.includes("/dashboard") && (
                   <>
                     {!location.pathname.includes("/dashboard/create-cause") && (
-                      <NavLink to="/dashboard/create-cause">
-                        <FancyButton label="+ Add a Cause" />{" "}
-                      </NavLink>
+                      <div>
+                        {userIsUser() && (
+                          <NavLink to="/dashboard/create-cause">
+                          <FancyButton label="+ Add a Cause" />{" "}
+                         </NavLink>
+                        )}
+                       {(Volunteer() || userIsAnAdmin()) && (
+                      <NavLink to="/dashboard/review">
+                      <FancyButton label="Review Causes" />{" "}
+                     </NavLink>
+                       )}
+                       {(cLeader() || userIsAnAdmin() )&& (
+                      <NavLink to="/dashboard/approve">
+                      <FancyButton label="Approve Causes" />{" "}
+                     </NavLink>
+                       )}
+                       {(cLeader())&& (
+                      <NavLink to="/dashboard/approveVolunteer">
+                      <FancyButton label="Approve Volunteers" />{" "}
+                     </NavLink>
+                       )}
+                      </div>
                     )}
 
                     <LoggedInAvatar user={user} />

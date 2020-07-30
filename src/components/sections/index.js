@@ -7,6 +7,8 @@ import AboutHeaderSection from "./AboutHeaderSection";
 import CausesTabs from "./CausesTabs";
 import SubscriptionBox from "./SubscriptionBox";
 import ACauseHeader from "./ACauseHeader";
+import ReviewCauseTable from '../ReviewCauseTable';
+
 
 export {
   HomeHeaderSection,
@@ -17,5 +19,6 @@ export {
   AboutHeaderSection,
   CausesTabs,
   SubscriptionBox,
-  ACauseHeader
+  ACauseHeader,
+  ReviewCauseTable,
 };
