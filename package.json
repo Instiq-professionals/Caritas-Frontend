@@ -13,6 +13,7 @@
     "axios": "^0.19.2",
     "moment": "^2.24.0",
     "react": "^16.13.1",
+    "react-awesome-player": "^1.0.12",
     "react-dom": "^16.13.1",
     "react-google-recaptcha": "^2.0.1",
     "react-naira": "^1.2.1",

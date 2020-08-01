@@ -193,14 +193,14 @@ const ReviewCause = (props) => {
   if (volunteersData.length) {
     volunteersTable = <div>
       <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-            Review causes table
+            Review volunteers table
       </Typography>
           <Grid container spacing={5} style={{marginTop: "30px"}}>
           <Paper className={tableClass.root}>
       <Table className={tableClass.table}>
         <TableHead>
           <TableRow>
-            <StyledTableCell>Cause Photo</StyledTableCell>
+            <StyledTableCell>volunteers Photo</StyledTableCell>
             <StyledTableCell align="right">First Name</StyledTableCell>
             <StyledTableCell align="right">Last Name</StyledTableCell>
             <StyledTableCell align="right">State</StyledTableCell>
@@ -213,7 +213,7 @@ const ReviewCause = (props) => {
           {rows.map(volunteer=> (
             <StyledTableRow key={volunteer._id}>
             <StyledTableCell align="right">
-                <Avatar src={'/assets/images/icons/third-party-icon.png'} />
+                <Avatar src={volunteer.photo} />
               </StyledTableCell>
               <StyledTableCell align="right">{volunteer.first_name}</StyledTableCell>
               <StyledTableCell align="right">{volunteer.last_name}</StyledTableCell>

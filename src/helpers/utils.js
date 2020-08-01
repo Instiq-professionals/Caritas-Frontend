@@ -57,12 +57,12 @@ const signout = () => {
 };
 
 const processPhoto = (photo) => {
-  // const result =
-  //   process.env.NODE_ENV === "development"
-  //     ? photo.replace(/^uploads\\/, baseUrl)
-  //     : "/" + photo;
+  const result =
+    process.env.NODE_ENV === "development"
+      ? photo.replace(/^uploads\\/, baseUrl)
+      : "/" + photo;
 
-  // return result;
+  return result;
 };
 
 export {

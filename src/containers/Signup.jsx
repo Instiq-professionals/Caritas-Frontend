@@ -227,6 +227,7 @@ const Signup = (props) => {
 
   const  reg_credential =  user.email !== "" ? user.email : user.phone;
   const password = user.password;
+  const volunteer_photo = uploadFiles.image;
 
   const [volunteer, setVolunteer] = useState({
     first_name: "",
@@ -403,6 +404,7 @@ const Signup = (props) => {
       ...volunteer,
       [name]: e.target.value
     });
+    console.log(volunteer)
  };
 
   const handleAddImageClick = (event) => {
@@ -540,12 +542,12 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (!isValidVolunteer(volunteer.local_govt) || volunteer.local_govt == undefined || volunteer.local_govt.length<3) {
+    if (volunteer.local_govt.length<3) {
       setErrorMessage("Ïnvalid Local government area");
       setProgress(false);
       return;
     }
-    if (!isValidVolunteer(volunteer.state) ||volunteer.state == undefined || volunteer.state.length<3) {
+    if (volunteer.state.length<3) {
       setErrorMessage("Ïnvalid State");
       setProgress(false);
       return;
@@ -553,7 +555,7 @@ const Signup = (props) => {
     return true;
   }
   const validateVolunteerClick2 = () => {
-    if (!isValidVolunteer(volunteer.highest_education_level) ||volunteer.highest_education_level == undefined || volunteer.highest_education_level.length<3) {
+    if (volunteer.highest_education_level.length<3) {
       setErrorMessage("Ïnvalid eduction level");
       setProgress(false);
       return;
@@ -598,7 +600,7 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (volunteer.guarantor_work_details.length<3) {
+    if (volunteer.guarantor_company.length<3) {
       setErrorMessage("Provide a valid guarantor's work details");
       setProgress(false);
       return;
@@ -608,6 +610,11 @@ const Signup = (props) => {
   const validateVolunteerClick3 = () => {
     if (volunteer.religious_group == undefined || volunteer.religious_group.length<1) {
       setErrorMessage("Choose if you are in a religious group");
+      setProgress(false);
+      return;
+    }
+    if (volunteer.religious_group === 'Yes' && volunteer.religion === '') {
+      setErrorMessage("Provide the religious group you belong");
       setProgress(false);
       return;
     }
@@ -656,7 +663,7 @@ const Signup = (props) => {
     if (event) event.preventDefault();
     progress === false ? setProgress(true) : setProgress(progress);
     if (validateVolunteerClick3()) {
-     await props.signUpUser(reg_credential,user.email,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,photo,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record);
+     await props.signUpUser(reg_credential,user.email,phone_number,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,uploadFiles.image,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record);
      setTimeout(() => (window.location = "/signin"), 5000);
     }
     
@@ -2456,8 +2463,8 @@ const Signup = (props) => {
                     required="required"
                     label="Work Details"
                     placeholder="What type of work does this person do"
-                    value={volunteer.guarantor_work_details}
-                    onChange={handleChangeVolunteer("guarantor_work_details")}
+                    value={volunteer.guarantor_company}
+                    onChange={handleChangeVolunteer("guarantor_company")}
                   />
                 </FormControl>
               </Grid>
@@ -2560,8 +2567,8 @@ const Signup = (props) => {
                     required="required"
                     label="Provide groups name"
                     placeholder="If yes provide groups name"
-                    value={volunteer.religious_group_name}
-                    onChange={handleChangeVolunteer("religious_group_name")}
+                    value={volunteer.religion}
+                    onChange={handleChangeVolunteer("religion")}
                   />
                 </FormControl>
               </Grid>
@@ -2655,7 +2662,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    signUpUser: (reg_credential,email,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,photo,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record) => dispatch(actionCreators.authSignUp(reg_credential,email,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,photo,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record))
+    signUpUser: (reg_credential,email,phone_number,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,photo,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record) => dispatch(actionCreators.authSignUp(reg_credential,email,phone_number,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,photo,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record))
   }
 }
 

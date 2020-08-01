@@ -238,8 +238,8 @@ const ApproveVolunteer = (props) => {
               <Grid item xs={12} md={6}>
               <Zoom in={true} timeout={1000} mountOnEnter>
                 <img
-                  src="/assets/images/top_left.png"
-                  alt=""
+                  src={singleVolunteer.photo}
+                  alt={`Pictures of ${singleVolunteer.first_name} ${singleVolunteer.last_name}`}
                   className={classes.heroImage}
                 />
               </Zoom>
