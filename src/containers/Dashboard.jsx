@@ -33,6 +33,7 @@ import {
 } from "../services/cause.service";
 import { CausesTable, UsersTable } from "../components";
 import {PieChart, Pie} from 'recharts';
+import * as actions from '../store/actions/index';
 
 const moreStyles = makeStyles((theme) => ({
   sectionHead: {
@@ -96,6 +97,23 @@ const moreStyles = makeStyles((theme) => ({
 
 const Dashboard = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
+  const token = JSON.parse(localStorage.getItem("user")).token;
+
+  useEffect(() => {
+    props.getAllCausesByAuser(token);
+  },[]);
+  const CausesData = props.data;
+  const errorMsg = props.error;
+
+  const userCausePending = [];
+  for (const data of CausesData ) {
+    userCausePending.push(data.cause_status );
+};
+const userCausePendingLength = userCausePending.filter(element => element === "Awaiting Approval")
+console.log('CausesData ',CausesData.length )
+
+  //const userCausePending =CausesData && CausesData.filter(element => element.cause_status === "Awaiting Approval");
+
   const [curUser, setCurUser] = useState(user);
 
   let location = useLocation();
@@ -104,18 +122,24 @@ const Dashboard = (props) => {
   const classes = moreStyles();
   let [page, setPage] = useState(props.page ? props.page : 0);
 
-  
+  const handleCausesPageClick = () => {
+    props.history.push('/dashboard/myCauses')
+  }
   
 
   return (
     <>
       <PrimaryAppBar />
-      <Summary />
+      <Summary 
+      userCausesDataLength={errorMsg?'0':CausesData.length}
+      userPendingCausesLength={userCausePendingLength.length}
+      clickToCausesPage={handleCausesPageClick}
+      />
     </>
   );
 };
 
-const Summary = () => {
+const Summary = (props) => {
   const classes = moreStyles();
 
   let [allCauses, setAllCauses] = useState([]);
@@ -231,11 +255,14 @@ const Summary = () => {
              </Typography>
                           
            </Grid>
-           <Grid item xs={6} md={3}>
-              <SummaryCard title="Total Causes" value="0" />
+           <Grid item xs={6} md={3} onClick = {props.clickToCausesPage} >
+              <SummaryCard 
+              title="Total Causes" 
+              value={props.userCausesDataLength} 
+              />
            </Grid>
            <Grid item xs={6} md={3}>
-              <SummaryCard title="Pending Causes" value="0" />
+              <SummaryCard title="Pending Causes" value={props.userPendingCausesLength} />
            </Grid>
            <Grid item xs={6} md={3}>
               <SummaryCard title="Approved Causes" value="0" />
@@ -392,7 +419,7 @@ const SummaryCard = (props) => {
   const classes = moreStyles();
 
   return (
-    <Paper className={classes.summaryCard}>
+    <Paper className={classes.summaryCard} >
         <Typography component="h6" variant="h6" style={{fontSize: '12px', color: 'black', marginBottom: "10px"}}>{props.title}</Typography>
         <Typography component="h4" variant="h4" style={{fontWeight:  'bold'}}>{props.value}</Typography>
     </Paper>
@@ -418,4 +445,18 @@ const SummaryPie = (props) => {
 
 }
 
-export default Dashboard;
+const mapStateToProps = state => {
+  return {
+    loading : state.getCausesBySingleUser.loading,
+    data: state.getCausesBySingleUser.causes?state.getCausesBySingleUser.causes.data:"There is no cause found",
+    error: state.getCausesBySingleUser.error
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getAllCausesByAuser : (token) => dispatch(actions.getAllCausesByAuser(token)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

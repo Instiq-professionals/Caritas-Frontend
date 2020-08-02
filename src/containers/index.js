@@ -19,6 +19,8 @@ import ApproveCause from "./ApproveCause";
 import CauseDetailsToBeApproved from "./causeDetailsToBeApproved";
 import ViewVolunteerRegPending from "./ViewVolunteerRegPending";
 import ApproveVolunteer from "./approveVolunteer";
+import MyCauseDetails from './myCauseDetails';
+import MyCauses from './myCauses';
 
 export {
   Home,
@@ -26,6 +28,8 @@ export {
   FAQ,
   Signin,
   Dashboard,
+  MyCauses,
+  MyCauseDetails,
   ReviewCauses,
   RecommendAcause,
   ApproveCause,

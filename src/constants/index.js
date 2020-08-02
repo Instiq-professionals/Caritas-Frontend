@@ -33,6 +33,7 @@ const Routes = {
 
   create_cause: host + "cause/create",
   all_causes: host + "cause",
+  get_all_causes_by_a_user: host + 'cause/my_causes',
   get_cause: host + "cause/", //the cause id must be appended
   moderator_all_causes: host + "cause/approve_causes",
   approve_cause: host + "cause/approve/", //the cause id must be appended

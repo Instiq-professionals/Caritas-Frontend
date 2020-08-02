@@ -7,6 +7,8 @@ import {
   FAQ,
   Signin,
   Dashboard,
+  MyCauses,
+  MyCauseDetails,
   ReviewCauses,
   RecommendAcause,
   ApproveCause,
@@ -32,6 +34,8 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import {
   signUpreducer,
+  getCausesBySingleUser,
+  getCauseBySingleUser,
   getVolunteersForApproval,
   getVolunteerForApproval,
   makeDecisionOnVolunteer,
@@ -68,6 +72,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
 signup : signUpreducer,
+getCausesBySingleUser,
+getCauseBySingleUser,
 getVolunteersForApproval : getVolunteersForApproval,
 getVolunteerForApproval,
 makeDecisionOnVolunteer,
@@ -125,6 +131,8 @@ const App = () => {
               path="/dashboard/create-cause"
               component={AddCause}
             />
+            <ProtectedRoute path="/dashboard/myCauses" component={MyCauses} exact/>
+            <ProtectedRoute path="/dashboard/myCauses/:id" component={MyCauseDetails} />
             <ProtectedRoute path="/dashboard/profile" component={Profile} />
             <ProtectedRoute path="/dashboard/approveVolunteer" component={ViewVolunteerRegPending} exact/>
             <ProtectedRoute path="/dashboard/approveVolunteer/:id" component={ApproveVolunteer} />

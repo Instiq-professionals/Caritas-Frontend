@@ -4,6 +4,10 @@ export {
     accountDetails
 } from './signup';
 export {
+    getAllCausesByAuser,
+    checkCauseDetails
+} from './getAllCausesByAuser';
+export {
     reviewCauses,
     reviewCauseDetails,
     recommendAcourseForApproval 
