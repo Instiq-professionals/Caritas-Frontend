@@ -98,21 +98,26 @@ const moreStyles = makeStyles((theme) => ({
 const Dashboard = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
+  const daysLeft = JSON.parse(localStorage.getItem("user")).daysLeft;
 
   useEffect(() => {
-    props.getAllCausesByAuser(token);
+    userIsUser() && props.getAllCausesByAuser(token);
+    cLeader() && props.getVolunteersForApproval(token);
+    props.reviewCauses(token)
   },[]);
   const CausesData = props.data;
   const errorMsg = props.error;
+  const RegPendingData = props.volunteersRegPendingData;
+  const volunteersReviewData = props.volunteersReviewData;
 
-  const userCausePending = [];
+  const userCauseStatus = [];
   for (const data of CausesData ) {
-    userCausePending.push(data.cause_status );
+    userCauseStatus.push(data.cause_status );
 };
-const userCausePendingLength = userCausePending.filter(element => element === "Awaiting Approval")
-console.log('CausesData ',CausesData.length )
+const userCausePendingLength = userCauseStatus.filter(element => element === "Awaiting Approval");
+const userApprovedCausesLength = userCauseStatus.filter(element => element === "Approved")
+console.log('userApprovedCausesLength...',userApprovedCausesLength )
 
-  //const userCausePending =CausesData && CausesData.filter(element => element.cause_status === "Awaiting Approval");
 
   const [curUser, setCurUser] = useState(user);
 
@@ -133,7 +138,10 @@ console.log('CausesData ',CausesData.length )
       <Summary 
       userCausesDataLength={errorMsg?'0':CausesData.length}
       userPendingCausesLength={userCausePendingLength.length}
+      userApprovedCausesLength={userApprovedCausesLength.length}
+      daysLeft={daysLeft?`${daysLeft} days left`:'0'}
       clickToCausesPage={handleCausesPageClick}
+      RegPendingData={props.volunteersRegPendingDataError?'0':RegPendingData.length}
       />
     </>
   );
@@ -265,10 +273,10 @@ const Summary = (props) => {
               <SummaryCard title="Pending Causes" value={props.userPendingCausesLength} />
            </Grid>
            <Grid item xs={6} md={3}>
-              <SummaryCard title="Approved Causes" value="0" />
+              <SummaryCard title="Approved Causes" value={props.userApprovedCausesLength}/>
            </Grid>
            <Grid item xs={6} md={3}>
-              <SummaryPie title="Cause counddown" data={data} />
+              <SummaryPie title="Cause counddown" data={data} daysLeftToLogAnotherCause={props.daysLeft}/>
            </Grid>
 
         </Grid>
@@ -305,7 +313,7 @@ const Summary = (props) => {
         </>
       )}
 
-      {(userIsAnAdmin() || cLeader() || Volunteer())  && (
+      {(userIsAnAdmin() || cLeader() || Volunteer() || userIsModerator())  && (
         <>
         <Grid container spacing={10}>
            <Grid item xs={12}>
@@ -328,6 +336,9 @@ const Summary = (props) => {
            <Grid item xs={6} md={3}>
               <SummaryCard title="Approved Causes" value="30" />
            </Grid>
+           {userIsModerator() && (<Grid item xs={6} md={3}>
+              <SummaryCard title="Impacts" value="30" />
+           </Grid>)}
            {Volunteer() && (
             <Grid item xs={6} md={3}>
               <SummaryCard title="Review causes" value="30" />
@@ -335,7 +346,7 @@ const Summary = (props) => {
            )}
            {(userIsAnAdmin() || cLeader()) && (
              <Grid item xs={6} md={3}>
-             <SummaryCard title="volunteer Registration Pending" value="10" />
+             <SummaryCard title="volunteer Registration Pending" value={props.RegPendingData} />
           </Grid>
            )}
 
@@ -357,17 +368,17 @@ const Summary = (props) => {
                component="p"
                className={classes.sectionSubhead}
              >
-               Here are the causes pioneered by you
+               Here are the causes pioneered users
              </Typography>
                                        
            </Grid>
 
           
-             <SlideableGridList
+             {/* <SlideableGridList
                causes={allCauses}
                label="Glad you are here. Create a new cause."
                cols={4}
-             />
+             /> */}
            
         </Grid>
         </>
@@ -439,7 +450,7 @@ const SummaryPie = (props) => {
           <Pie data={props.data} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill={Colors.appRed} label />
         
         </PieChart>
-        <Typography component="h3" variant="h3" style={{fontSize: '20px', fontWeight: 'bold',  color: Colors.appRed, alignSelf: 'center', position: 'absolute', top: '50%'}}>0</Typography>
+        <Typography component="h3" variant="h3" style={{fontSize: '20px', fontWeight: 'bold',  color: Colors.appRed, alignSelf: 'center', position: 'absolute', top: '50%'}}>{props.daysLeftToLogAnotherCause}</Typography>
     </Paper>
   )
 
@@ -447,15 +458,20 @@ const SummaryPie = (props) => {
 
 const mapStateToProps = state => {
   return {
-    loading : state.getCausesBySingleUser.loading,
-    data: state.getCausesBySingleUser.causes?state.getCausesBySingleUser.causes.data:"There is no cause found",
-    error: state.getCausesBySingleUser.error
+    loading : state.getAllMyCauses.loading,
+    data: state.getAllMyCauses.causes?state.getAllMyCauses.causes.data:"There is no cause found",
+    error: state.getAllMyCauses.error,
+    volunteersRegPendingData: state.getVolunteersForApproval.volunteers?state.getVolunteersForApproval.volunteers.data:'loading...',
+    volunteersRegPendingDataError: state.getVolunteersForApproval.error,
+    volunteersReviewData: state.reviewCauses.causes?state.reviewCauses.causes.data:"There is no cause found",
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getAllCausesByAuser : (token) => dispatch(actions.getAllCausesByAuser(token)),
+    getAllCausesByAuser : (token) => dispatch(actions.getAllMyCauses(token)),
+    getVolunteersForApproval : (token) => dispatch(actions.getVolunteersForApproval(token)),
+    reviewCauses : (token) => dispatch(actions.reviewCauses(token)),
   }
 }
 

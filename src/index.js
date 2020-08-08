@@ -9,9 +9,10 @@ import {
   Dashboard,
   MyCauses,
   MyCauseDetails,
+  EditCause,
   ReviewCauses,
   RecommendAcause,
-  ApproveCause,
+  GetAllCausesForCleadersDecision,
   CauseDetailsToBeApproved,
   ViewVolunteerRegPending ,
   ApproveVolunteer,
@@ -34,14 +35,15 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import {
   signUpreducer,
-  getCausesBySingleUser,
-  getCauseBySingleUser,
+  getAllMyCauses,
+  getMyCause,
   getVolunteersForApproval,
   getVolunteerForApproval,
   makeDecisionOnVolunteer,
   displayCausesForReview,
   displayCause,
-  recommendCause
+  recommendCause,
+  makeDecisionOnCause
 } from './store/reducers/index'
 //import signUpreducer from './store/reducers/signupreducers';
 //import displayCausesForReview from './store/reducers/reviewCauses';
@@ -72,14 +74,15 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
 signup : signUpreducer,
-getCausesBySingleUser,
-getCauseBySingleUser,
+getAllMyCauses,
+getMyCause,
 getVolunteersForApproval : getVolunteersForApproval,
 getVolunteerForApproval,
 makeDecisionOnVolunteer,
 reviewCauses : displayCausesForReview,
 displayCause : displayCause,
-recommend : recommendCause
+recommend : recommendCause,
+makeDecisionOnCause
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger, ReduxThunk)))
@@ -132,13 +135,14 @@ const App = () => {
               component={AddCause}
             />
             <ProtectedRoute path="/dashboard/myCauses" component={MyCauses} exact/>
-            <ProtectedRoute path="/dashboard/myCauses/:id" component={MyCauseDetails} />
+            <ProtectedRoute path="/dashboard/myCauses/:id" component={MyCauseDetails} exact/>
+            <ProtectedRoute path="/dashboard/myCauses/:id/:cause_id" component={EditCause} />
             <ProtectedRoute path="/dashboard/profile" component={Profile} />
             <ProtectedRoute path="/dashboard/approveVolunteer" component={ViewVolunteerRegPending} exact/>
             <ProtectedRoute path="/dashboard/approveVolunteer/:id" component={ApproveVolunteer} />
             <ProtectedRoute path="/dashboard/review" component={ReviewCauses } exact/>
             <ProtectedRoute path="/dashboard/review/:id" component={RecommendAcause }/>
-            <ProtectedRoute exact path="/dashboard/approve" component={ApproveCause}/>
+            <ProtectedRoute exact path="/dashboard/approve" component={GetAllCausesForCleadersDecision}/>
             <ProtectedRoute path="/dashboard/approve/:id" component={CauseDetailsToBeApproved}/>
             <Route path="/cause/:id" component={ACausePage} />
             <ModeratorRoute

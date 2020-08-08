@@ -124,15 +124,19 @@ const useTableStyles = makeStyles(theme => ({
   },
 }));
 
-const ReviewCause = (props) => {
+const MyCauses = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
+  const causeId = JSON.parse(localStorage.getItem("user")).causes[0]._id;
   const causeData = props.data;
   const causeError = props.error;
-
   useEffect(() => {
-    props.reviewCauses(token);
+    props.getMyCauses(token);
   },[]);
+
+  //const [delete, setDelete] = useState(false);
+  const [deleteCause, setDeleteCause] = useState(false);
+  let [openDialog, setOpenDialog] = useState(false);
 
   const classes = moreStyles();
   const tableClass = useTableStyles();
@@ -141,9 +145,23 @@ const ReviewCause = (props) => {
   const rows = [];
   for (const data of causeData) {
      rows.push(data);
+ };
+
+ const onPressDelete = () => {
+  setDeleteCause(true);
+}
+
+const onPressNo = () => {
+  setDeleteCause(false);
+}
+
+ const handleDeleteCause = (id) => {
+  props.deleteCause(token,id);
+  setTimeout(() => (window.location = "/dashboard/myCauses"), 3000);
  }
+
   const handleViewCause = (id) => {
-    props.history.push(`/dashboard/review/${id}`)
+    props.history.push(`/dashboard/myCauses/${id}`)
   }
 
   
@@ -188,15 +206,16 @@ const ReviewCause = (props) => {
       </div>
     );
   };
-  let CauseTable; 
+  let CauseTable;
   if (causeError) {
     CauseTable = <div><Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
     {causeError.message}
   </Typography></div>;
-  }else {
+  }
+  else {
     CauseTable = <div>
       <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-            Review causes table
+            My causes table
       </Typography>
           <Grid container spacing={5} style={{marginTop: "30px"}}>
           <Paper className={tableClass.root}>
@@ -208,6 +227,7 @@ const ReviewCause = (props) => {
             <StyledTableCell align="right">Amount required</StyledTableCell>
             <StyledTableCell align="right">Status</StyledTableCell>
             <StyledTableCell align="right">Category</StyledTableCell>
+            <StyledTableCell align="right">Delete</StyledTableCell>
             <StyledTableCell align="right">View</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -215,12 +235,29 @@ const ReviewCause = (props) => {
           {rows.map(cause=> (
             <StyledTableRow key={cause._id}>
             <StyledTableCell align="right">
-                <Avatar src={'/assets/images/icons/third-party-icon.png'} />
+                <Avatar src={cause.cause_photos} />
               </StyledTableCell>
               <StyledTableCell align="right">{cause.cause_title}</StyledTableCell>
               <StyledTableCell align="right">{cause.amount_required}</StyledTableCell>
               <StyledTableCell align="right">{cause.cause_status}</StyledTableCell>
               <StyledTableCell align="right">{cause.category}</StyledTableCell>
+              <StyledTableCell align="right">
+              <div style={{textAlign: "center", width: "100%"}} >
+              <Button
+                  onClick={() => onPressDelete() }
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    margin: "30px auto",
+                    color: "white",
+                    paddingLeft: "30px",
+                    paddingRight: "30px"                    
+                  }}
+                >
+                   Delete
+              </Button>
+            </div>
+              </StyledTableCell>
               <StyledTableCell align="right">
               <div style={{textAlign: "center", width: "100%"}} >
               <Button
@@ -249,6 +286,47 @@ const ReviewCause = (props) => {
   return (
     <>
       <PrimaryAppBar />
+      <MyDialog
+        title={props.deletedStatus?props.deletedStatus: 'error'}
+        openDialog={props.deletedStatus?true:false}
+        positiveDialog={true}
+        onClose={() => setOpenDialog(false)}
+      >
+        {props.deletedMessage?props.deletedMessage: 'something went wrong'}
+      </MyDialog>
+      <MyDialog
+        title='Delete Cause'
+        openDialog={deleteCause}
+        positiveDialog={true}
+        onClose={() => setOpenDialog(false)}
+      >
+        {'Are you sure you want to continue?'}
+        <div>
+            <Button
+                onClick={(event) => onPressNo()}
+                variant="contained"
+                color="primary"
+                style={{
+                  //marginLeft: "auto",
+                  color: "white",
+                }}
+              >
+                No
+              </Button>
+              <Button
+                onClick={() =>  handleDeleteCause(causeId)}
+                variant="contained"
+                color="primary"
+                style={{
+                  marginLeft: "auto",
+                  color: "white",
+                  //float: "right",
+                }}
+              >
+                Yes
+              </Button>
+        </div>
+      </MyDialog>
         <Container style={{ marginTop: 150 }}>
         <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
           Good going, {getAuthenticatedUser().first_name}. 
@@ -258,6 +336,7 @@ const ReviewCause = (props) => {
         </Typography>
 
         <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
+       { props.loading && <CircularProgress disableShrink className={classes.Circular }/>}
           {CauseTable}
         </Paper>
       </Container>
@@ -269,17 +348,20 @@ const ReviewCause = (props) => {
 
 const mapStateToProps = state => {
   return {
-    loading : state.displayCause.loading,
-    data: state.reviewCauses.causes?state.reviewCauses.causes.data:"There is no cause found",
-    error: state.reviewCauses.error,
+    loading : state.getAllMyCauses.loading,
+    data: state.getAllMyCauses.causes?state.getAllMyCauses.causes.data:[],
+    error: state.getAllMyCauses.error,
+    deletedStatus:state.getAllMyCauses.deletedStatus,
+    deletedMessage:state.getAllMyCauses.deletedMessage,
+    deleteCauseId:state.getAllMyCauses.cause_id,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    reviewCauses : (token) => dispatch(actions.reviewCauses(token)),
+    getMyCauses : (token) => dispatch(actions.getAllMyCauses(token)),
+    deleteCause : (token,cause_id) => dispatch(actions.deleteCause(token,cause_id))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReviewCause);
-
+export default connect(mapStateToProps, mapDispatchToProps)(MyCauses);

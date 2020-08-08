@@ -114,6 +114,7 @@ const CauseDetailsbySingleUser = (props) => {
   const singleCause = props.singleCauseDetails;
   const createdBy = props.createdBy;
   const cause_id = localStorage.getItem('cause_id' );
+  const causeId = props.match.params.id;
   //5f25c0cc97b1ed04536c55c9
   useEffect(() => {
     const cause_id = props.match.params.id;
@@ -153,12 +154,25 @@ const CauseDetailsbySingleUser = (props) => {
   let [dialogTitle, setDialogTitle] = useState("");
   let [positiveDialog, setPositiveDialog] = useState(false);
   let [selectedOwner, setSelectedOwner] = useState("Self");
+  const [deleteCause, setDeleteCause] = useState(false);
   const handleViewCauses = () => {
     setPage(2);
     //props.getAsingleCauseDetails(token,cause_id);
   }
 
 
+  const handleDeleteCause = (id) => {
+    props.deleteCause(token,id);
+    setTimeout(() => (window.location = "/dashboard/myCauses"), 1000);
+   };
+
+   const onPressDelete = () => {
+    setDeleteCause(true);
+  }
+  
+  const onPressNo = () => {
+    setDeleteCause(false);
+  }
 
   const handleBriefDescriptionChange = (event) => {
     setBriefDescription(event.target.value);
@@ -221,7 +235,7 @@ const CauseDetailsbySingleUser = (props) => {
       </div>
     );
   };
-  let CauseIsMounted = props.loading && <CircularProgress disableShrink />;
+  let CauseIsMounted = props.loading && <CircularProgress disableShrink className={classes.Circular }/>;
   if (singleCause ) {
     CauseIsMounted = <div>
       <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
@@ -244,21 +258,25 @@ const CauseDetailsbySingleUser = (props) => {
               <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{tcolor: "#FC636B", textAlign: "center"}}>
              {singleCause.brief_description}
             </Typography><br/>
-             <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Address : {singleCause.address}
+             {singleCause.first_name && <div>
+              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
+                 Beneficiary name : {`${singleCause.first_name} ${singleCause.last_name}`}
              </Typography><br/>
-            <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
+               </div>}
+             {singleCause.first_name && <div>
+              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
+                 Beneficiary address : {singleCause.address}
+             </Typography><br/>
+               </div>}
+               <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
                  Account number : {singleCause.account_number}
              </Typography><br/>
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                Bank name: Access
+                Bank name: {singleCause.bank}
              </Typography><br/>
             <Typography variant="h6" component="h6" style={{fontWeight: "bold"}}>
               Amount required: 
             <Naira>{singleCause.amount_required}</Naira> 
-             </Typography><br/>
-              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Name : {`${createdBy.first_name} ${createdBy.last_name}`}
              </Typography><br/>
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
                  Email : {createdBy.email}
@@ -273,19 +291,32 @@ const CauseDetailsbySingleUser = (props) => {
               <div style={{
                     marginTop: "30px",
                     marginBottom: "30px",
+                    textAlign: "center",
                     width: "100%"
                   }}>
                 <Button
-                  onClick={() => {}}
+                  onClick={() => onPressDelete()}
                   variant="contained"
                   color="primary"
                   style={{
-                    marginLeft: "50%",
+                    //marginLeft: "50%",
                     color: "white",
                     //float: "right",
                   }}
                 >
                  Delete cause
+                </Button>
+                <Button
+                  onClick={() => props.history.push(`/dashboard/myCauses/${causeId}/${causeId}`)}
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    //marginLeft: "55%",
+                    color: "white",
+                    //float: "right",
+                  }}
+                >
+                 Edit cause
                 </Button>
               </div>
             </Grid>
@@ -295,13 +326,54 @@ const CauseDetailsbySingleUser = (props) => {
     <>
       <PrimaryAppBar />
       <MyDialog
+        title={props.deletedStatus?props.deletedStatus: 'error'}
+        openDialog={props.deletedStatus?true:false}
+        positiveDialog={true}
+        onClose={() => setOpenDialog(false)}
+      >
+        {props.deletedMessage?props.deletedMessage: 'something went wrong'}
+      </MyDialog>
+      <MyDialog
+        title='Delete Cause'
+        openDialog={deleteCause}
+        positiveDialog={true}
+        onClose={() => setOpenDialog(false)}
+      >
+        {'Are you sure you want to continue?'}
+        <div>
+            <Button
+                onClick={(event) => onPressNo()}
+                variant="contained"
+                color="primary"
+                style={{
+                  //marginLeft: "auto",
+                  color: "white",
+                }}
+              >
+                No
+              </Button>
+              <Button
+                onClick={() =>  handleDeleteCause(causeId)}
+                variant="contained"
+                color="primary"
+                style={{
+                  marginLeft: "auto",
+                  color: "white",
+                  //float: "right",
+                }}
+              >
+                Yes
+              </Button>
+        </div>
+      </MyDialog>
+      {/* <MyDialog
         title={props.causeMessage?props.causeMessage.status: 'error'}
         openDialog={props.causeMessage?true:false}
         positiveDialog={positiveDialog}
         onClose={() => setOpenDialog(false)}
       >
         {props.causeMessage?props.causeMessage.message: 'something went wrong'}
-      </MyDialog>
+      </MyDialog> */}
         <Container style={{ marginTop: 150 }}>
           <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
             Good going, {getAuthenticatedUser().first_name}. 
@@ -323,20 +395,19 @@ const CauseDetailsbySingleUser = (props) => {
 
 const mapStateToProps = state => {
   return {
-    loading : state.displayCause.loading,
-    data: state.reviewCauses.causes?state.reviewCauses.causes.data:"There is no cause found",
-    singleCauseDetails: state.getCauseBySingleUser.cause?state.getCauseBySingleUser.cause.data[0]:null,
-    createdBy: state.getCauseBySingleUser.cause?state.getCauseBySingleUser.cause.data[1]:null,
-    causeError: state.displayCause.error,
-    causeMessage: state.recommend.message
+    loading : state.getMyCause.loading,
+    singleCauseDetails: state.getMyCause.cause?state.getMyCause.cause.data[0]:null,
+    createdBy: state.getMyCause.cause?state.getMyCause.cause.data[1]:null,
+    causeError: state.getMyCause.error,
+    deletedStatus:state.getAllMyCauses.deletedStatus,
+    deletedMessage:state.getAllMyCauses.deletedMessage,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    reviewCauses : (token) => dispatch(actions.reviewCauses(token)),
     getAsingleCauseDetails : (token,id) => dispatch(actions.checkCauseDetails(token,id)),
-    recommendAcause : (formData, token,cause_id) => dispatch(actions.recommendAcourseForApproval(formData,token,cause_id))
+    deleteCause : (token,cause_id) => dispatch(actions.deleteCause(token,cause_id))
   }
 }
 

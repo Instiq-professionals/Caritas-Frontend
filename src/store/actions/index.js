@@ -4,14 +4,21 @@ export {
     accountDetails
 } from './signup';
 export {
-    getAllCausesByAuser,
-    checkCauseDetails
-} from './getAllCausesByAuser';
+    getAllMyCauses,
+    checkCauseDetails,
+    deleteCause,
+    editCause
+} from './myCauses';
 export {
     reviewCauses,
     reviewCauseDetails,
     recommendAcourseForApproval 
 } from './reviewCauses';
+export {
+    getCausesForApproval ,
+    approveCause,
+    disApproveCause
+} from './makeAdecisionOnCause'
 export {
     getVolunteersForApproval,
     checkVolunteerDetails,

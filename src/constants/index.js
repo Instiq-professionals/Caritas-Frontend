@@ -29,15 +29,20 @@ const Routes = {
   disapprove_volunteer: host + "users/disapprove/",
 
   review_cause: host + "cause/review_causes",
-  review_a_single_cause: host + "cause/review/",
+  review_a_single_cause: host + "cause/review/", //the cause id must be appended
+  approve_cause: host + "cause/approve/",  //the cause id must be appended
+  disapprove_cause: host + "cause/disapprove/", //the cause id must be appended
 
   create_cause: host + "cause/create",
   all_causes: host + "cause",
   get_all_causes_by_a_user: host + 'cause/my_causes',
+  delete_cause: host + 'cause/delete/', //the cause id must be appended
+  edit_cause: host + 'cause/edit/', //the cause id must be appended
   get_cause: host + "cause/", //the cause id must be appended
   moderator_all_causes: host + "cause/approve_causes",
+  fetch_all_causes_for_approval: host + "cause/approve",
   approve_cause: host + "cause/approve/", //the cause id must be appended
-  reject_cause: host + "cause/disapprove/", //the caue id is appended
+  disapprove_cause: host + "cause/disapprove/", //the caue id is appended
 
   verify_email: host + "users/confirm_email/", //the verification token must be appended
   forgot_password: host + "users/forgot_password",

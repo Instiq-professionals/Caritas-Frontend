@@ -2,9 +2,15 @@ import * as actionTypes from './actionsTypes';
 import { Routes } from "../../constants/index";
 import axios from 'axios'
 
-export const getCausesForReview = (payload) => {
+export const getCausesForReviewStart = () => {
     return {
-        type : actionTypes.GET_CAUSE_AS_VOLUNTEER_OR_ADMIN,
+        type : actionTypes.GET_CAUSE_AS_VOLUNTEER_OR_ADMIN_START
+    };
+};
+
+export const getCausesForReviewSuccess = (payload) => {
+    return {
+        type : actionTypes.GET_CAUSE_AS_VOLUNTEER_OR_ADMIN_SUCCESS,
         payload
     };
 };
@@ -18,6 +24,7 @@ export const getCausesForReviewFail = (error) => {
 
 export const reviewCauses = (token) => {
     return dispatch => {
+        dispatch(getCausesForReviewStart());
          axios({
             method : 'get',
             url: Routes.review_cause,
@@ -27,7 +34,7 @@ export const reviewCauses = (token) => {
           })
           .then(res => {
               console.log(res.data);
-              dispatch(getCausesForReview(res.data))
+              dispatch(getCausesForReviewSuccess(res.data))
           })
           .catch(err => {
             console.log(err.response.data);

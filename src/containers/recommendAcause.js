@@ -244,7 +244,7 @@ const RecommendAcause = (props) => {
                  Account number : {singleCause.account_number}
              </Typography><br/>
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                Bank name: Access
+                Bank name:{singleCause.bank}
              </Typography><br/>
             <Typography variant="h6" component="h6" style={{fontWeight: "bold"}}>
               Amount required: 

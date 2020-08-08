@@ -7,11 +7,11 @@ const initialState = {
     loading : false
 };
 
-const setDetails = (state, action) => {
+const getCausesStart = (state, action) => {
     return updatedObject(state, {error: null, loading:true})
 };
 
-const getCauses = (state, action) => {
+const getCausesSuccess = (state, action) => {
     return updatedObject(state, {
         causes: action.payload,
         error: null,
@@ -29,7 +29,8 @@ const getCausesFail = (state, action) => {
 
 export const displayCausesForReview = (state = initialState, action) => {
     switch(action.type) {
-        case actionTypes.GET_CAUSE_AS_VOLUNTEER_OR_ADMIN: return getCauses (state, action);
+        case actionTypes.GET_CAUSE_AS_VOLUNTEER_OR_ADMIN_START: return getCausesStart(state, action);
+        case actionTypes.GET_CAUSE_AS_VOLUNTEER_OR_ADMIN_SUCCESS: return getCausesSuccess (state, action);
         case actionTypes.GET_CAUSE_AS_VOLUNTEER_OR_ADMIN_FAIL: return getCausesFail(state, action);
         default: return state
     }

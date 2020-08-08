@@ -124,14 +124,13 @@ const useTableStyles = makeStyles(theme => ({
   },
 }));
 
-const ReviewCause = (props) => {
+const GetAllCausesForCleadersDecision = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
   const causeData = props.data;
   const causeError = props.error;
-
   useEffect(() => {
-    props.reviewCauses(token);
+    props.onGetAllCauses(token);
   },[]);
 
   const classes = moreStyles();
@@ -143,7 +142,7 @@ const ReviewCause = (props) => {
      rows.push(data);
  }
   const handleViewCause = (id) => {
-    props.history.push(`/dashboard/review/${id}`)
+    props.history.push(`/dashboard/approve/${id}`)
   }
 
   
@@ -188,7 +187,7 @@ const ReviewCause = (props) => {
       </div>
     );
   };
-  let CauseTable; 
+  let CauseTable ; 
   if (causeError) {
     CauseTable = <div><Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
     {causeError.message}
@@ -196,7 +195,7 @@ const ReviewCause = (props) => {
   }else {
     CauseTable = <div>
       <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-            Review causes table
+            Causes table
       </Typography>
           <Grid container spacing={5} style={{marginTop: "30px"}}>
           <Paper className={tableClass.root}>
@@ -215,7 +214,7 @@ const ReviewCause = (props) => {
           {rows.map(cause=> (
             <StyledTableRow key={cause._id}>
             <StyledTableCell align="right">
-                <Avatar src={'/assets/images/icons/third-party-icon.png'} />
+                <Avatar src={cause.cause_photos} />
               </StyledTableCell>
               <StyledTableCell align="right">{cause.cause_title}</StyledTableCell>
               <StyledTableCell align="right">{cause.amount_required}</StyledTableCell>
@@ -269,17 +268,17 @@ const ReviewCause = (props) => {
 
 const mapStateToProps = state => {
   return {
-    loading : state.displayCause.loading,
-    data: state.reviewCauses.causes?state.reviewCauses.causes.data:"There is no cause found",
-    error: state.reviewCauses.error,
+    loading : state.makeDecisionOnCause.loading,
+    data: state.makeDecisionOnCause.causes?state.makeDecisionOnCause.causes.data:"There is no cause found",
+    error: state.makeDecisionOnCause.error,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    reviewCauses : (token) => dispatch(actions.reviewCauses(token)),
+    onGetAllCauses : (token) => dispatch(actions.getCausesForApproval(token)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReviewCause);
+export default connect(mapStateToProps, mapDispatchToProps)(GetAllCausesForCleadersDecision);
 

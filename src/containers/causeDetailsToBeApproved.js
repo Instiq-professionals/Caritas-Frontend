@@ -24,7 +24,7 @@ import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { PrimaryAppBar, MyTextField } from "../commons";
 import { yourCauses, trendingCauses, followedCauses} from "../mock";
-import { SlideableGridList, AddImage, AddCauseImage, AddVideo, ApproveCauseTable  } from "../components";
+import { SlideableGridList, AddImage, AddCauseImage, AddVideo, ReviewCauseTable  } from "../components";
 import {
   isValidCauseTitle,
   isValidFunds,
@@ -107,16 +107,13 @@ const moreStyles = makeStyles((theme) => ({
   }
 }));
 
-const CauseDetailsToBeApproved = (props) => {
+const RecommendAcause = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
-  const data = [];
   const singleCause = props.singleCauseDetails;
   const createdBy = props.createdBy;
-  const cause_id = localStorage.getItem('cause_id' );
-  console.log('.....nn.me.tt...',props.data);
+  const cause_id = props.match.params.id;
   useEffect(() => {
-    props.reviewCauses(token);
     props.getAsingleCauseDetails(token,cause_id);
 
   },[]);
@@ -131,7 +128,10 @@ const CauseDetailsToBeApproved = (props) => {
 
   const classes = moreStyles();
   let [page, setPage] = useState(1);
-
+  const [accept, setAccept] = useState(false);
+  const [buttonApprove, setButtonApprove] = useState('Approve');
+  const [buttonDisApprove, setButtonDisApprove] = useState('Disaprove');
+  const [dialogTitle, setDialogTitle] = useState("Make a decision");
   let [causeTitle, setCauseTitle] = useState("");
   let [amountRequired, setAmountRequired] = useState("0");
   let [briefDescription, setBriefDescription] = useState("");
@@ -150,35 +150,25 @@ const CauseDetailsToBeApproved = (props) => {
   let [errorMessage, setErrorMessage] = useState("");
   let [openDialog, setOpenDialog] = useState(false);
   let [dialogMessage, setDialogMessage] = useState("");
-  let [dialogTitle, setDialogTitle] = useState("");
   let [positiveDialog, setPositiveDialog] = useState(false);
   let [selectedOwner, setSelectedOwner] = useState("Self");
-  const handleViewCauses = () => {
-    setPage(2);
-    //props.getAsingleCauseDetails(token,cause_id);
-  }
 
+  const onPressApprove = () => {
+    setAccept(true);
+}
 
-
-  const handleBriefDescriptionChange = (event) => {
-    setBriefDescription(event.target.value);
+const onPressNo = () => {
+  setAccept(false);
+}
+  
+  const handleApproveSubmit = () => {
+    props.onPressApprove(token,cause_id);
+    setTimeout(() => (window.location = "/dashboard/approve"), 1000);
   };
-  const validateForm = () => {
-    if (!isValidBriefDescription(briefDescription) || briefDescription.length < 5) {
-      setErrorMessage("Please enter a valid description");
-      return;
-    }
-    return true
-  }
-  const handleSubmit = (event) => {
-    if (event) event.preventDefault();
-    if (validateForm()) {
-      setErrorMessage('');
-      props.recommendAcause(briefDescription,token,cause_id);
-      setTimeout(() => (window.location = "/dashboard/review"), 3000);
-    }
-  }
-
+  const handleDisApproveSubmit = () => {
+    props.onPressDisApprove(token,cause_id);
+    setTimeout(() => (window.location = "/dashboard/approve"), 1000);
+  };
   
   const CauseOwnerSelection = (props) => {
     const useStyles = makeStyles((theme) => ({
@@ -221,7 +211,7 @@ const CauseDetailsToBeApproved = (props) => {
       </div>
     );
   };
-  let CauseIsMounted = props.loading && <CircularProgress disableShrink />;
+  let CauseIsMounted = props.loading && <CircularProgress disableShrink className={classes.Circular}/>;
   if (singleCause ) {
     CauseIsMounted = <div>
       <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
@@ -251,7 +241,7 @@ const CauseDetailsToBeApproved = (props) => {
                  Account number : {singleCause.account_number}
              </Typography><br/>
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                Bank name: Access
+                Bank name:{singleCause.bank}
              </Typography><br/>
             <Typography variant="h6" component="h6" style={{fontWeight: "bold"}}>
               Amount required: 
@@ -269,28 +259,30 @@ const CauseDetailsToBeApproved = (props) => {
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
                  Phone Number : {createdBy.phone_number}
              </Typography><br/>
+             <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
+                 Reviewed By : {`${props.reviewedBy.first_name} ${props.reviewedBy.last_name}`}
+             </Typography><br/>
+             <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
+                 Reviewed at : {singleCause.reviewed_at}
+             </Typography><br/>
+             <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
+                 Reviewer's Message : {singleCause.reviewer_message}
+             </Typography><br/>
               </Grid>
               <div style={{
                     marginTop: "30px",
                     marginBottom: "30px",
+                    textAlign: "center",
                     width: "100%"
                   }}>
                 <Button
-                  onClick={() => setPage(1)}
-                  variant="contained"
-                  color="default"
-                  
-                >
-                  Back
-                </Button>
-                <Button
-                  onClick={() => setPage(3)}
+                  onClick={() => setOpenDialog(true)}
                   variant="contained"
                   color="primary"
                   style={{
-                    marginLeft: "auto",
+                    //marginLeft: "auto",
                     color: "white",
-                    float: "right",
+                    //float: "right",
                   }}
                 >
                  Take a decision
@@ -303,15 +295,38 @@ const CauseDetailsToBeApproved = (props) => {
     <>
       <PrimaryAppBar />
       <MyDialog
-        title={props.causeMessage?props.causeMessage.status: 'error'}
-        openDialog={props.causeMessage?true:false}
-        positiveDialog={positiveDialog}
+        title={props.decision.status !== null?props.decision.status:dialogTitle}
+        openDialog={openDialog}
+        positiveDialog={true}
         onClose={() => setOpenDialog(false)}
       >
-        {props.causeMessage?props.causeMessage.message: 'something went wrong'}
+        {props.decision.status !== null? props.decision.message: <div>
+            <Button
+                onClick={() => handleDisApproveSubmit()}
+                variant="contained"
+                color="primary"
+                style={{
+                  //marginLeft: "auto",
+                  color: "white",
+                }}
+              >
+                {buttonDisApprove}
+              </Button>
+              <Button
+                onClick={() =>  handleApproveSubmit()}
+                variant="contained"
+                color="primary"
+                style={{
+                  marginLeft: "21px",
+                  color: "white",
+                  //float: "right",
+                }}
+              >
+                {buttonApprove}
+              </Button>
+             { props.decisionSpinner && <CircularProgress disableShrink className={classes.Circular}/>}
+        </div>}
       </MyDialog>
-      {page === 1 && (
-
         <Container style={{ marginTop: 150 }}>
           <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
             Good going, {getAuthenticatedUser().first_name}. 
@@ -325,67 +340,6 @@ const CauseDetailsToBeApproved = (props) => {
             {CauseIsMounted}
           </Paper>
         </Container>
-      )}
-      {page === 2 && (
-        <Container style={{ marginTop: 150 }}>
-        <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
-          <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-            Make a recommendation 
-          </Typography>          
-            
-            <div style={{width: "100%", textAlign: "center", marginTop: "30px"}} >
-
-              <form action="#" method="POST" className={classes.form}>
-              <div style={{ color: "red", textAlign: "center", margin: 16 }}>
-                {errorMessage}
-              </div>
-                 <FormControl className={classes.formControl}>
-                   <MyTextField
-                     id="description"
-                     type="text"
-                     name="description"
-                     required="required"
-                     label="Reviewers message"
-                     placeholder="Say what you feel about the cause"
-                     multiline={true}
-                     rows={3}
-                     value={briefDescription}
-                     onChange={handleBriefDescriptionChange}
-                   />
-                 </FormControl>
-              </form>
-                  
-            </div>
-
-            <div style={{
-                  marginTop: "30px",
-                  marginBottom: "30px",
-                }}>
-              <Button
-                onClick={() => setPage(2)}
-                variant="contained"
-                color="default"
-                
-              >
-                Back
-              </Button>
-              <Button
-                onClick={() => handleSubmit()}
-                variant="contained"
-                color="primary"
-                style={{
-                  marginLeft: "auto",
-                  color: "white",
-                  float: "right",
-                }}
-              >
-                Submit
-              </Button>
-            </div>
-                    
-        </Paper>
-        </Container>
-      )}
     </>
   );
 };
@@ -398,17 +352,20 @@ const mapStateToProps = state => {
     data: state.reviewCauses.causes?state.reviewCauses.causes.data:"There is no cause found",
     singleCauseDetails: state.displayCause.cause?state.displayCause.cause.data[0]:null,
     createdBy: state.displayCause.cause?state.displayCause.cause.data[1]:null,
+    reviewedBy: state.displayCause.cause?state.displayCause.cause.data[2]:null,
     causeError: state.displayCause.error,
-    causeMessage: state.recommend.message
+    causeMessage: state.recommend.message,
+    decision: state.makeDecisionOnCause,
+    decisionSpinner: state.makeDecisionOnCause.loading
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    reviewCauses : (token) => dispatch(actions.reviewCauses(token)),
     getAsingleCauseDetails : (token,id) => dispatch(actions.reviewCauseDetails(token,id)),
-    recommendAcause : (formData, token,cause_id) => dispatch(actions.recommendAcourseForApproval(formData,token,cause_id))
+    onPressApprove :  (token,cause_id) => dispatch(actions.approveCause(token,cause_id)),
+    onPressDisApprove :  (token,cause_id) => dispatch(actions.disApproveCause(token,cause_id)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CauseDetailsToBeApproved);
+export default connect(mapStateToProps, mapDispatchToProps)(RecommendAcause);

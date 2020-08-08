@@ -15,12 +15,13 @@ import VerifyEmailPage from "./VerifyEmailPage";
 import ResetPassword from "./ResetPassword";
 import ReviewCauses from "./ReviewCauses";
 import RecommendAcause from './recommendAcause';
-import ApproveCause from "./ApproveCause";
+import GetAllCausesForCleadersDecision from "./getAllCausesForCleadersDecision";
 import CauseDetailsToBeApproved from "./causeDetailsToBeApproved";
 import ViewVolunteerRegPending from "./ViewVolunteerRegPending";
 import ApproveVolunteer from "./approveVolunteer";
 import MyCauseDetails from './myCauseDetails';
 import MyCauses from './myCauses';
+import EditCause from './EditCourse';
 
 export {
   Home,
@@ -30,9 +31,10 @@ export {
   Dashboard,
   MyCauses,
   MyCauseDetails,
+  EditCause,
   ReviewCauses,
   RecommendAcause,
-  ApproveCause,
+  GetAllCausesForCleadersDecision,
   CauseDetailsToBeApproved,
   ViewVolunteerRegPending ,
   ApproveVolunteer,

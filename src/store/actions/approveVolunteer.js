@@ -24,7 +24,7 @@ export const getVolunteerForApprovalFail = (error) => {
 
 export const getVolunteersForApproval = (token) => {
     return dispatch => {
-        getVolunteerForApprovalStart();
+        dispatch(getVolunteerForApprovalStart());
          axios({
             method : 'get',
             url: Routes.get_all_volunteers_for_approval,

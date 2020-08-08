@@ -2,11 +2,11 @@ export {
     signUpreducer
 } from './signupreducers';
 export {
-    getCausesBySingleUser
-} from './getAllCausesBySingleUser';
+    getAllMyCauses
+} from './getAllMyCauses';
 export {
-    getCauseBySingleUser
-} from './getsingleCauseByUser';
+    getMyCause
+} from './getMyCauseDetail';
 export {
     getVolunteersForApproval
 } from './volunteersForApprovalDetails';
@@ -26,3 +26,6 @@ export {
 export {
     recommendCause
 } from './recommendAcause';
+export {
+    makeDecisionOnCause
+} from './makeAdecisionOnCause'

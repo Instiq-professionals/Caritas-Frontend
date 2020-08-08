@@ -128,10 +128,13 @@ const MyCauses = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
   const causeData = props.data;
-
+  const causeError = props.error;
   useEffect(() => {
-    props.reviewCauses(token);
+    props.getMyCauses(token);
   },[]);
+
+  const [deleteCause, setDeleteCause] = useState(false);
+  let [openDialog, setOpenDialog] = useState(false);
 
   const classes = moreStyles();
   const tableClass = useTableStyles();
@@ -140,10 +143,19 @@ const MyCauses = (props) => {
   const rows = [];
   for (const data of causeData) {
      rows.push(data);
- }
+ };
+
+ const onPressDelete = () => {
+  setDeleteCause(true);
+}
+
+const onPressNo = () => {
+  setDeleteCause(false);
+}
+
  const handleDeleteCause = (id) => {
-    rows.filter(item => item.id !== id);
-    console.log(`the cause with given id ${id} was deleted by me`)
+  props.deleteCause(token,id);
+  setTimeout(() => (window.location = "/dashboard/myCauses"), 3000);
  }
 
   const handleViewCause = (id) => {
@@ -192,10 +204,13 @@ const MyCauses = (props) => {
       </div>
     );
   };
-  let CauseTable = <div><Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-  There is no Cause found
-</Typography></div>;
-  if (causeData.length) {
+  let CauseTable;
+  if (causeError) {
+    CauseTable = <div><Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
+    {causeError.message}
+  </Typography></div>;
+  }
+  else {
     CauseTable = <div>
       <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
             My causes table
@@ -210,7 +225,6 @@ const MyCauses = (props) => {
             <StyledTableCell align="right">Amount required</StyledTableCell>
             <StyledTableCell align="right">Status</StyledTableCell>
             <StyledTableCell align="right">Category</StyledTableCell>
-            <StyledTableCell align="right">Delete</StyledTableCell>
             <StyledTableCell align="right">View</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -224,23 +238,6 @@ const MyCauses = (props) => {
               <StyledTableCell align="right">{cause.amount_required}</StyledTableCell>
               <StyledTableCell align="right">{cause.cause_status}</StyledTableCell>
               <StyledTableCell align="right">{cause.category}</StyledTableCell>
-              <StyledTableCell align="right">
-              <div style={{textAlign: "center", width: "100%"}} >
-              <Button
-                  onClick={() => handleDeleteCause(cause._id) }
-                  variant="contained"
-                  color="primary"
-                  style={{
-                    margin: "30px auto",
-                    color: "white",
-                    paddingLeft: "30px",
-                    paddingRight: "30px"                    
-                  }}
-                >
-                   Delete
-              </Button>
-            </div>
-              </StyledTableCell>
               <StyledTableCell align="right">
               <div style={{textAlign: "center", width: "100%"}} >
               <Button
@@ -278,6 +275,7 @@ const MyCauses = (props) => {
         </Typography>
 
         <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
+       { props.loading && <CircularProgress disableShrink className={classes.Circular }/>}
           {CauseTable}
         </Paper>
       </Container>
@@ -289,15 +287,16 @@ const MyCauses = (props) => {
 
 const mapStateToProps = state => {
   return {
-    loading : state.getCausesBySingleUser.loading,
-    data: state.getCausesBySingleUser.causes?state.getCausesBySingleUser.causes.data:"There is no cause found",
-    error: state.getCausesBySingleUser.error
+    loading : state.getAllMyCauses.loading,
+    data: state.getAllMyCauses.causes?state.getAllMyCauses.causes.data:[],
+    error: state.getAllMyCauses.error,
+    deleteCauseId:state.getAllMyCauses.cause_id,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    reviewCauses : (token) => dispatch(actions.getAllCausesByAuser(token)),
+    getMyCauses : (token) => dispatch(actions.getAllMyCauses(token)),
   }
 }
 

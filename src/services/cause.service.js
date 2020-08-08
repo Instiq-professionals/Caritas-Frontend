@@ -111,6 +111,8 @@ const createCause = async (cause) => {
   let formData = new FormData();
   formData.append("cause_title", cause.causeTitle);
   formData.append("amount_required", parseInt(cause.amountRequired));
+  formData.append("account_number", parseInt(cause.acountNumber));
+  formData.append("bank", cause.bank);
   formData.append("brief_description", cause.briefDescription);
   // formData.append("charity_information", cause.charityInformation);
   // formData.append("additional_information", cause.additionalInformation);
@@ -137,20 +139,20 @@ const createCause = async (cause) => {
     let middle_name = cause.thirdParty.middle_name;
     let last_name = cause.thirdParty.last_name;
     let gender = cause.thirdParty.gender;
-    let bank = cause.thirdParty.bank;
+   // let bank = cause.thirdParty.bank;
     let address = cause.thirdParty.address;
     let local_government = cause.thirdParty.local_government;
-    let account_number = cause.thirdParty.account_number;
-    //let amount_required = cause.thirdParty.amount_required;
+    //let account_number = cause.thirdParty.account_number;
+    //let amount_required = parseInt(cause.thirdParty.amount_required);
 
     formData.append("first_name", first_name);
     formData.append("middle_name", middle_name);
     formData.append("last_name", last_name);
-    formData.append("bank", bank);
+    //formData.append("bank", bank);
     formData.append("address", address);
     formData.append("gender", gender);
     formData.append("local_government", local_government);
-    formData.append("account_number", account_number);
+   // formData.append("account_number", account_number);
     //formData.append("amount_required", amount_required);
 
   }
