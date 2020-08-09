@@ -37,6 +37,7 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import {
   signUpreducer,
+  profile,
   getAllMyCauses,
   getMyCause,
   getVolunteersForApproval,
@@ -77,6 +78,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
 signup : signUpreducer,
+profile,
 getAllMyCauses,
 getMyCause,
 getVolunteersForApproval : getVolunteersForApproval,

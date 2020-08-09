@@ -2,6 +2,9 @@ export {
     signUpreducer
 } from './signupreducers';
 export {
+    profile
+} from './profile';
+export {
     getAllMyCauses
 } from './getAllMyCauses';
 export {

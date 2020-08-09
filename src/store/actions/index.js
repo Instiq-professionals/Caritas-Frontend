@@ -4,6 +4,9 @@ export {
     accountDetails
 } from './signup';
 export {
+    profile
+} from './profile';
+export {
     getAllMyCauses,
     checkCauseDetails,
     deleteCause,

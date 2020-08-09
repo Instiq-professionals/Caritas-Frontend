@@ -130,7 +130,7 @@ const Signin = () => {
   let [openDialog, setOpenDialog] = useState();
   let [positiveDialog, setPositiveDialog] = useState(true);
 
-  let [verified, setVerified] = useState(true);
+  let [verified, setVerified] = useState(false);
 
   const handleSubmit = async (event) => {
     if (event) event.preventDefault();
