@@ -439,6 +439,11 @@ export default function PrimarySearchAppBar() {
                       <FancyButton label="Approve Causes" />{" "}
                      </NavLink>
                        )}
+                       {userIsModerator() && (
+                         <NavLink to="/dashboard/resolve">
+                         <FancyButton label="Resolve Causes" />{" "}
+                        </NavLink>
+                       )}
                        {(cLeader())&& (
                       <NavLink to="/dashboard/approveVolunteer">
                       <FancyButton label="Approve Volunteers" />{" "}

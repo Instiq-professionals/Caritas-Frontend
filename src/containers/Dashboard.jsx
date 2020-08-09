@@ -141,10 +141,116 @@ console.log('userApprovedCausesLength...',userApprovedCausesLength )
       userApprovedCausesLength={userApprovedCausesLength.length}
       daysLeft={daysLeft?`${daysLeft} days left`:'0'}
       clickToCausesPage={handleCausesPageClick}
-      RegPendingData={props.volunteersRegPendingDataError?'0':RegPendingData.length}
       />
+      {userIsModerator() && <Director
+        clickToCausesPage={() => props.history.push('/dashboard/resolve')}
+       />}
+      {Volunteer() && <VolunteerDashboard
+        clickToCausesPage={() => props.history.push('/dashboard/review')}
+       />}
+      {cLeader() && <CleadersDashboard
+        RegPendingData={props.volunteersRegPendingDataError?'0':RegPendingData.length}
+        clickToCausesPage={() => props.history.push('/dashboard/approve')}
+        clickToRegPendingPage={() => props.history.push('/dashboard/approveVolunteer')}
+        />}
     </>
   );
+};
+
+const Director = (props) => {
+  const classes = moreStyles();
+  return (
+    <Container style={{ marginTop: 200 }}>
+        <Grid container spacing={2}>
+           <Grid item xs={12}>
+             <Typography
+               variant="h4"
+               component="h4"
+               className={classes.sectionHead}
+             >
+               Activity Summary
+             </Typography>            
+           </Grid>
+           <Grid item xs={12} sm={6} md={3}>
+              <SummaryCard title="Total Causes" value="0" />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3}>
+              <SummaryCard title="Pending Causes" value="0" />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
+              <SummaryCard title="Approved Causes" value="0" />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3}>
+              <SummaryCard title="Impacts" value="0" />
+           </Grid>
+           </Grid>
+    </Container>
+  )
+  
+};
+
+const VolunteerDashboard = (props) => {
+  const classes = moreStyles();
+  return (
+    <Container style={{ marginTop: 200 }}>
+        <Grid container spacing={2}>
+           <Grid item xs={12}>
+             <Typography
+               variant="h4"
+               component="h4"
+               className={classes.sectionHead}
+             >
+               Activity Summary
+             </Typography>            
+           </Grid>
+           <Grid item xs={12} sm={6} md={3}>
+              <SummaryCard title="Total Causes" value="0" />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
+              <SummaryCard title="Pending Causes" value="0" />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3}>
+              <SummaryCard title="Approved Causes" value="0" />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3}>
+              <SummaryCard title="Review causes" value="0" />
+           </Grid>
+           </Grid>
+    </Container>
+  )
+  
+};
+
+const CleadersDashboard = (props) => {
+  const classes = moreStyles();
+  return (
+    <Container style={{ marginTop: 200 }}>
+        <Grid container spacing={2}>
+           <Grid item xs={12}>
+             <Typography
+               variant="h4"
+               component="h4"
+               className={classes.sectionHead}
+             >
+               Activity Summary
+             </Typography>            
+           </Grid>
+           <Grid item xs={12} sm={6} md={3}>
+              <SummaryCard title="Total Causes" value="0" />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
+              <SummaryCard title="Pending Causes" value="0" />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} >
+              <SummaryCard title="Approved Causes" value="0" />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToRegPendingPage}>
+             <SummaryCard title="volunteer Registration Pending" value={props.RegPendingData} />
+           </Grid>
+           </Grid>
+    </Container>
+  )
+  
 };
 
 const Summary = (props) => {
@@ -251,7 +357,7 @@ const Summary = (props) => {
         // </Grid>
 
         <>
-        <Grid container spacing={10}>
+        <Grid container spacing={2}>
            <Grid item xs={12}>
 
              <Typography
@@ -263,19 +369,19 @@ const Summary = (props) => {
              </Typography>
                           
            </Grid>
-           <Grid item xs={6} md={3} onClick = {props.clickToCausesPage} >
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage} >
               <SummaryCard 
               title="Total Causes" 
               value={props.userCausesDataLength} 
               />
            </Grid>
-           <Grid item xs={6} md={3}>
+           <Grid item xs={12} sm={6} md={3}>
               <SummaryCard title="Pending Causes" value={props.userPendingCausesLength} />
            </Grid>
-           <Grid item xs={6} md={3}>
+           <Grid item xs={12} sm={6} md={3}>
               <SummaryCard title="Approved Causes" value={props.userApprovedCausesLength}/>
            </Grid>
-           <Grid item xs={6} md={3}>
+           <Grid item xs={12} sm={6} md={3}>
               <SummaryPie title="Cause counddown" data={data} daysLeftToLogAnotherCause={props.daysLeft}/>
            </Grid>
 
@@ -313,9 +419,9 @@ const Summary = (props) => {
         </>
       )}
 
-      {(userIsAnAdmin() || cLeader() || Volunteer() || userIsModerator())  && (
+      {(userIsAnAdmin() )  && (
         <>
-        <Grid container spacing={10}>
+        <Grid container spacing={2}>
            <Grid item xs={12}>
 
              <Typography
@@ -327,25 +433,17 @@ const Summary = (props) => {
              </Typography>
                           
            </Grid>
-           <Grid item xs={6} md={3}>
+           <Grid item xs={12} sm={6} md={3}>
               <SummaryCard title="Total Causes" value="50" />
            </Grid>
-           <Grid item xs={6} md={3}>
+           <Grid item xs={12} sm={6} md={3}>
               <SummaryCard title="Pending Causes" value="20" />
            </Grid>
-           <Grid item xs={6} md={3}>
+           <Grid item xs={12} sm={6} md={3}>
               <SummaryCard title="Approved Causes" value="30" />
            </Grid>
-           {userIsModerator() && (<Grid item xs={6} md={3}>
-              <SummaryCard title="Impacts" value="30" />
-           </Grid>)}
-           {Volunteer() && (
-            <Grid item xs={6} md={3}>
-              <SummaryCard title="Review causes" value="30" />
-           </Grid>
-           )}
-           {(userIsAnAdmin() || cLeader()) && (
-             <Grid item xs={6} md={3}>
+           {(userIsAnAdmin() ) && (
+             <Grid item xs={12} sm={6} md={3}>
              <SummaryCard title="volunteer Registration Pending" value={props.RegPendingData} />
           </Grid>
            )}
@@ -384,7 +482,7 @@ const Summary = (props) => {
         </>
       )}
 
-      {(userIsModerator())&& (
+      {/* {(userIsModerator())&& (
         <>
           <Typography
             variant="h6"
@@ -401,7 +499,7 @@ const Summary = (props) => {
             <CausesTable />
           </Grid>
         </>
-      )}
+      )} */}
       {userIsAnAdmin()  && (
         <>
           <Typography

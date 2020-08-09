@@ -18,7 +18,11 @@ export {
     getCausesForApproval ,
     approveCause,
     disApproveCause
-} from './makeAdecisionOnCause'
+} from './makeAdecisionOnCause';
+export {
+    getCausesForResolution,
+    resolveCause 
+} from './resolveCause';
 export {
     getVolunteersForApproval,
     checkVolunteerDetails,

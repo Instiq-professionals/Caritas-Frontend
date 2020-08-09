@@ -14,6 +14,8 @@ import {
   RecommendAcause,
   GetAllCausesForCleadersDecision,
   CauseDetailsToBeApproved,
+  GetAllCausesForDirectors,
+  Resolvecause,
   ViewVolunteerRegPending ,
   ApproveVolunteer,
   Causes,
@@ -43,7 +45,8 @@ import {
   displayCausesForReview,
   displayCause,
   recommendCause,
-  makeDecisionOnCause
+  makeDecisionOnCause,
+  resolveCause,
 } from './store/reducers/index'
 //import signUpreducer from './store/reducers/signupreducers';
 //import displayCausesForReview from './store/reducers/reviewCauses';
@@ -82,7 +85,8 @@ makeDecisionOnVolunteer,
 reviewCauses : displayCausesForReview,
 displayCause : displayCause,
 recommend : recommendCause,
-makeDecisionOnCause
+makeDecisionOnCause,
+resolveCause
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger, ReduxThunk)))
@@ -144,6 +148,8 @@ const App = () => {
             <ProtectedRoute path="/dashboard/review/:id" component={RecommendAcause }/>
             <ProtectedRoute exact path="/dashboard/approve" component={GetAllCausesForCleadersDecision}/>
             <ProtectedRoute path="/dashboard/approve/:id" component={CauseDetailsToBeApproved}/>
+            <ProtectedRoute path="/dashboard/resolve" exact component={GetAllCausesForDirectors}/>
+            <ProtectedRoute exact path="/dashboard/resolve/:id" component={Resolvecause}/>
             <Route path="/cause/:id" component={ACausePage} />
             <ModeratorRoute
               path="/dashboard/cause/:id"

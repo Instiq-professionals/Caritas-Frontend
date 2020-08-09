@@ -124,13 +124,13 @@ const useTableStyles = makeStyles(theme => ({
   },
 }));
 
-const ReviewCause = (props) => {
+const GetAllCausesForDirectors = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
-  const volunteersData = props.data;
-
+  const causeData = props.data;
+  const causeError = props.error;
   useEffect(() => {
-    props.getVolunteersForApproval(token);
+    props.onGetAllCausesForDirector(token);
   },[]);
 
   const classes = moreStyles();
@@ -138,11 +138,11 @@ const ReviewCause = (props) => {
 
   let [selectedOwner, setSelectedOwner] = useState("Self");
   const rows = [];
-  for (const data of volunteersData) {
+  for (const data of causeData) {
      rows.push(data);
  }
-  const handleViewVolunteer = (id) => {
-    props.history.push(`/dashboard/approveVolunteer/${id}`)
+  const handleViewCause = (id) => {
+    props.history.push(`/dashboard/resolve/${id}`)
   }
 
   
@@ -187,45 +187,43 @@ const ReviewCause = (props) => {
       </div>
     );
   };
-  let volunteersTable;
-  if (props.volunterError) {
-    volunteersTable = <div><Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-    {props.volunterError.message}
+  let CauseTable ; 
+  if (causeError) {
+    CauseTable = <div><Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
+    {causeError.message}
   </Typography></div>;
-  } else {
-    volunteersTable = <div>
+  }else {
+    CauseTable = <div>
       <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-            Review volunteers table
+            Causes table
       </Typography>
           <Grid container spacing={5} style={{marginTop: "30px"}}>
           <Paper className={tableClass.root}>
       <Table className={tableClass.table}>
         <TableHead>
           <TableRow>
-            <StyledTableCell>volunteers Photo</StyledTableCell>
-            <StyledTableCell align="right">First Name</StyledTableCell>
-            <StyledTableCell align="right">Last Name</StyledTableCell>
-            <StyledTableCell align="right">State</StyledTableCell>
-            <StyledTableCell align="right">Highest Education level</StyledTableCell>
-            <StyledTableCell align="right">Phone Number</StyledTableCell>
+            <StyledTableCell>Cause Photo</StyledTableCell>
+            <StyledTableCell align="right">Cause title</StyledTableCell>
+            <StyledTableCell align="right">Amount required</StyledTableCell>
+            <StyledTableCell align="right">Status</StyledTableCell>
+            <StyledTableCell align="right">Category</StyledTableCell>
             <StyledTableCell align="right">View</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(volunteer=> (
-            <StyledTableRow key={volunteer._id}>
+          {rows.map(cause=> (
+            <StyledTableRow key={cause._id}>
             <StyledTableCell align="right">
-                <Avatar src={volunteer.photo} />
+                <Avatar src={cause.cause_photos} />
               </StyledTableCell>
-              <StyledTableCell align="right">{volunteer.first_name}</StyledTableCell>
-              <StyledTableCell align="right">{volunteer.last_name}</StyledTableCell>
-              <StyledTableCell align="right">{volunteer.state}</StyledTableCell>
-              <StyledTableCell align="right">{volunteer.highest_education_level}</StyledTableCell>
-              <StyledTableCell align="right">{volunteer.phone_number}</StyledTableCell>
+              <StyledTableCell align="right">{cause.cause_title}</StyledTableCell>
+              <StyledTableCell align="right">{cause.amount_required}</StyledTableCell>
+              <StyledTableCell align="right">{cause.cause_status}</StyledTableCell>
+              <StyledTableCell align="right">{cause.category}</StyledTableCell>
               <StyledTableCell align="right">
               <div style={{textAlign: "center", width: "100%"}} >
               <Button
-                  onClick={() =>  handleViewVolunteer(volunteer._id)}
+                  onClick={() =>  handleViewCause(cause._id)}
                   variant="contained"
                   color="primary"
                   style={{
@@ -255,11 +253,11 @@ const ReviewCause = (props) => {
           Good going, {getAuthenticatedUser().first_name}. 
         </Typography>
         <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{textAlign: "center"}}>
-          Start the process of accepting new volunteers
+          Start the process of adding a new cause
         </Typography>
 
         <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
-          {volunteersTable}
+          {CauseTable}
         </Paper>
       </Container>
     </>
@@ -270,17 +268,17 @@ const ReviewCause = (props) => {
 
 const mapStateToProps = state => {
   return {
-    loading : state.displayCause.loading,
-    data: state.getVolunteersForApproval.volunteers?state.getVolunteersForApproval.volunteers.data:'loading...',
-    volunterError: state.getVolunteersForApproval.error,
+    loading : state.resolveCause.loading,
+    data: state.resolveCause.causes?state.resolveCause.causes.data:"There is no cause found",
+    error: state.resolveCause.error,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    reviewCauses : (token) => dispatch(actions.reviewCauses(token)),
-    getVolunteersForApproval : (token) => dispatch(actions.getVolunteersForApproval(token)),
+    onGetAllCausesForDirector : (token) => dispatch(actions.getCausesForResolution(token))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReviewCause);
+export default connect(mapStateToProps, mapDispatchToProps)(GetAllCausesForDirectors);
+

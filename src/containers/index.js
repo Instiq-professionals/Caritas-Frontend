@@ -22,6 +22,8 @@ import ApproveVolunteer from "./approveVolunteer";
 import MyCauseDetails from './myCauseDetails';
 import MyCauses from './myCauses';
 import EditCause from './EditCourse';
+import GetAllCausesForDirectors from './getAllCausesForDirector';
+import Resolvecause from './ResolveCause';
 
 export {
   Home,
@@ -36,6 +38,8 @@ export {
   RecommendAcause,
   GetAllCausesForCleadersDecision,
   CauseDetailsToBeApproved,
+  GetAllCausesForDirectors,
+  Resolvecause,
   ViewVolunteerRegPending ,
   ApproveVolunteer,
   Causes,

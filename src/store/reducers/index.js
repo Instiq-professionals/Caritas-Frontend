@@ -28,4 +28,7 @@ export {
 } from './recommendAcause';
 export {
     makeDecisionOnCause
-} from './makeAdecisionOnCause'
+} from './makeAdecisionOnCause';
+export {
+    resolveCause
+} from './resolveCause';

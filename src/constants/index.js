@@ -42,7 +42,10 @@ const Routes = {
   moderator_all_causes: host + "cause/approve_causes",
   fetch_all_causes_for_approval: host + "cause/approve",
   approve_cause: host + "cause/approve/", //the cause id must be appended
-  disapprove_cause: host + "cause/disapprove/", //the caue id is appended
+  disapprove_cause: host + "cause/disapprove/", //the cause id is appended
+  get_causes_to_be_resolved: host + "cause/resolve",
+  get_cause_to_be_resolved: host + "cause/resolve/",  //the cause id is appended
+  get_causes_by_category: host + "cause/category/",  //the cause category is appended
 
   verify_email: host + "users/confirm_email/", //the verification token must be appended
   forgot_password: host + "users/forgot_password",
