@@ -30,6 +30,7 @@ import {
 import {
   getAllCauses,
   getAllCausesAsModerator,
+  getTimeToCreateAnewCauses
 } from "../services/cause.service";
 import { CausesTable, UsersTable } from "../components";
 import {PieChart, Pie} from 'recharts';
@@ -99,9 +100,11 @@ const Dashboard = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
   const daysLeft = props.timeToCreateanotherCause;
-
+ 
   useEffect(() => {
     props.getProfile(token);
+    userIsModerator() && props.onGetAllCausesForDirector(token);
+    cLeader() && props.onGetAllCauses(token);
     userIsUser() && props.getAllCausesByAuser(token);
     cLeader() && props.getVolunteersForApproval(token);
     Volunteer() && props.reviewCauses(token)
@@ -110,6 +113,7 @@ const Dashboard = (props) => {
   const errorMsg = props.error;
   const RegPendingData = props.volunteersRegPendingData;
   const volunteersReviewData = props.volunteersReviewData;
+  const cLeaderData = props.CleadersDashboard;
 
   const userCauseStatus = [];
   for (const data of CausesData ) {
@@ -121,11 +125,19 @@ const volunterCauseStatus = [];
     volunterCauseStatus.push(data.cause_status );
 };
 
+const cLeaderCauseStatus = [];
+  for (const data of cLeaderData ) {
+    cLeaderCauseStatus.push(data.cause_status );
+};
+
 const userCausePendingLength = userCauseStatus.filter(element => element === "Awaiting Approval");
 const userApprovedCausesLength = userCauseStatus.filter(element => element === "Approved");
 const userResolvedCausesLength = userCauseStatus.filter(element => element === "Resolved");
 const volunteerCausePendingLength = volunterCauseStatus.filter(element => element === "Awaiting Approval");
-console.log('volunteerCausePendingLength...',volunteerCausePendingLength.length)
+const cLeaderCausePendingLength = cLeaderCauseStatus.filter(element => element === "Awaiting Approval");
+const cLeaderApprovedLength = cLeaderCauseStatus.filter(element => element === "Approved");
+const cLeaderCauseResolvedLength = cLeaderCauseStatus.filter(element => element === "Resolved");
+console.log(' cLeaderCauseStatus...',cLeaderCausePendingLength)
 
 
   const [curUser, setCurUser] = useState(user);
@@ -152,6 +164,7 @@ console.log('volunteerCausePendingLength...',volunteerCausePendingLength.length)
       clickToCausesPage={handleCausesPageClick}
       />
       {userIsModerator() && <Director
+        approved={props.directordata.length}
         clickToCausesPage={() => props.history.push('/dashboard/resolve')}
        />}
       {Volunteer() && <VolunteerDashboard
@@ -160,6 +173,8 @@ console.log('volunteerCausePendingLength...',volunteerCausePendingLength.length)
        />}
       {cLeader() && <CleadersDashboard
         RegPendingData={props.volunteersRegPendingDataError?'0':RegPendingData.length}
+        Pending={cLeaderCausePendingLength.length}
+        Event={cLeaderApprovedLength.length}
         clickToCausesPage={() => props.history.push('/dashboard/approve')}
         clickToRegPendingPage={() => props.history.push('/dashboard/approveVolunteer')}
         />}
@@ -182,16 +197,16 @@ const Director = (props) => {
              </Typography>            
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Total Causes" value="0" />
+              <SummaryCard title="Total C.Leaders" value="4" />
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Pending Causes" value='0' />
+              <SummaryCard title="Approved events" value='0' />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
-              <SummaryCard title="Approved Causes" value="0" />
+              <SummaryCard title="Approved Causes" value={props.approved} />
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Impacts" value="0" />
+              <SummaryCard title="Impacts" value="31" />
            </Grid>
            </Grid>
     </Container>
@@ -214,16 +229,16 @@ const VolunteerDashboard = (props) => {
              </Typography>            
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Total Causes" value="0" />
+              <SummaryCard title="Total Users" value="3" />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
               <SummaryCard title="Pending Causes" value={props.CausePending}/>
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Approved Causes" value="0" />
+              <SummaryCard title="Pending events" value="0" />
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Review causes" value="0" />
+              <SummaryCard title="Next event" value="Sep,24" />
            </Grid>
            </Grid>
     </Container>
@@ -246,13 +261,13 @@ const CleadersDashboard = (props) => {
              </Typography>            
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Total Causes" value="0" />
+              <SummaryCard title="Total Volunteers" value="4" />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
-              <SummaryCard title="Pending Causes" value="0" />
+              <SummaryCard title="Pending Causes" value={props.Pending} />
            </Grid>
            <Grid item xs={12} sm={6} md={3} >
-              <SummaryCard title="Approved Causes" value="0" />
+              <SummaryCard title="Pending Event" value={props.Event}/>
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToRegPendingPage}>
              <SummaryCard title="volunteer Registration Pending" value={props.RegPendingData} />
@@ -271,6 +286,7 @@ const Summary = (props) => {
   const fetchAllCauses = async () => {
     return await getAllCauses();
   };
+
 
   const data = [
     {
@@ -573,6 +589,8 @@ const mapStateToProps = state => {
     volunteersRegPendingData: state.getVolunteersForApproval.volunteers?state.getVolunteersForApproval.volunteers.data:'loading...',
     volunteersRegPendingDataError: state.getVolunteersForApproval.error,
     volunteersReviewData: state.reviewCauses.causes?state.reviewCauses.causes.data:"There is no cause found",
+    CleadersDashboard: state.makeDecisionOnCause.causes?state.makeDecisionOnCause.causes.data:"There is no cause found",
+    directordata: state.resolveCause.causes?state.resolveCause.causes.data:"There is no cause found",
   }
 };
 
@@ -582,6 +600,8 @@ const mapDispatchToProps = dispatch => {
     getAllCausesByAuser : (token) => dispatch(actions.getAllMyCauses(token)),
     getVolunteersForApproval : (token) => dispatch(actions.getVolunteersForApproval(token)),
     reviewCauses : (token) => dispatch(actions.reviewCauses(token)),
+    onGetAllCauses : (token) => dispatch(actions.getCausesForApproval(token)),
+    onGetAllCausesForDirector : (token) => dispatch(actions.getCausesForResolution(token))
   }
 }
 

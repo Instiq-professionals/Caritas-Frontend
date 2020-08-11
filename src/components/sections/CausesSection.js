@@ -91,7 +91,7 @@ const CausesSection = () => {
                 basic food items, financial support for families especially the
                 indigent and the vulnerable in our communities. We are here to
                 help, please register and log a case for food support to get
-                speedy help from our QCare team. This currently open to states
+                speedy help from our QCare team. This is currently open to states
                 with lockdown restrictions in Nigeria.
               </Typography>
               <Link to="/signup">

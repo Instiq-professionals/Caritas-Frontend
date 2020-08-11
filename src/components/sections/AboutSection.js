@@ -38,8 +38,8 @@ const AboutSection = () => {
               <a href="https://www.instiq.com">InstiQ</a> - A tech company that
               is currently revolutionizing African tech space with solution
               presence in about twenty(20) African countries. The company is
-              committed to using part of her revenue and encouraging other
-              partners to join us to make significant impacts on people’s lives.
+              committed to using part of her revenue and encourages others to
+              partner with her in order to make significant impacts in the lives of people.
             </Typography>
           </div>
         </Slide>
