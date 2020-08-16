@@ -5,7 +5,7 @@ const host =
 const baseUrl =
   process.env.NODE_ENV == "development"
     ? "http://localhost:5000/"
-    : "https://www.qcare.ng/";
+    : "https://www.qcare.ng/api";
 const recaptchaKey = "6LcZFewUAAAAADBST21gzdTFt-BBdFdlDk2H5UEY"; //shouldn't be here
 const recaptchaSecret = "6LcZFewUAAAAAEMwQ7Q4eCOm5L2NyFsG-ij2CR3w"; //this too
 const Colors = {
