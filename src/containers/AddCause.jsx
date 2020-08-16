@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import { PrimaryAppBar, MyTextField } from "../commons";
 import { yourCauses, trendingCauses, followedCauses} from "../mock";
 import { SlideableGridList, AddImage, AddCauseImage, AddVideo } from "../components";
+import { cLeader,Volunteer, userIsModerator, userIsAnAdmin } from "../helpers/utils";
 import {
   isValidCauseTitle,
   isValidFunds,
@@ -101,12 +102,13 @@ const moreStyles = makeStyles((theme) => ({
 const AddCause = () => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const [curUser, setCurUser] = useState(user);
-
+  console.log('checking...',curUser.role[1])
   let location = useLocation();
   let history = useHistory();
 
   const classes = moreStyles();
   let [page, setPage] = useState(1);
+  const peopleThatCanCreateACauseForAthirdParty = cLeader() || Volunteer() || userIsModerator() || userIsAnAdmin();
 
   let [causeTitle, setCauseTitle] = useState("");
   let [amountRequired, setAmountRequired] = useState("");
@@ -141,6 +143,7 @@ const AddCause = () => {
   let [terms, setTerms] = useState(false);
   let [selectedType, setSelectedType] = useState("Food");
   let [selectedOwner, setSelectedOwner] = useState("Self");
+  console.log('....type',selectedOwner)
   let [thirdParty,  setThirdParty] = useState({
     title: "Select Title",
     first_name: "",
@@ -159,7 +162,10 @@ const AddCause = () => {
   // const handleCategoryChange = (event) => {
   //   setCategory(event.target.value);
   // };
-
+ const thirdPartyCreator = () => {
+  setSelectedOwner('Third Party');
+  setSelectedType(curUser.role[1])
+ };
   const handleCauseTitleChange = (event) => {
     setCauseTitle(event.target.value);
   };
@@ -559,12 +565,12 @@ const AddCause = () => {
             Who is this cause for?
           </Typography>
           <Grid container spacing={5} style={{marginTop: "30px"}}>
-            <Grid item sm={6}>
+            <Grid item  xs={!peopleThatCanCreateACauseForAthirdParty? 12:6} sm={!peopleThatCanCreateACauseForAthirdParty? 12:6}>
               <CauseOwnerSelection type="Self" image={'/assets/images/icons/user-type.png'} />
             </Grid>
-            <Grid item sm={6}>
+           {peopleThatCanCreateACauseForAthirdParty && <Grid item sm={6} onClick={() => thirdPartyCreator()}>
               <CauseOwnerSelection type="Third Party" image={'/assets/images/icons/third-party-icon.png'} />
-            </Grid>
+            </Grid>}
             
             <div style={{textAlign: "center", width: "100%"}} >
               <Button
@@ -800,7 +806,7 @@ const AddCause = () => {
               What help are you requesting for?
             </Typography>
             <Grid container spacing={5} style={{marginTop: "30px"}}>
-              <Grid item sm={6} md={3}>
+              <Grid item sm={6} md={3} >
                 <CauseSelection type="Food" image={'/assets/images/icons/food-help.png'} />
               </Grid>
               <Grid item sm={6} md={3}>

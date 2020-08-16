@@ -42,8 +42,9 @@ import {
 import { createCause } from "../services/cause.service";
 import { MyDialog, MyButton } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
-import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
+import Moment from 'react-moment';
+import { baseUrl  } from "../constants";
 
 
 const moreStyles = makeStyles((theme) => ({
@@ -125,13 +126,13 @@ const useTableStyles = makeStyles(theme => ({
   },
 }));
 
-const MyCauses = (props) => {
+const GetAllMyEvent = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
-  const causeData = props.data;
-  const causeError = props.error;
+  const eventData = props.data;
+  const eventError = props.error;
   useEffect(() => {
-    props.getMyCauses(token);
+    props.getAllMyEvents(token);
   },[]);
 
   const [deleteCause, setDeleteCause] = useState(false);
@@ -142,45 +143,67 @@ const MyCauses = (props) => {
 
   let [selectedOwner, setSelectedOwner] = useState("Self");
   const rows = [];
-  for (const data of causeData) {
+  for (const data of eventData) {
      rows.push(data);
  };
 
- const onPressDelete = () => {
-  setDeleteCause(true);
-}
 
-const onPressNo = () => {
-  setDeleteCause(false);
-}
-
- const handleDeleteCause = (id) => {
-  props.deleteCause(token,id);
-  setTimeout(() => (window.location = "/dashboard/myCauses"), 3000);
- }
-
-  const handleViewCause = (id) => {
-    props.history.push(`/dashboard/myCauses/${id}`)
+  const handleViewMyEvent = (id) => {
+    props.history.push(`/dashboard/myevents/${id}`)
   }
 
-  const createSuccessStory = (id) => {
-    props.history.push(`/dashboard/mySuccessStory/${id}`)
+  
+  const CauseOwnerSelection = (props) => {
+    const useStyles = makeStyles((theme) => ({
+      root: {
+        display: "flex",
+        flexDirection: "column",
+        padding: "20px",
+        alignItems: "center",
+        cursor: "pointer",
+        boxShadow:
+          props.type == selectedOwner
+            ? "0px 0px 20px rgba(252, 99, 107, 0.7)"
+            : "none",
+        backgroundColor:
+          props.type == selectedOwner
+            ? "rgba(255,255,255,.7)"
+            : "transparent",
+
+        "&:hover": {
+          boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
+          backgroundColor: "rgba(255,255,255,.7)",
+        },
+      },
+
+      active: {
+        boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
+      },
+    }));
+
+    const classes2 = useStyles();
+    return (
+      <div
+        className={clsx(classes2.root)}
+        onClick={() => {
+          setSelectedOwner(props.type);
+        }}
+      >
+        <img src={props.image} alt="" style={{ height: "80px" }} />
+        <p style={{ textAlign: "center" }}>{props.type}</p>
+      </div>
+    );
   };
-
-  const viewSuccessStory = (id) => {
-    props.history.push(`/dashboard/getMySuccessStory/${id}`)
-  }
-
   let CauseTable;
-  if (causeError) {
+  if (eventError) {
     CauseTable = <div><Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-    {causeError.message}
+    {eventError.message}
   </Typography></div>;
   }
   else {
     CauseTable = <div>
       <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-            My causes table
+            My event table
       </Typography>
           <Grid container spacing={5} style={{marginTop: "30px"}}>
           <Paper className={tableClass.root}>
@@ -188,28 +211,29 @@ const onPressNo = () => {
         <TableHead>
           <TableRow>
             <StyledTableCell>Cause Photo</StyledTableCell>
-            <StyledTableCell align="right">Cause title</StyledTableCell>
-            <StyledTableCell align="right">Amount required</StyledTableCell>
+            <StyledTableCell align="right">title</StyledTableCell>
+            <StyledTableCell align="right">category</StyledTableCell>
             <StyledTableCell align="right">Status</StyledTableCell>
-            <StyledTableCell align="right">Category</StyledTableCell>
+            <StyledTableCell align="right">budget</StyledTableCell>
+            <StyledTableCell align="right">event_date</StyledTableCell>
             <StyledTableCell align="right">View</StyledTableCell>
-            <StyledTableCell align="right">Action</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(cause=> (
-            <StyledTableRow key={cause._id}>
+          {rows.map(event=> (
+            <StyledTableRow key={event._id}>
             <StyledTableCell align="right">
-                <Avatar src={baseUrl + cause.cause_photos} />
+                <Avatar src={ baseUrl + event.pictures} />
               </StyledTableCell>
-              <StyledTableCell align="right">{cause.cause_title}</StyledTableCell>
-              <StyledTableCell align="right">{cause.amount_required}</StyledTableCell>
-              <StyledTableCell align="right">{cause.cause_status}</StyledTableCell>
-              <StyledTableCell align="right">{cause.category}</StyledTableCell>
+              <StyledTableCell align="right">{event.title}</StyledTableCell>
+              <StyledTableCell align="right">{event.category}</StyledTableCell>
+              <StyledTableCell align="right">{event.event_status}</StyledTableCell>
+              <StyledTableCell align="right"><Naira>{event.budget}</Naira></StyledTableCell>
+              <StyledTableCell align="right"><Moment >{event.event_date}</Moment></StyledTableCell>
               <StyledTableCell align="right">
               <div style={{textAlign: "center", width: "100%"}} >
               <Button
-                  onClick={() =>  handleViewCause(cause._id)}
+                  onClick={() =>  handleViewMyEvent(event._id)}
                   variant="contained"
                   color="primary"
                   style={{
@@ -222,40 +246,6 @@ const onPressNo = () => {
                   View Details
               </Button>
             </div>
-              </StyledTableCell>
-              <StyledTableCell align="right">
-              {cause.cause_status !== 'Resolved'? <div style={{textAlign: "center"}}>No action</div>:
-              cause.hasSuccessStory ?<div style={{textAlign: "center", width: "100%"}} >
-              <Button
-                  onClick={() =>  viewSuccessStory(cause._id)}
-                  variant="contained"
-                  color="primary"
-                  style={{
-                    //margin: "30px auto",
-                    color: "white",
-                    //paddingLeft: "30px",
-                    //paddingRight: "30px"                    
-                  }}
-                >
-                   view success story
-              </Button>
-            </div>:
-              <div style={{textAlign: "center", width: "100%"}} >
-              <Button
-                  onClick={() =>  createSuccessStory(cause._id)}
-                  variant="contained"
-                  color="primary"
-                  style={{
-                    //margin: "30px auto",
-                    color: "white",
-                    //paddingLeft: "30px",
-                    //paddingRight: "30px"                    
-                  }}
-                >
-                   create success story
-              </Button>
-            </div>
-              }
               </StyledTableCell>
             </StyledTableRow>
           ))}
@@ -289,17 +279,16 @@ const onPressNo = () => {
 
 const mapStateToProps = state => {
   return {
-    loading : state.getAllMyCauses.loading,
-    data: state.getAllMyCauses.causes?state.getAllMyCauses.causes.data:[],
-    error: state.getAllMyCauses.error,
-    deleteCauseId:state.getAllMyCauses.cause_id,
+    loading : state.crudEvent.loading,
+    data: state.crudEvent.events?state.crudEvent.events.data:[],
+    error: state.crudEvent.error,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getMyCauses : (token) => dispatch(actions.getAllMyCauses(token)),
+    getAllMyEvents : (token) => dispatch(actions.getAllMyEvents(token)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyCauses);
+export default connect(mapStateToProps, mapDispatchToProps)(GetAllMyEvent);

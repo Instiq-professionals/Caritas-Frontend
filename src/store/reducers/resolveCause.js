@@ -3,6 +3,7 @@ import { updatedObject } from '../utility'
 
 const initialState = {
     causes: null,
+    cause:null,
     status: null,
     message: null,
     error : null,
@@ -35,7 +36,7 @@ const resolveACauseStart = (state, action) => {
 
 const resolveACauseSuccess = (state, action) => {
     return updatedObject(state, {
-        causes: action.payload,
+        cause: action.payload,
         status: action.payload.status,
         message: action.payload.message,
         error : null,

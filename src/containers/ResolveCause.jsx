@@ -32,7 +32,9 @@ import {
 } from "../helpers/validator";
 import { createCause } from "../services/cause.service";
 import { MyDialog, MyButton } from "../components";
+import { MyConfirmationDialog } from "../commons";
 import {getAuthenticatedUser} from "../helpers/utils";
+import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
 
 
@@ -212,7 +214,8 @@ const Resolvecause = (props) => {
               <Grid item md={6}>
               <Zoom in={true} timeout={1000} mountOnEnter>
                 <img
-                  src="/assets/images/top_left.png"
+                style={{height:'500px', width:'100%'}}
+                  src={baseUrl + singleCause.cause_photos}
                   alt=""
                   className={classes.heroImage}
                 />
@@ -285,38 +288,21 @@ const Resolvecause = (props) => {
   return (
     <>
       <PrimaryAppBar />
+      <MyConfirmationDialog
+      openDialog={openDialog}
+      onClose={() => setOpenDialog(false)}
+      positive={() => handleApproveSubmit()}
+      >
+        {"Are you sure you want to resolve this cause?"}
+        { props.decisionSpinner && <CircularProgress disableShrink className={classes.Circular}/>}
+      </MyConfirmationDialog>
       <MyDialog
-        title={props.decision.status !== null?props.decision.status:dialogTitle}
-        openDialog={openDialog}
+        title={props.decision.status !== null && props.decision.status}
+        openDialog={props.decision.status?true:false}
         positiveDialog={true}
         onClose={() => setOpenDialog(false)}
       >
-        {props.decision.status !== null? props.decision.message: <div>
-            <Button
-                onClick={() => setOpenDialog(false)}
-                variant="contained"
-                color="primary"
-                style={{
-                  //marginLeft: "auto",
-                  color: "white",
-                }}
-              >
-                {'No'}
-              </Button>
-              <Button
-                onClick={() =>  handleApproveSubmit()}
-                variant="contained"
-                color="primary"
-                style={{
-                  marginLeft: "21px",
-                  color: "white",
-                  //float: "right",
-                }}
-              >
-                {'Yes'}
-              </Button>
-             { props.decisionSpinner && <CircularProgress disableShrink className={classes.Circular}/>}
-        </div>}
+        {props.decision.status !== null && props.decision.message} 
       </MyDialog>
         <Container style={{ marginTop: 150 }}>
           <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>

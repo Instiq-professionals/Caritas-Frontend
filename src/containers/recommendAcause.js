@@ -33,6 +33,7 @@ import {
 import { createCause } from "../services/cause.service";
 import { MyDialog, MyButton } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
+import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
 
 
@@ -224,7 +225,8 @@ const RecommendAcause = (props) => {
               <Grid item md={6}>
               <Zoom in={true} timeout={1000} mountOnEnter>
                 <img
-                  src="/assets/images/top_left.png"
+                style={{height:'100%', width:'100%'}}
+                  src={ baseUrl + singleCause.cause_photos}
                   alt=""
                   className={classes.heroImage}
                 />

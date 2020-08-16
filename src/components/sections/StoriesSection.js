@@ -1,42 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Typography, Grid } from "@material-ui/core";
 import { useStyles } from "../../helpers";
 import { Story } from "../";
 import { SubscriptionBox } from "./";
 import { Colors } from "../../constants";
+import { withRouter } from 'react-router-dom';
+import { connect } from "react-redux";
+import { baseUrl  } from "../../constants";
+import * as actions from '../../store/actions/index';
 
-const stories = [
-  // {
-  //   image: "/assets/images/classroom1.png",
-  //   title: "Recent Stories - 1",
-  //   story: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-  //                       sed diam nonumy eirmod tempor invidunt ut labore et
-  //                       dolore magna aliquyam erat, sed diam voluptua.`,
-  // },
-  // {
-  //   image: "/assets/images/classroom2.png",
-  //   title: "Recent Stories - 2",
-  //   story: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-  //                       sed diam nonumy eirmod tempor invidunt ut labore et
-  //                       dolore magna aliquyam erat, sed diam voluptua.`,
-  // },
-  // {
-  //   image: "/assets/images/sick-child.png",
-  //   title: "Recent Stories - 3",
-  //   story: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-  //                       sed diam nonumy eirmod tempor invidunt ut labore et
-  //                       dolore magna aliquyam erat, sed diam voluptua.`,
-  // },
-  // {
-  //   image: "/assets/images/smiling-kid.png",
-  //   title: "Recent Stories - 4",
-  //   story: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-  //                       sed diam nonumy eirmod tempor invidunt ut labore et
-  //                       dolore magna aliquyam erat, sed diam voluptua.`,
-  // },
-];
+// const stories = [
+//   {
+//     image: "/assets/images/classroom1.png",
+//     title: "Recent Stories - 1",
+//     story: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+//                         sed diam nonumy eirmod tempor invidunt ut labore et
+//                         dolore magna aliquyam erat, sed diam voluptua.`,
+//   },
+//   {
+//     image: "/assets/images/classroom2.png",
+//     title: "Recent Stories - 2",
+//     story: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+//                         sed diam nonumy eirmod tempor invidunt ut labore et
+//                         dolore magna aliquyam erat, sed diam voluptua.`,
+//   },
+//   {
+//     image: "/assets/images/sick-child.png",
+//     title: "Recent Stories - 3",
+//     story: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+//                         sed diam nonumy eirmod tempor invidunt ut labore et
+//                         dolore magna aliquyam erat, sed diam voluptua.`,
+//   },
+//   {
+//     image: "/assets/images/smiling-kid.png",
+//     title: "Recent Stories - 4",
+//     story: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
+//                         sed diam nonumy eirmod tempor invidhhhhunt ut labore et
+//                         dolore magna aliquyam erat, sed diam voluptua.`,
+//   },
+// ];
 
-const StoriesSection = () => {
+const StoriesSection = (props) => {
+  const stories = props.data
+  useEffect(() => {
+    props.getAllSuccessStories();
+  },[]);
   const classes = useStyles();
   return (
     <section className={classes.stories}>
@@ -64,8 +72,8 @@ const StoriesSection = () => {
           {stories.length > 0 &&
             stories.map((story, index) => (
               <Grid item xs={12} md={6}>
-                <Story image={story.image} title={story.title}>
-                  {story.story}
+                <Story image={baseUrl + story.pictures} title={'Success story'}>
+                  {story.testimonial}
                 </Story>
               </Grid>
             ))}
@@ -93,4 +101,18 @@ const StoriesSection = () => {
   );
 };
 
-export default StoriesSection;
+const mapStateToProps = state => {
+  return {
+    loading : state.getAllSuccessStories.loading,
+    data: state.getAllSuccessStories.stories?state.getAllSuccessStories.stories.data:[],
+    error: state.getAllSuccessStories.error,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getAllSuccessStories : () => dispatch(actions.getAllSuccessStories()),
+  }
+}
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(StoriesSection));

@@ -24,6 +24,16 @@ import MyCauses from './myCauses';
 import EditCause from './EditCourse';
 import GetAllCausesForDirectors from './getAllCausesForDirector';
 import Resolvecause from './ResolveCause';
+import MySuccessStory from './MySuccessStory';
+import GetMySuccessStoryDetails from './GetMySuccessDetails';
+import CreateEvent from './CreateEvent';
+import GetAllMyEvent from './getAllMyEvents';
+import MyEventDetails from './MyeventDetails';
+import EditEvent from './EditEvent';
+import GetAllEventsByCleader from './GetAllEventsByCleader';
+import MakeAdecisionOnEventByCleader from './MakeAdecisionOnEventByCleader';
+import GetAllEventsByDirector from './GetAllEventsToBeResolve';
+import ResolveEvent from './ResolveEvent';
 
 export {
   Home,
@@ -40,6 +50,16 @@ export {
   CauseDetailsToBeApproved,
   GetAllCausesForDirectors,
   Resolvecause,
+  MySuccessStory,
+  GetMySuccessStoryDetails,
+  CreateEvent,
+  GetAllMyEvent,
+  MyEventDetails,
+  EditEvent,
+  GetAllEventsByCleader,
+  MakeAdecisionOnEventByCleader,
+  GetAllEventsByDirector,
+  ResolveEvent,
   ViewVolunteerRegPending ,
   ApproveVolunteer,
   Causes,

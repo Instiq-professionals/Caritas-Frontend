@@ -46,15 +46,36 @@ const Routes = {
   disapprove_cause: host + "cause/disapprove/", //the cause id is appended
   get_causes_to_be_resolved: host + "cause/resolve",
   get_cause_to_be_resolved: host + "cause/resolve/",  //the cause id is appended
-  get_causes_by_category: host + "cause/category/",  //the cause category is appended
-
+ 
   verify_email: host + "users/confirm_email/", //the verification token must be appended
   forgot_password: host + "users/forgot_password",
   reset_password: host + "users/update_password/", //the reset password token must be appended
   get_profile: host + "users/profile",
   update_profile: host + "users/profile/update",
   moderator_all_users: host + "users",
-  create_success_story: host + "success_stories/create",
+  
+  get_causes_by_category: host + "cause/category/",  //the cause category is appended
+  create_success_story: host + "success_stories/create/", //requires the auth token 
+  get_my_success_stories: host + "success_stories/my_stories", //requires the auth token 
+  edit_my_success_story: host + "success_stories/edit/", //the story id must be appended
+  delete_my_success_story: host + "success_stories/delete", //the story id must be appended
+  get_all_success_stories: host + "success_stories/", //does not require authentication
+  get_single_success_story: host + "success_stories/story/", //the cause_id must be appended and it requires no authentication
+
+  create_an_event: host + "events", //This endpoint is for the creation of events. It is only accessible to volunteers,C.Leaders, Directors and the Chairman
+  fetch_events_for_approval: host + "events/approve", //This endpoint is available only to C.Leaders
+  approval_event_by_cLeader: host + "events/approve/", //the id of the event must be appended
+  disapproval_event_by_cLeader: host + "events/disapprove/", //the id of the event must be appended
+
+  fetch_all_events_by_user: host + "events/my_events",
+  fetch_all_single_event: host + "events/", //This endpoint does not require authentication, the id must be appended
+  edit_event: host + "events/edit/", //event creator only, the id must be appended
+  delete_event: host + "events/delete/", //event creator only, the id must be appended
+
+  close_event: host + "events/close/", //director only, the id of the event must be appended
+  fetch_all_closed_event: host + "events/closed", //requires authentication
+
+  fetch_all_event: host + "events", //This endpoint fetches all approved events and it doesnt require authentication
 };
 
 const Actions = {

@@ -24,7 +24,7 @@ import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { PrimaryAppBar, MyTextField } from "../commons";
 import { yourCauses, trendingCauses, followedCauses} from "../mock";
-import { SlideableGridList, AddImage, AddCauseImage, AddVideo, ReviewCauseTable  } from "../components";
+import { SlideableGridList, AddImage, AddCauseImage, AddVideo, ApproveCauseTable  } from "../components";
 import {
   isValidCauseTitle,
   isValidFunds,
@@ -32,10 +32,12 @@ import {
 } from "../helpers/validator";
 import { createCause } from "../services/cause.service";
 import { MyDialog, MyButton } from "../components";
-import { MyConfirmationDialog, MyPromptDialog } from "../commons";
 import {getAuthenticatedUser} from "../helpers/utils";
-import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
+import { MyConfirmationDialog, MyPromptDialog } from "../commons";
+import YouTubeMedia from "../components/YoutubeMedia";
+import Moment from 'react-moment';
+import { baseUrl  } from "../constants";
 
 
 const moreStyles = makeStyles((theme) => ({
@@ -109,20 +111,18 @@ const moreStyles = makeStyles((theme) => ({
   }
 }));
 
-const RecommendAcause = (props) => {
+const MakeAdecisionOnEventByCleader = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
-  const singleCause = props.singleCauseDetails;
-  const createdBy = props.createdBy;
-  const cause_id = props.match.params.id;
+  const singleEvent = props.data;
+  const eventId = props.match.params.id;
+  //5f25c0cc97b1ed04536c55c9
   useEffect(() => {
-    props.getAsingleCauseDetails(token,cause_id);
+    const event_id = props.match.params.id;
+    props.checkEventDetails(event_id);
 
   },[]);
-  // useEffect(() => {
-  //   props.getAsingleCauseDetails(token,cause_id);
 
-  // },[]);
   const [curUser, setCurUser] = useState(user);
 
   let location = useLocation();
@@ -130,15 +130,8 @@ const RecommendAcause = (props) => {
 
   const classes = moreStyles();
   let [page, setPage] = useState(1);
-  const [accept, setAccept] = useState(false);
-  const [buttonApprove, setButtonApprove] = useState('Approve');
-  const [buttonDisApprove, setButtonDisApprove] = useState('Disaprove');
-  const [dialogTitle, setDialogTitle] = useState("");
-  let [causeTitle, setCauseTitle] = useState("");
-  let [amountRequired, setAmountRequired] = useState("0");
+
   let [briefDescription, setBriefDescription] = useState("");
-  let [charityInformation, setCharityInformation] = useState("");
-  let [additionalInformation, setAdditionalInformation] = useState("");
   let [causeOptions, setCauseOptions] = useState({
     enableComments: false,
     enableWatching: true,
@@ -146,30 +139,24 @@ const RecommendAcause = (props) => {
     socialMediaSharing: true,
     agreeToTandC: false,
   });
-  const [reason_for_disapproval, setReason] = useState('');
+  
 
+  // let [category, setCategory] = useState("Food");
   let [errorMessage, setErrorMessage] = useState("");
   let [openDialog, setOpenDialog] = useState(false);
   let [dialogMessage, setDialogMessage] = useState("");
+  let [dialogTitle, setDialogTitle] = useState("");
   let [positiveDialog, setPositiveDialog] = useState(false);
-  let [selectedOwner, setSelectedOwner] = useState("Self");
-
+ 
   const [confirm, setConfirm] = useState(false);
   const [disapprove, setDisapprove] = useState(false);
   const [dialogueMsg, setDialogueMsg] = useState('');
   const [open,setOpen] = useState(false);
+  const [reason_for_disapproval, setReason] = useState('');
 
-  const onPressApprove = () => {
-    setAccept(true);
-}
-
-const onPressNo = () => {
-  setAccept(false);
-}
-  
   const handleApproveSubmit = () => {
-    props.onPressApprove(token,cause_id);
-    setTimeout(() => (window.location = "/dashboard/approve"), 1000);
+    props.approveEventByCleader(token,eventId);
+    setTimeout(() => (window.location = "/dashboard/getEventsByCleader"), 1000);
   };
   const handleDisApproveSubmit = () => {
     if (reason_for_disapproval.length<6) {
@@ -179,108 +166,61 @@ const onPressNo = () => {
       setOpen(true);
       return;
     }
-     props.onPressDisApprove(token,cause_id,reason_for_disapproval);
-    setTimeout(() => (window.location = "/dashboard/approve"), 1000);
+     props.disApproveEvent(token,eventId,reason_for_disapproval);
+    setTimeout(() => (window.location = "/dashboard/getEventsByCleader"), 1000);
   };
-  
-  const CauseOwnerSelection = (props) => {
-    const useStyles = makeStyles((theme) => ({
-      root: {
-        display: "flex",
-        flexDirection: "column",
-        padding: "20px",
-        alignItems: "center",
-        cursor: "pointer",
-        boxShadow:
-          props.type == selectedOwner
-            ? "0px 0px 20px rgba(252, 99, 107, 0.7)"
-            : "none",
-        backgroundColor:
-          props.type == selectedOwner
-            ? "rgba(255,255,255,.7)"
-            : "transparent",
 
-        "&:hover": {
-          boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
-          backgroundColor: "rgba(255,255,255,.7)",
-        },
-      },
 
-      active: {
-        boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
-      },
-    }));
-
-    const classes2 = useStyles();
-    return (
-      <div
-        className={clsx(classes2.root)}
-        onClick={() => {
-          setSelectedOwner(props.type);
-        }}
-      >
-        <img src={ props.image} alt="" style={{ height: "80px" }} />
-        <p style={{ textAlign: "center" }}>{props.type}</p>
-      </div>
-    );
-  };
-  let CauseIsMounted = props.loading && <CircularProgress disableShrink className={classes.Circular}/>;
-  if (singleCause ) {
-    CauseIsMounted = <div>
-      <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-                {`${createdBy.first_name} ${createdBy.last_name} cause details`}
+  let EventIsMounted = props.loading && <CircularProgress disableShrink className={classes.Circular }/>;
+  if (singleEvent ) {
+    EventIsMounted = <div>
+        <Grid container spacing={5} style={{marginTop: "30px"}}>
+            <Grid item xs={12}>
+            <Typography variant="h6" component="h6" style={{color: "#FC636B", textAlign: "center", fontWeight: "bold"}}>
+                {singleEvent.title}
             </Typography>
-            <Grid container spacing={5} style={{marginTop: "30px"}}>
+            <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{tcolor: "#FC636B", textAlign: "center"}}>
+                {singleEvent.description}
+            </Typography><br/>
+            </Grid>
+            <Grid
+                item
+                xs={12}
+                style={{
+                border: `2px dashed ${Colors.appRed}`,
+                marginBottom: "40px",
+                }}
+                >
+                  <YouTubeMedia
+                   video={singleEvent.video}
+                   />
+             </Grid>
               <Grid item md={6}>
               <Zoom in={true} timeout={1000} mountOnEnter>
                 <img
-                style={{height:'100%', width:'100%'}}
-                  src={baseUrl + singleCause.cause_photos}
-                  alt=""
+                  style={{height:'500px', width:'100%'}}
+                  src={ baseUrl + singleEvent.pictures}
+                  alt={`${singleEvent.title} picture`}
                   className={classes.heroImage}
                 />
               </Zoom>
               </Grid>
               <Grid item md={6}>
-              <Typography variant="h6" component="h6" style={{color: "#FC636B", textAlign: "center", fontWeight: "bold"}}>
-                 {singleCause.cause_title}
-              </Typography>
-              <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{tcolor: "#FC636B", textAlign: "center"}}>
-             {singleCause.brief_description}
-            </Typography><br/>
-             <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Address : {singleCause.address}
-             </Typography><br/>
-            <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Account number : {singleCause.account_number}
+               <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
+                 Budget : <Naira>{singleEvent.budget}</Naira>
              </Typography><br/>
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                Bank name:{singleCause.bank}
+             Budget breakdown: {singleEvent.budget_breakdown}
              </Typography><br/>
             <Typography variant="h6" component="h6" style={{fontWeight: "bold"}}>
-              Amount required: 
-            <Naira>{singleCause.amount_required}</Naira> 
-             </Typography><br/>
-              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Name : {`${createdBy.first_name} ${createdBy.last_name}`}
+            Event date: 
+            <Moment >{singleEvent.event_date}</Moment>
              </Typography><br/>
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Email : {createdBy.email}
+             Expected no of impact : {singleEvent.expected_no_of_impact}
              </Typography><br/>
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Address : {createdBy.address}
-             </Typography><br/>
-             <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Phone Number : {createdBy.phone_number}
-             </Typography><br/>
-             <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Reviewed By : {`${props.reviewedBy.first_name} ${props.reviewedBy.last_name}`}
-             </Typography><br/>
-             <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Reviewed at : {singleCause.reviewed_at}
-             </Typography><br/>
-             <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Reviewer's Message : {singleCause.reviewer_message}
+             venue : {singleEvent.venue}
              </Typography><br/>
               </Grid>
               <div style={{
@@ -340,7 +280,7 @@ const onPressNo = () => {
       onClose={() => setConfirm(false)}
       positive={() => handleApproveSubmit()}
       >
-        {"Are you sure you want to approve this cause?"}
+        {"Are you sure you want to approve this event?"}
         { props.decisionSpinner && <CircularProgress disableShrink className={classes.Circular}/>}
       </MyConfirmationDialog>
       <MyDialog
@@ -359,7 +299,7 @@ const onPressNo = () => {
                   color: "white",
                 }}
               >
-                {buttonDisApprove}
+                Disaprove
               </Button>
               <Button
                 onClick={() =>  setConfirm(true)}
@@ -371,7 +311,7 @@ const onPressNo = () => {
                   //float: "right",
                 }}
               >
-                {buttonApprove}
+                Approve
               </Button>
         </div>}
       </MyDialog>
@@ -379,41 +319,36 @@ const onPressNo = () => {
           <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
             Good going, {getAuthenticatedUser().first_name}. 
           </Typography>
-          <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{textAlign: "center"}}>
-            Start the process of adding a new cause
-          </Typography>
           <Typography component="h1" variant="h5" className={classes.Circular}>
           </Typography>
           <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
-            {CauseIsMounted}
+            {EventIsMounted}
           </Paper>
         </Container>
     </>
   );
 };
 
-//5f3509e661942a156a366d10
+
 
 const mapStateToProps = state => {
   return {
-    loading : state.displayCause.loading,
-    data: state.reviewCauses.causes?state.reviewCauses.causes.data:"There is no cause found",
-    singleCauseDetails: state.displayCause.cause?state.displayCause.cause.data[0]:null,
-    createdBy: state.displayCause.cause?state.displayCause.cause.data[1]:null,
-    reviewedBy: state.displayCause.cause?state.displayCause.cause.data[2]:null,
-    causeError: state.displayCause.error,
-    causeMessage: state.recommend.message,
-    decision: state.makeDecisionOnCause,
-    decisionSpinner: state.makeDecisionOnCause.loading
+    loading : state.crudEvent.loading,
+    data: state.crudEvent.event?state.crudEvent.event.data:[],
+    error: state.crudEvent.error,
+    decision: state.makeDecisionOnEventByCleader,
+    decisionSpinner: state.makeDecisionOnEventByCleader.loading,
+    deletedStatus:state.crudEvent.deletedStatus,
+    deletedMessage:state.crudEvent.deletedMessage,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getAsingleCauseDetails : (token,id) => dispatch(actions.reviewCauseDetails(token,id)),
-    onPressApprove :  (token,cause_id) => dispatch(actions.approveCause(token,cause_id)),
-    onPressDisApprove :  (token,cause_id,reason) => dispatch(actions.disApproveCause(token,cause_id,reason)),
+    checkEventDetails : (id) => dispatch(actions.checkEventDetails(id)),
+    approveEventByCleader : (token,event_id) => dispatch(actions.approveEventByCleader(token,event_id)),
+    disApproveEvent : (token,cause_id,reason) => dispatch(actions.disApproveEvent(token,cause_id,reason)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecommendAcause);
+export default connect(mapStateToProps, mapDispatchToProps)(MakeAdecisionOnEventByCleader);

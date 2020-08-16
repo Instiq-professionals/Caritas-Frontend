@@ -164,12 +164,14 @@ console.log(' cLeaderCauseStatus...',cLeaderCausePendingLength)
       clickToCausesPage={handleCausesPageClick}
       />
       {userIsModerator() && <Director
-        approved={props.directordata.length}
+        approved={props.directordataError?'0':props.directordata.length}
         clickToCausesPage={() => props.history.push('/dashboard/resolve')}
+        clickToEventsPage={() => props.history.push('/dashboard/resolveEvent')}
        />}
       {Volunteer() && <VolunteerDashboard
         CausePending={volunteerCausePendingLength.length}
         clickToCausesPage={() => props.history.push('/dashboard/review')}
+        clickToEventPage={() => props.history.push('/dashboard/myevents')}
        />}
       {cLeader() && <CleadersDashboard
         RegPendingData={props.volunteersRegPendingDataError?'0':RegPendingData.length}
@@ -177,6 +179,7 @@ console.log(' cLeaderCauseStatus...',cLeaderCausePendingLength)
         Event={cLeaderApprovedLength.length}
         clickToCausesPage={() => props.history.push('/dashboard/approve')}
         clickToRegPendingPage={() => props.history.push('/dashboard/approveVolunteer')}
+        clickToEventPage={() => props.history.push('/dashboard/getEventsByCleader')}
         />}
     </>
   );
@@ -199,7 +202,7 @@ const Director = (props) => {
            <Grid item xs={12} sm={6} md={3}>
               <SummaryCard title="Total C.Leaders" value="4" />
            </Grid>
-           <Grid item xs={12} sm={6} md={3}>
+           <Grid item xs={12} sm={6} md={3} onClick={props.clickToEventsPage}>
               <SummaryCard title="Approved events" value='0' />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
@@ -234,8 +237,8 @@ const VolunteerDashboard = (props) => {
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
               <SummaryCard title="Pending Causes" value={props.CausePending}/>
            </Grid>
-           <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Pending events" value="0" />
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToEventPage}>
+              <SummaryCard title="My events" value="0" />
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
               <SummaryCard title="Next event" value="Sep,24" />
@@ -260,13 +263,13 @@ const CleadersDashboard = (props) => {
                Activity Summary
              </Typography>            
            </Grid>
-           <Grid item xs={12} sm={6} md={3}>
+           <Grid item xs={12} sm={6} md={3} >
               <SummaryCard title="Total Volunteers" value="4" />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
               <SummaryCard title="Pending Causes" value={props.Pending} />
            </Grid>
-           <Grid item xs={12} sm={6} md={3} >
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToEventPage}>
               <SummaryCard title="Pending Event" value={props.Event}/>
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToRegPendingPage}>
@@ -591,6 +594,7 @@ const mapStateToProps = state => {
     volunteersReviewData: state.reviewCauses.causes?state.reviewCauses.causes.data:"There is no cause found",
     CleadersDashboard: state.makeDecisionOnCause.causes?state.makeDecisionOnCause.causes.data:"There is no cause found",
     directordata: state.resolveCause.causes?state.resolveCause.causes.data:"There is no cause found",
+    directordataError: state.resolveCause.error
   }
 };
 

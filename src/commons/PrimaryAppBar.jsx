@@ -424,11 +424,14 @@ export default function PrimarySearchAppBar() {
                   <>
                     {!location.pathname.includes("/dashboard/create-cause") && (
                       <div>
-                        {userIsUser() && (
                           <NavLink to="/dashboard/create-cause">
                           <FancyButton label="+ Add a Cause" />{" "}
                          </NavLink>
-                        )}
+                         {!userIsUser() && (
+                           <NavLink to="/dashboard/createEvent">
+                           <FancyButton label="+ Add an Event" />{" "}
+                          </NavLink>
+                         )} 
                        {(Volunteer() || userIsAnAdmin()) && (
                       <NavLink to="/dashboard/review">
                       <FancyButton label="Review Causes" />{" "}

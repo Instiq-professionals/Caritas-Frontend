@@ -33,9 +33,10 @@ import {
 import { createCause } from "../services/cause.service";
 import { MyDialog, MyButton } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
-import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
-
+import YouTubeMedia from "../components/YoutubeMedia";
+import Moment from 'react-moment';
+import { baseUrl  } from "../constants";
 
 
 const moreStyles = makeStyles((theme) => ({
@@ -109,24 +110,18 @@ const moreStyles = makeStyles((theme) => ({
   }
 }));
 
-const CauseDetailsbySingleUser = (props) => {
+const MyEventDetails = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
-  const data = [];
-  const singleCause = props.singleCauseDetails;
-  const createdBy = props.createdBy;
-  const cause_id = localStorage.getItem('cause_id' );
-  const causeId = props.match.params.id;
+  const singleEvent = props.data;
+  const eventId = props.match.params.id;
   //5f25c0cc97b1ed04536c55c9
   useEffect(() => {
-    const cause_id = props.match.params.id;
-    props.getAsingleCauseDetails(token,cause_id);
+    const event_id = props.match.params.id;
+    props.checkEventDetails(event_id);
 
   },[]);
-  // useEffect(() => {
-  //   props.getAsingleCauseDetails(token,cause_id);
 
-  // },[]);
   const [curUser, setCurUser] = useState(user);
 
   let location = useLocation();
@@ -135,11 +130,7 @@ const CauseDetailsbySingleUser = (props) => {
   const classes = moreStyles();
   let [page, setPage] = useState(1);
 
-  let [causeTitle, setCauseTitle] = useState("");
-  let [amountRequired, setAmountRequired] = useState("0");
   let [briefDescription, setBriefDescription] = useState("");
-  let [charityInformation, setCharityInformation] = useState("");
-  let [additionalInformation, setAdditionalInformation] = useState("");
   let [causeOptions, setCauseOptions] = useState({
     enableComments: false,
     enableWatching: true,
@@ -164,8 +155,8 @@ const CauseDetailsbySingleUser = (props) => {
 
 
   const handleDeleteCause = (id) => {
-    props.deleteCause(token,id);
-    setTimeout(() => (window.location = "/dashboard/myCauses"), 1000);
+    props.deleteMyEvent(token,id);
+    setTimeout(() => (window.location = "/dashboard/myevents"), 1000);
    };
 
    const onPressDelete = () => {
@@ -176,121 +167,63 @@ const CauseDetailsbySingleUser = (props) => {
     setDeleteCause(false);
   }
 
-  const handleBriefDescriptionChange = (event) => {
-    setBriefDescription(event.target.value);
-  };
-  const validateForm = () => {
-    if (!isValidBriefDescription(briefDescription) || briefDescription.length < 5) {
-      setErrorMessage("Please enter a valid description");
-      return;
-    }
-    return true
-  }
-  const handleSubmit = (event) => {
-    if (event) event.preventDefault();
-    if (validateForm()) {
-      setErrorMessage('');
-      props.recommendAcause(briefDescription,token,cause_id);
-      setTimeout(() => (window.location = "/dashboard/review"), 3000);
-    }
-  }
 
-  
-  const CauseOwnerSelection = (props) => {
-    const useStyles = makeStyles((theme) => ({
-      root: {
-        display: "flex",
-        flexDirection: "column",
-        padding: "20px",
-        alignItems: "center",
-        cursor: "pointer",
-        boxShadow:
-          props.type == selectedOwner
-            ? "0px 0px 20px rgba(252, 99, 107, 0.7)"
-            : "none",
-        backgroundColor:
-          props.type == selectedOwner
-            ? "rgba(255,255,255,.7)"
-            : "transparent",
-
-        "&:hover": {
-          boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
-          backgroundColor: "rgba(255,255,255,.7)",
-        },
-      },
-
-      active: {
-        boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
-      },
-    }));
-
-    const classes2 = useStyles();
-    return (
-      <div
-        className={clsx(classes2.root)}
-        onClick={() => {
-          setSelectedOwner(props.type);
-        }}
-      >
-        <img src={props.image} alt="" style={{ height: "80px" }} />
-        <p style={{ textAlign: "center" }}>{props.type}</p>
-      </div>
-    );
-  };
-  let CauseIsMounted = props.loading && <CircularProgress disableShrink className={classes.Circular }/>;
-  if (singleCause ) {
-    CauseIsMounted = <div>
-      <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-                {`${createdBy.first_name} ${createdBy.last_name} cause details`}
+  let EventIsMounted = props.loading && <CircularProgress disableShrink className={classes.Circular }/>;
+  if (singleEvent ) {
+    EventIsMounted = <div>
+        <Grid container spacing={5} style={{marginTop: "30px"}}>
+            <Grid item xs={12}>
+            <Typography variant="h6" component="h6" style={{color: "#FC636B", textAlign: "center", fontWeight: "bold"}}>
+                {singleEvent.title}
             </Typography>
-            <Grid container spacing={5} style={{marginTop: "30px"}}>
+            <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{tcolor: "#FC636B", textAlign: "center"}}>
+                {singleEvent.description}
+            </Typography><br/>
+            </Grid>
+            <Grid
+                item
+                xs={12}
+                style={{
+                border: `2px dashed ${Colors.appRed}`,
+                marginBottom: "40px",
+                }}
+                >
+                  <YouTubeMedia
+                   video={singleEvent.video}
+                   />
+             </Grid>
+             </Grid>
+              <Grid container spacing={5}>
               <Grid item md={6}>
               <Zoom in={true} timeout={1000} mountOnEnter>
                 <img
-                style={{height:'100%', width:'100%'}}
-                  src={baseUrl + singleCause.cause_photos}
-                  alt="cause photo"
+                style={{height:'500px', width:'100%'}}
+                  src={baseUrl + singleEvent.pictures}
+                  alt={`${singleEvent.title} picture`}
                   className={classes.heroImage}
                 />
               </Zoom>
               </Grid>
               <Grid item md={6}>
-              <Typography variant="h6" component="h6" style={{color: "#FC636B", textAlign: "center", fontWeight: "bold"}}>
-                 {singleCause.cause_title}
-              </Typography>
-              <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{tcolor: "#FC636B", textAlign: "center"}}>
-             {singleCause.brief_description}
-            </Typography><br/>
-             {singleCause.first_name && <div>
-              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Beneficiary name : {`${singleCause.first_name} ${singleCause.last_name}`}
-             </Typography><br/>
-               </div>}
-             {singleCause.first_name && <div>
-              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Beneficiary address : {singleCause.address}
-             </Typography><br/>
-               </div>}
                <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Account number : {singleCause.account_number}
+                 Budget : <Naira>{singleEvent.budget}</Naira>
              </Typography><br/>
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                Bank name: {singleCause.bank}
+             Budget breakdown: {singleEvent.budget_breakdown}
              </Typography><br/>
             <Typography variant="h6" component="h6" style={{fontWeight: "bold"}}>
-              Amount required: 
-            <Naira>{singleCause.amount_required}</Naira> 
+            Event date: 
+            <Moment >{singleEvent.event_date}</Moment>
              </Typography><br/>
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Email : {createdBy.email}
+             Expected no of impact : {singleEvent.expected_no_of_impact}
              </Typography><br/>
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Address : {createdBy.address}
-             </Typography><br/>
-             <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Phone Number : {createdBy.phone_number}
+             venue : {singleEvent.venue}
              </Typography><br/>
               </Grid>
+              </Grid>
+              <Grid>
               <div style={{
                     marginTop: "30px",
                     marginBottom: "30px",
@@ -310,7 +243,7 @@ const CauseDetailsbySingleUser = (props) => {
                  Delete cause
                 </Button>
                 <Button
-                  onClick={() => props.history.push(`/dashboard/myCauses/${causeId}/${causeId}`)}
+                  onClick={() => props.history.push(`/dashboard/editEvent/${eventId}`)}
                   variant="contained"
                   color="primary"
                   style={{
@@ -356,7 +289,7 @@ const CauseDetailsbySingleUser = (props) => {
                 No
               </Button>
               <Button
-                onClick={() =>  handleDeleteCause(causeId)}
+                onClick={() =>  handleDeleteCause(eventId)}
                 variant="contained"
                 color="primary"
                 style={{
@@ -379,7 +312,7 @@ const CauseDetailsbySingleUser = (props) => {
           <Typography component="h1" variant="h5" className={classes.Circular}>
           </Typography>
           <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
-            {CauseIsMounted}
+            {EventIsMounted}
           </Paper>
         </Container>
     </>
@@ -390,20 +323,19 @@ const CauseDetailsbySingleUser = (props) => {
 
 const mapStateToProps = state => {
   return {
-    loading : state.getMyCause.loading,
-    singleCauseDetails: state.getMyCause.cause?state.getMyCause.cause.data[0]:null,
-    createdBy: state.getMyCause.cause?state.getMyCause.cause.data[1]:null,
-    causeError: state.getMyCause.error,
-    deletedStatus:state.getAllMyCauses.deletedStatus,
-    deletedMessage:state.getAllMyCauses.deletedMessage,
+    loading : state.crudEvent.loading,
+    data: state.crudEvent.event?state.crudEvent.event.data:[],
+    error: state.crudEvent.error,
+    deletedStatus:state.crudEvent.deletedStatus,
+    deletedMessage:state.crudEvent.deletedMessage,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getAsingleCauseDetails : (token,id) => dispatch(actions.checkCauseDetails(token,id)),
-    deleteCause : (token,cause_id) => dispatch(actions.deleteCause(token,cause_id))
+    checkEventDetails : (id) => dispatch(actions.checkEventDetails(id)),
+    deleteMyEvent : (token,event_id) => dispatch(actions.deleteMyEvent(token,event_id))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CauseDetailsbySingleUser);
+export default connect(mapStateToProps, mapDispatchToProps)(MyEventDetails);

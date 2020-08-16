@@ -42,6 +42,7 @@ import {
 import { createCause } from "../services/cause.service";
 import { MyDialog, MyButton } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
+import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
 
 
@@ -215,7 +216,7 @@ const ReviewCause = (props) => {
           {rows.map(volunteer=> (
             <StyledTableRow key={volunteer._id}>
             <StyledTableCell align="right">
-                <Avatar src={volunteer.photo} />
+                <Avatar src={baseUrl + volunteer.photo} />
               </StyledTableCell>
               <StyledTableCell align="right">{volunteer.first_name}</StyledTableCell>
               <StyledTableCell align="right">{volunteer.last_name}</StyledTableCell>

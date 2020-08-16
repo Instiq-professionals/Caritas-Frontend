@@ -82,14 +82,27 @@ export default function MyPromptDialog(props) {
           {props.title}
         </DialogTitle>
         <DialogContent dividers>
-          <TextField
-            variant="standard"
+        <Typography
+            gutterBottom
+            style={{
+              paddingTop: 100,
+              paddingBottom: 100,
+              width: "400px",
+              textAlign: "center",
+            }}
+          >
+            <TextField
+             variant="outlined"
             multiline
-            rows="5"
+            label="Reason for disapproval"
+            placeholder="State the reason for disapproval"
+            rows="3"
             value={answer}
-            onChange={handleChange}
+            onChange={props.change}
             style={{ width: "100%" }}
           />
+          {props.children}
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">

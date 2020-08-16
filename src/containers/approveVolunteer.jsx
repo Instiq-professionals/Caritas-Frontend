@@ -33,6 +33,7 @@ import {
 import { createCause } from "../services/cause.service";
 import { MyDialog, MyButton } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
+import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
 
 
@@ -223,7 +224,7 @@ const ApproveVolunteer = (props) => {
           setSelectedOwner(props.type);
         }}
       >
-        <img src={props.image} alt="" style={{ height: "80px" }} />
+        <img src={ props.image} alt="" style={{ height: "80px" }} />
         <p style={{ textAlign: "center" }}>{props.type}</p>
       </div>
     );
@@ -238,7 +239,8 @@ const ApproveVolunteer = (props) => {
               <Grid item xs={12} md={6}>
               <Zoom in={true} timeout={1000} mountOnEnter>
                 <img
-                  src={singleVolunteer.photo}
+                  style={{height:'100%', width:'100%'}}
+                  src={baseUrl + singleVolunteer.photo}
                   alt={`Pictures of ${singleVolunteer.first_name} ${singleVolunteer.last_name}`}
                   className={classes.heroImage}
                 />

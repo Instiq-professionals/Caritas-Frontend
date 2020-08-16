@@ -48,7 +48,7 @@ const deleteCauseSuccess = (state, action) => {
 
 const deleteCauseFail = (state, action) => {
     return updatedObject(state, {
-        causes: null,
+        //causes: null,
         deletedStatus: null,
         deletedMessage:null,
         error: action.error,

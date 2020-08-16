@@ -35,6 +35,7 @@ import { MyButton, MyDialog } from "../components";
 import ReCAPTCHA from "react-google-recaptcha";
 import { AddProfileImage } from "../components";
 import { getToken } from "../helpers/utils";
+import TermsAndCondition from "../components/TermsAndCondition"
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -521,13 +522,13 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (!isValidVolunteer(volunteer.first_name) ||volunteer.first_name == undefined || volunteer.first_name.length<3) {
+    if (!isValidVolunteer(volunteer.first_name.trim()) ||volunteer.first_name == undefined || volunteer.first_name.length<3) {
       setErrorMessage("Ïnvalid First name");
       setProgress(false);
       return;
     }
 
-    if (!isValidVolunteer(volunteer.last_name)||volunteer.last_name == undefined || volunteer.last_name.length<3) {
+    if (!isValidVolunteer(volunteer.last_name.trim())||volunteer.last_name == undefined || volunteer.last_name.length<3) {
       setErrorMessage("Ïnvalid Last name");
       setProgress(false);
       return;
@@ -537,7 +538,7 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (!isValidPhoneNumber(volunteer.phone_number) || volunteer.phone_number == undefined ) {
+    if (!isValidPhoneNumber(volunteer.phone_number.trim()) || volunteer.phone_number == undefined ) {
       setErrorMessage("Ïnvalid phone number");
       setProgress(false);
       return;
@@ -565,12 +566,12 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (!isValidVolunteer(volunteer.guarantor_name)||volunteer.guarantor_name == undefined || volunteer.guarantor_name.length<3) {
+    if (!isValidVolunteer(volunteer.guarantor_name.trim())||volunteer.guarantor_name == undefined || volunteer.guarantor_name.length<3) {
       setErrorMessage("Ïnvalid guarantor's first name");
       setProgress(false);
       return;
     }
-    if (!isValidVolunteer(volunteer.guarantor_last_name)||volunteer.guarantor_last_name == undefined || volunteer.guarantor_last_name.length<3) {
+    if (!isValidVolunteer(volunteer.guarantor_last_name.trim())||volunteer.guarantor_last_name == undefined || volunteer.guarantor_last_name.length<3) {
       setErrorMessage("Ïnvalid guarantor's last name");
       setProgress(false);
       return;
@@ -580,12 +581,12 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (!isValidEmail(volunteer.guarantor_email) || volunteer.guarantor_email == undefined ) {
+    if (!isValidEmail(volunteer.guarantor_email.trim()) || volunteer.guarantor_email == undefined ) {
       setErrorMessage("Ïnvalid guarantor's email address");
       setProgress(false);
       return;
     }
-    if (!isValidPhoneNumber(volunteer.guarantor_phone_number) || volunteer.guarantor_phone_number == undefined ) {
+    if (!isValidPhoneNumber(volunteer.guarantor_phone_number.trim()) || volunteer.guarantor_phone_number == undefined ) {
       setErrorMessage("Ïnvalid guarantor's phone number");
       setProgress(false);
       return;
@@ -2315,7 +2316,7 @@ const Signup = (props) => {
                     name="eduction_level"
                     required="required"
                     label=" Eduction Level"
-                    placeholder="Enter your highest Eduction Level"
+                    placeholder="Enter your highest Education Level"
                     value={volunteer.eduction_level}
                     onChange={handleChangeVolunteer("highest_education_level")}
                   />
@@ -2595,6 +2596,9 @@ const Signup = (props) => {
                     <FormControlLabel value="No" control={<Radio />} label="No" />
                   </RadioGroup>
               </FormControl>
+             </Grid>
+             <Grid item xs={12}>
+             <TermsAndCondition />
              </Grid>
              <Grid item xs={12}>
               <FormControl component="fieldset">

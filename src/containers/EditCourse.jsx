@@ -32,6 +32,7 @@ import { createCause } from "../services/cause.service";
 import { MyDialog, MyButton } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
 import { AddProfileImage } from "../components";
+import { baseUrl  } from "../constants";
 
 const moreStyles = makeStyles((theme) => ({
   sectionHead: {
@@ -158,10 +159,6 @@ const EditCause = (props) => {
     
   },[singleCause,createdBy,setEditCause]);
   console.log('lets start editing...',editCause)
-
-  // const handleCategoryChange = (event) => {
-  //   setCategory(event.target.value);
-  // };
 
   const handleChangeEdit =  name => (e) => { 
     setEditCause({

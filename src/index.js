@@ -16,6 +16,16 @@ import {
   CauseDetailsToBeApproved,
   GetAllCausesForDirectors,
   Resolvecause,
+  MySuccessStory,
+  GetMySuccessStoryDetails,
+  CreateEvent,
+  GetAllMyEvent,
+  EditEvent,
+  MyEventDetails,
+  GetAllEventsByCleader,
+  MakeAdecisionOnEventByCleader,
+  GetAllEventsByDirector,
+  ResolveEvent,
   ViewVolunteerRegPending ,
   ApproveVolunteer,
   Causes,
@@ -48,6 +58,12 @@ import {
   recommendCause,
   makeDecisionOnCause,
   resolveCause,
+  getAllMySuccessStories,
+  MyStoryDetails,
+  getAllSuccessStories,
+  crudEvent,
+  makeDecisionOnEventByCleader,
+  resolveEvent
 } from './store/reducers/index'
 //import signUpreducer from './store/reducers/signupreducers';
 //import displayCausesForReview from './store/reducers/reviewCauses';
@@ -58,6 +74,8 @@ import { Colors } from "./constants";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import ModeratorRoute from "./components/ModeratorRoute";
+import VolunteerRoute from "./components/VolunteerRoute";
+import CleaderRoute from "./components/CleaderRoute";
 
 function logger({ getState }) {
   return next => action => {
@@ -88,7 +106,13 @@ reviewCauses : displayCausesForReview,
 displayCause : displayCause,
 recommend : recommendCause,
 makeDecisionOnCause,
-resolveCause
+resolveCause,
+getAllMySuccessStories,
+MyStoryDetails,
+getAllSuccessStories,
+crudEvent,
+makeDecisionOnEventByCleader,
+resolveEvent
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger, ReduxThunk)))
@@ -144,15 +168,25 @@ const App = () => {
             <ProtectedRoute path="/dashboard/myCauses/:id" component={MyCauseDetails} exact/>
             <ProtectedRoute path="/dashboard/myCauses/:id/:cause_id" component={EditCause} />
             <ProtectedRoute path="/dashboard/profile" component={Profile} />
-            <ProtectedRoute path="/dashboard/approveVolunteer" component={ViewVolunteerRegPending} exact/>
-            <ProtectedRoute path="/dashboard/approveVolunteer/:id" component={ApproveVolunteer} />
-            <ProtectedRoute path="/dashboard/review" component={ReviewCauses } exact/>
-            <ProtectedRoute path="/dashboard/review/:id" component={RecommendAcause }/>
-            <ProtectedRoute exact path="/dashboard/approve" component={GetAllCausesForCleadersDecision}/>
-            <ProtectedRoute path="/dashboard/approve/:id" component={CauseDetailsToBeApproved}/>
-            <ProtectedRoute path="/dashboard/resolve" exact component={GetAllCausesForDirectors}/>
-            <ProtectedRoute exact path="/dashboard/resolve/:id" component={Resolvecause}/>
+            <ProtectedRoute path="/dashboard/getMySuccessStory/:id" component={GetMySuccessStoryDetails} />
+            <ProtectedRoute path="/dashboard/mySuccessStory/:id" exact component={MySuccessStory}/>
+            <ProtectedRoute path="/dashboard/myevents" component={GetAllMyEvent} exact/>
+            <ProtectedRoute path="/dashboard/myevents/:id" component={MyEventDetails} />
+            <CleaderRoute path="/dashboard/approveVolunteer" component={ViewVolunteerRegPending} exact/>
+            <ProtectedRoute path="/dashboard/createEvent" component={CreateEvent} />
+            <ProtectedRoute path="/dashboard/editEvent/:id" component={EditEvent} />
+            <CleaderRoute path="/dashboard/approveVolunteer/:id" component={ApproveVolunteer} />
             <Route path="/cause/:id" component={ACausePage} />
+            <VolunteerRoute path="/dashboard/review" component={ReviewCauses } exact/>
+            <VolunteerRoute path="/dashboard/review/:id" component={RecommendAcause }/>
+            <CleaderRoute exact path="/dashboard/approve" component={GetAllCausesForCleadersDecision}/>
+            <CleaderRoute exact path="/dashboard/getEventsByCleader" component={GetAllEventsByCleader}/>
+            <CleaderRoute exact path="/dashboard/getEventsByCleader/:id" component={MakeAdecisionOnEventByCleader}/>
+            <CleaderRoute path="/dashboard/approve/:id" component={CauseDetailsToBeApproved}/>
+            <ModeratorRoute path="/dashboard/resolve" exact component={GetAllCausesForDirectors}/>
+            <ModeratorRoute exact path="/dashboard/resolve/:id" component={Resolvecause}/>
+            <ModeratorRoute path="/dashboard/resolveEvent" exact component={GetAllEventsByDirector}/>
+            <ModeratorRoute path="/dashboard/resolveEvent/:id" exact component={ResolveEvent}/>
             <ModeratorRoute
               path="/dashboard/cause/:id"
               component={ModeratorCausePage}

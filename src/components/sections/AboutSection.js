@@ -48,7 +48,7 @@ const AboutSection = () => {
             <Stat
               src="/assets/images/icons/briefcase-icon.png"
               total="10+"
-              label="Medical facilities"
+              label="Medical support"
             />
             <Stat
               src="/assets/images/icons/mortar-icon.png"

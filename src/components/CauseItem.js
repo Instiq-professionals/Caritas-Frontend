@@ -28,12 +28,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   image: {
-    backgroundImage: (props) =>
-      process.env.NODE_ENV === "development"
-        ? "url(" +
-          props.cause.cause_photos[0].replace(/^uploads\\/, baseUrl) +
-          ")"
-        : "/" + props.cause.cause_photos[0],
+    // backgroundImage: (props) =>
+    //   process.env.NODE_ENV === "development"
+    //     ? "url(" +
+    //       props.cause.cause_photos[0].replace(/^uploads\\/, baseUrl) +
+    //       ")"
+    //     : "/" + props.cause.cause_photos[0],
+
     backgroundSize: "cover",
     backgroundPosition: "center",
     flex: 0.45,
@@ -81,6 +82,7 @@ const CauseItem = (props) => {
   console.log("Inside cause item", props);
   return (
     <Paper
+    style={{backgroundImage:`url(${baseUrl}${props.cause.cause_photos})`}}
       elevation="4"
       className={clsx(classes.item, classes.root)}
       onClick={() => (window.location = `/cause/${props.cause._id}`)}

@@ -86,11 +86,14 @@ export const approveCause  = (token,cause_id) => {
     }
 };
 
-export const disApproveCause  = (token,cause_id) => {
+export const disApproveCause  = (token,cause_id,reason_for_disapproval) => {
     return dispatch => {
         dispatch(makeDecisionOnCauseStart());
+        const formData = new FormData();
+        formData.append("reason_for_disapproval", reason_for_disapproval);
          axios({
             method : 'put',
+            data: formData,
             url: Routes.disapprove_cause + cause_id,
             headers : {
               'x-auth-token' : token
