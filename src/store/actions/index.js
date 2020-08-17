@@ -52,6 +52,9 @@ export {
     resolveEvent
 } from './resolveEvent';
 export {
+    getAllCausesByCategory
+} from './getAllCauseByCategory';
+export {
     getVolunteersForApproval,
     checkVolunteerDetails,
     approveVolunteer,

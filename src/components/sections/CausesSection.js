@@ -14,6 +14,9 @@ import { Colors } from "../../constants";
 import { Link } from "react-router-dom";
 import { CauseItem } from "../";
 import { getAllCauses } from "../../services/cause.service";
+import { withRouter } from 'react-router-dom';
+import { connect } from "react-redux";
+import * as actions from '../../store/actions/index';
 
 const causes = [
   {
@@ -42,11 +45,15 @@ const causes = [
   },
 ];
 
-const CausesSection = () => {
+const CausesSection = (props) => {
   const classes = useStyles();
+  useEffect(() => {
+    props.getAllCausesByCategory('Food');
+  },[]);
 
   const [tab, setTab] = useState(0);
   const [allCauses, setAllCauses] = useState([]);
+  const causesByCategory = props.data;
 
   const handleTabChange = (value) => {
     setTab(value);
@@ -64,7 +71,7 @@ const CausesSection = () => {
     }
     setTheCauses();
   }, []);
-
+ console.log('gbilz.....',allCauses)
   return (
     <section className={classes.corona}>
       <Container>
@@ -168,7 +175,7 @@ const CausesSection = () => {
               </Typography>
             </Grid>
             <Grid item sm={12} md={6} style={{ textAlign: "right" }}>
-              <Link to="/" style={{ float: "right" }}>
+              <Link to="/causes" style={{ float: "right" }}>
                 See all
               </Link>
             </Grid>
@@ -184,10 +191,10 @@ const CausesSection = () => {
                 onChange={(tab, index) => handleTabChange(index)}
               >
                 <Tab label="All" style={{ textTransform: "none" }} />
-                <Tab label="Education" style={{ textTransform: "none" }} />
-                <Tab label="Health" style={{ textTransform: "none" }} />
-                <Tab label="Human Rights" style={{ textTransform: "none" }} />
-                <Tab label="Food" style={{ textTransform: "none" }} />
+                <Tab label="Education" style={{ textTransform: "none" }} onClick={() => props.getAllCausesByCategory('Education')}/>
+                <Tab label="Health" style={{ textTransform: "none" }} onClick={() => props.getAllCausesByCategory('Health')}/>
+                <Tab label="Human Rights" style={{ textTransform: "none" }} onClick={() => props.getAllCausesByCategory('Human Rights')} />
+                <Tab label="Food" style={{ textTransform: "none" }}  onClick={() => props.getAllCausesByCategory('Food')}/>
               </Tabs>
               {tab === 0 && (
                 <Grid
@@ -235,14 +242,14 @@ const CausesSection = () => {
                     flexWrap: "no-wrap !important",
                   }}
                 >
-                  {allCauses.map((cause, index) => (
+                  {causesByCategory.map((cause, index) => (
                     <Grid item>
                       <CauseItem cause={cause} key={`cause-${cause._id}`}>
                         {cause.brief_description}
                       </CauseItem>
                     </Grid>
                   ))}
-                  {allCauses.length === 0 && (
+                  {causesByCategory.length === 0 && (
                     <div
                       style={{
                         backgroundColor: "rgba(255,255,255,.5)",
@@ -271,14 +278,14 @@ const CausesSection = () => {
                     flexWrap: "no-wrap !important",
                   }}
                 >
-                  {allCauses.map((cause, index) => (
+                  {causesByCategory.map((cause, index) => (
                     <Grid item>
                       <CauseItem cause={cause} key={`cause-${cause._id}`}>
                         {cause.brief_description}
                       </CauseItem>
                     </Grid>
                   ))}
-                  {allCauses.length === 0 && (
+                  {causesByCategory.length === 0 && (
                     <div
                       style={{
                         backgroundColor: "rgba(255,255,255,.5)",
@@ -306,14 +313,14 @@ const CausesSection = () => {
                     flexWrap: "no-wrap !important",
                   }}
                 >
-                  {allCauses.map((cause, index) => (
+                  {causesByCategory.map((cause, index) => (
                     <Grid item>
                       <CauseItem cause={cause} key={`cause-${cause._id}`}>
                         {cause.brief_description}
                       </CauseItem>
                     </Grid>
                   ))}
-                  {allCauses.length === 0 && (
+                  {causesByCategory.length === 0 && (
                     <div
                       style={{
                         backgroundColor: "rgba(255,255,255,.5)",
@@ -341,14 +348,14 @@ const CausesSection = () => {
                     flexWrap: "no-wrap !important",
                   }}
                 >
-                  {allCauses.map((cause, index) => (
+                  {causesByCategory.map((cause, index) => (
                     <Grid item>
                       <CauseItem cause={cause} key={`cause-${cause._id}`}>
                         {cause.brief_description}
                       </CauseItem>
                     </Grid>
                   ))}
-                  {allCauses.length === 0 && (
+                  {causesByCategory.length === 0 && (
                     <div
                       style={{
                         backgroundColor: "rgba(255,255,255,.5)",
@@ -412,4 +419,18 @@ const Precautions = (props) => {
   );
 };
 
-export default CausesSection;
+const mapStateToProps = state => {
+  return {
+    loading : state.getAllCausesByCategory.loading,
+    data: state.getAllCausesByCategory.causes?state.getAllCausesByCategory.causes.data:[],
+    error: state.getAllCausesByCategory.error,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getAllCausesByCategory : (category) => dispatch(actions.getAllCausesByCategory(category)),
+  }
+}
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(CausesSection));

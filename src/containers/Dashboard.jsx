@@ -105,15 +105,21 @@ const Dashboard = (props) => {
     props.getProfile(token);
     userIsModerator() && props.onGetAllCausesForDirector(token);
     cLeader() && props.onGetAllCauses(token);
-    userIsUser() && props.getAllCausesByAuser(token);
+    props.getAllCausesByAuser(token);
     cLeader() && props.getVolunteersForApproval(token);
-    Volunteer() && props.reviewCauses(token)
+    Volunteer() && props.reviewCauses(token);
+    !userIsUser() && props.getAllMyEvents(token);
+    cLeader() && props.getEventByCleader(token);
+    userIsModerator() && props.getEventByDirector(token)
   },[]);
   const CausesData = props.data;
   const errorMsg = props.error;
   const RegPendingData = props.volunteersRegPendingData;
   const volunteersReviewData = props.volunteersReviewData;
   const cLeaderData = props.CleadersDashboard;
+  const getAllEventsByCleader = props.getAllEventsByCleader;
+  const getMyEventdata = props.getMyEventdata;
+  const getsAllEventByDirectorData = props.getsAllEventByDirectorData;
 
   const userCauseStatus = [];
   for (const data of CausesData ) {
@@ -130,6 +136,11 @@ const cLeaderCauseStatus = [];
     cLeaderCauseStatus.push(data.cause_status );
 };
 
+const cLeaderEventsStatus = [];
+  for (const data of getAllEventsByCleader ) {
+    cLeaderEventsStatus.push(data.event_status );
+};
+
 const userCausePendingLength = userCauseStatus.filter(element => element === "Awaiting Approval");
 const userApprovedCausesLength = userCauseStatus.filter(element => element === "Approved");
 const userResolvedCausesLength = userCauseStatus.filter(element => element === "Resolved");
@@ -137,7 +148,7 @@ const volunteerCausePendingLength = volunterCauseStatus.filter(element => elemen
 const cLeaderCausePendingLength = cLeaderCauseStatus.filter(element => element === "Awaiting Approval");
 const cLeaderApprovedLength = cLeaderCauseStatus.filter(element => element === "Approved");
 const cLeaderCauseResolvedLength = cLeaderCauseStatus.filter(element => element === "Resolved");
-console.log(' cLeaderCauseStatus...',cLeaderCausePendingLength)
+console.log(' getMyEventdata...',getMyEventdata)
 
 
   const [curUser, setCurUser] = useState(user);
@@ -165,21 +176,27 @@ console.log(' cLeaderCauseStatus...',cLeaderCausePendingLength)
       />
       {userIsModerator() && <Director
         approved={props.directordataError?'0':props.directordata.length}
+        getsAllEventByDirectorData={getsAllEventByDirectorData.length}
         clickToCausesPage={() => props.history.push('/dashboard/resolve')}
         clickToEventsPage={() => props.history.push('/dashboard/resolveEvent')}
        />}
       {Volunteer() && <VolunteerDashboard
+       userCausesDataLength={errorMsg?'0':CausesData.length}
         CausePending={volunteerCausePendingLength.length}
+        getMyEventdata={getMyEventdata.length}
         clickToCausesPage={() => props.history.push('/dashboard/review')}
         clickToEventPage={() => props.history.push('/dashboard/myevents')}
+        clickToMyCausesPage={handleCausesPageClick}
        />}
       {cLeader() && <CleadersDashboard
+      userCausesDataLength={errorMsg?'0':CausesData.length}
         RegPendingData={props.volunteersRegPendingDataError?'0':RegPendingData.length}
         Pending={cLeaderCausePendingLength.length}
-        Event={cLeaderApprovedLength.length}
+        Event={cLeaderEventsStatus.length}
         clickToCausesPage={() => props.history.push('/dashboard/approve')}
         clickToRegPendingPage={() => props.history.push('/dashboard/approveVolunteer')}
         clickToEventPage={() => props.history.push('/dashboard/getEventsByCleader')}
+        clickToMyCausesPage={handleCausesPageClick}
         />}
     </>
   );
@@ -203,10 +220,10 @@ const Director = (props) => {
               <SummaryCard title="Total C.Leaders" value="4" />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick={props.clickToEventsPage}>
-              <SummaryCard title="Approved events" value='0' />
+              <SummaryCard title="Approved events in your category" value={props.getsAllEventByDirectorData} />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
-              <SummaryCard title="Approved Causes" value={props.approved} />
+              <SummaryCard title="Approved Causes in your category" value={props.approved} />
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
               <SummaryCard title="Impacts" value="31" />
@@ -231,14 +248,14 @@ const VolunteerDashboard = (props) => {
                Activity Summary
              </Typography>            
            </Grid>
-           <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Total Users" value="3" />
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToMyCausesPage}>
+              <SummaryCard title="My Causes" value={props.userCausesDataLength}  />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
-              <SummaryCard title="Pending Causes" value={props.CausePending}/>
+              <SummaryCard title="Pending Causes in Your Category" value={props.CausePending}/>
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToEventPage}>
-              <SummaryCard title="My events" value="0" />
+              <SummaryCard title="My events" value={props.getMyEventdata} />
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
               <SummaryCard title="Next event" value="Sep,24" />
@@ -263,14 +280,14 @@ const CleadersDashboard = (props) => {
                Activity Summary
              </Typography>            
            </Grid>
-           <Grid item xs={12} sm={6} md={3} >
-              <SummaryCard title="Total Volunteers" value="4" />
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToMyCausesPage}>
+              <SummaryCard title="My Causes" value={props.userCausesDataLength}  />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
-              <SummaryCard title="Pending Causes" value={props.Pending} />
+              <SummaryCard title="Pending Causes in Your Category" value={props.Pending} />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToEventPage}>
-              <SummaryCard title="Pending Event" value={props.Event}/>
+              <SummaryCard title="Pending Event in your category" value={props.Event}/>
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToRegPendingPage}>
              <SummaryCard title="volunteer Registration Pending" value={props.RegPendingData} />
@@ -594,7 +611,13 @@ const mapStateToProps = state => {
     volunteersReviewData: state.reviewCauses.causes?state.reviewCauses.causes.data:"There is no cause found",
     CleadersDashboard: state.makeDecisionOnCause.causes?state.makeDecisionOnCause.causes.data:"There is no cause found",
     directordata: state.resolveCause.causes?state.resolveCause.causes.data:"There is no cause found",
-    directordataError: state.resolveCause.error
+    directordataError: state.resolveCause.error,
+    getAllEventsByCleader: state.makeDecisionOnEventByCleader.events?state.makeDecisionOnEventByCleader.events.data:[],
+    getAllEventsByCleaderError: state.makeDecisionOnEventByCleader.error,
+    getMyEventdata: state.crudEvent.events?state.crudEvent.events.data:[],
+    getMyEventdataError: state.crudEvent.error,
+    getsAllEventByDirectorData: state.resolveEvent.events?state.resolveEvent.events.data:[],
+    getsAllEventByDirectorError: state.resolveEvent.error,
   }
 };
 
@@ -605,7 +628,10 @@ const mapDispatchToProps = dispatch => {
     getVolunteersForApproval : (token) => dispatch(actions.getVolunteersForApproval(token)),
     reviewCauses : (token) => dispatch(actions.reviewCauses(token)),
     onGetAllCauses : (token) => dispatch(actions.getCausesForApproval(token)),
-    onGetAllCausesForDirector : (token) => dispatch(actions.getCausesForResolution(token))
+    onGetAllCausesForDirector : (token) => dispatch(actions.getCausesForResolution(token)),
+    getAllMyEvents : (token) => dispatch(actions.getAllMyEvents(token)),
+    getEventByCleader : (token) => dispatch(actions.getEventByCleader(token)),
+    getEventByDirector : (token) => dispatch(actions.getEventForResolution(token)),
   }
 }
 

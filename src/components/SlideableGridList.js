@@ -78,7 +78,8 @@ const SlideableGridList = (props) => {
               >
                 <Link to={"/cause/" + aCause._id}>
                   <img
-                    src={processPhoto(aCause.cause_photos[0])}
+                    // src={processPhoto(aCause.cause_photos[0])}
+                    src={baseUrl + aCause.cause_photos}
                     alt={aCause.cause_title}
                     className={classes.listImage}
                   />

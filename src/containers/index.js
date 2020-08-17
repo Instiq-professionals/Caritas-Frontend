@@ -34,6 +34,7 @@ import GetAllEventsByCleader from './GetAllEventsByCleader';
 import MakeAdecisionOnEventByCleader from './MakeAdecisionOnEventByCleader';
 import GetAllEventsByDirector from './GetAllEventsToBeResolve';
 import ResolveEvent from './ResolveEvent';
+import AllCausesPage from './AllCausesPage';
 
 export {
   Home,
@@ -62,6 +63,7 @@ export {
   ResolveEvent,
   ViewVolunteerRegPending ,
   ApproveVolunteer,
+  AllCausesPage,
   Causes,
   HowItWorks,
   Signup,

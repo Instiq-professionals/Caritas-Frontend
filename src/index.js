@@ -63,7 +63,8 @@ import {
   getAllSuccessStories,
   crudEvent,
   makeDecisionOnEventByCleader,
-  resolveEvent
+  resolveEvent,
+  getAllCausesByCategory
 } from './store/reducers/index'
 //import signUpreducer from './store/reducers/signupreducers';
 //import displayCausesForReview from './store/reducers/reviewCauses';
@@ -112,7 +113,8 @@ MyStoryDetails,
 getAllSuccessStories,
 crudEvent,
 makeDecisionOnEventByCleader,
-resolveEvent
+resolveEvent,
+getAllCausesByCategory
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger, ReduxThunk)))

@@ -263,7 +263,7 @@ const Profile = () => {
               image={
                 typeof profile.image == String
                   ? processPhoto(profile.image)
-                  : profile.image
+                  :  profile.image
               }
               setImage={(file) => {
                 setProfile({

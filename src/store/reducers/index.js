@@ -53,3 +53,6 @@ export {
 export {
     resolveEvent
 } from './resolveEvent';
+export {
+    getAllCausesByCategory
+} from './getAllCausesByCategory';

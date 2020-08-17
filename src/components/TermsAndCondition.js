@@ -161,7 +161,7 @@ export default function FullScreenDialog() {
           Customer is responsible for keeping his/her login email and password confidential.   
           </Typography><br/>
           <Typography variant="small">
-          In case of any unauthorized use of is/her registration, Customer will notify the Qcare Foundation mmediately.  
+          In case of any unauthorized use of is/her registration, Customer will notify the Qcare Foundation immediately.  
           </Typography><br/>
             </Grid>
             <Grid item xs={12}>

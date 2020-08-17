@@ -63,15 +63,15 @@ const Footer = (props) => {
               Links
             </Typography>
 
-            <Link to="/" className={classes.link}>
+            <Link to="/about" className={classes.link}>
               About Us
             </Link>
             <br />
-            <Link to="/" className={classes.link}>
+            <Link to="/how-it-works" className={classes.link}>
               How it works
             </Link>
             <br />
-            <Link to="/" className={classes.link}>
+            <Link to="/causes" className={classes.link}>
               Causes
             </Link>
             <br />
@@ -115,27 +115,27 @@ const Footer = (props) => {
           </Grid>
           <Grid item xs={4} style={{ color: "white" }}></Grid>
           <Grid item xs={4} style={{ color: "white" }}>
-            <Link to="https://www.facebook.com">
-              <img
+            <a href="https://www.facebook.com">
+            <img
                 src="/assets/images/icons/facebook.png"
                 alt=""
                 className={classes.socialMedia}
               />
-            </Link>
-            <Link to="https://www.facebook.com">
-              <img
+            </a>
+            <a href="https://twitter.com/QcareF">
+            <img
                 src="/assets/images/icons/twitter.png"
                 alt=""
                 className={classes.socialMedia}
               />
-            </Link>
-            <Link to="https://www.facebook.com">
-              <img
+            </a>
+            <a href="https://instagram.com/qcarefoundation?igshid=1mfoou6zltqui">
+            <img
                 src="/assets/images/icons/instagram.png"
                 alt=""
                 className={classes.socialMedia}
               />
-            </Link>
+            </a>
           </Grid>
         </Grid>
       </Container>

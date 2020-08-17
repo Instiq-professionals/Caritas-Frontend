@@ -42,7 +42,7 @@ const HomeHeaderSection = () => {
                 style={{ display: "flex", margin: "32px 0px" }}
               >
                 <Link
-                  to="/education"
+                  to="/causes"
                   style={{
                     flex: 1,
                     color: Colors.appGreen,
@@ -53,7 +53,7 @@ const HomeHeaderSection = () => {
                   Education
                 </Link>
                 <Link
-                  to="/food"
+                  to="/causes"
                   style={{
                     flex: 1,
                     color: Colors.appOrange,
@@ -65,7 +65,7 @@ const HomeHeaderSection = () => {
                   Food
                 </Link>
                 <Link
-                  to="/health"
+                  to="/causes"
                   style={{
                     flex: 1,
                     color: Colors.appRed,
@@ -77,7 +77,7 @@ const HomeHeaderSection = () => {
                   Health
                 </Link>
                 <Link
-                  to="/human-rights"
+                  to="/causes"
                   style={{
                     flex: 1,
                     color: Colors.appBlue,

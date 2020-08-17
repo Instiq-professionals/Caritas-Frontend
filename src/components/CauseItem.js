@@ -4,6 +4,7 @@ import { Paper, Slider, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../constants";
 import { baseUrl } from "../constants";
+import Naira from 'react-naira';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -109,9 +110,8 @@ const CauseItem = (props) => {
                 fontSize: "10px",
               }}
             >
-              {"#"}
-              {props.cause.amount_donated} - {"#"}
-              {props.cause.amount_required}
+              <Naira>{props.cause.amount_donated?props.cause.amount_donated:0}</Naira>
+               - <Naira>{props.cause.amount_required}</Naira>
             </p>
           </div>
         </div>
