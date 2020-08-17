@@ -89,15 +89,15 @@ const Footer = (props) => {
               Want to help?
             </Typography>
 
-            <Link to="/" className={classes.link}>
+            <Link to="/causes" className={classes.link}>
               Donate Money
             </Link>
             <br />
-            <Link to="/" className={classes.link}>
+            <Link to="/signup" className={classes.link}>
               Become a partner
             </Link>
             <br />
-            <Link to="/" className={classes.link}>
+            <Link to="/signup" className={classes.link}>
               Become a volunteer
             </Link>
             <br />

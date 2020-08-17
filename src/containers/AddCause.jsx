@@ -1339,7 +1339,7 @@ const AddCause = () => {
                   </>
                 )}
 
-                 <FormControlLabel
+                 {/* <FormControlLabel
                     className={classes.checkbox}
                     style={{ marginTop: "20px" }}
                     control={
@@ -1353,7 +1353,7 @@ const AddCause = () => {
                     label={`I agree to the terms and conditions.`}
                   />
                   <p style={{textAlign: "center", color: Colors.appRed}}><a href="#" 
-                    style={{color: "inherit", fontWeight: "bold", fontSize: 14}}>Read full T&amp;C’s</a></p>
+                    style={{color: "inherit", fontWeight: "bold", fontSize: 14}}>Read full T&amp;C’s</a></p> */}
               </form>
                   
             </div>

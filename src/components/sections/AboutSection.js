@@ -47,22 +47,22 @@ const AboutSection = () => {
           <div className={classes.aboutFooter}>
             <Stat
               src="/assets/images/icons/briefcase-icon.png"
-              total="10+"
-              label="Medical support"
+              total="501"
+              label="Medical Support"
             />
             <Stat
               src="/assets/images/icons/mortar-icon.png"
-              total="20+"
-              label="Educational supplies"
+              total="0"
+              label="Educational Support"
             />
             <Stat
               src="/assets/images/icons/balance-icon.png"
-              total="0+"
-              label="Human rights cases"
+              total="0"
+              label="Human Rights Cases"
             />
             <Stat
               src="/assets/images/icons/spanner-icon.png"
-              total="30+"
+              total="50"
               label="Food"
             />
           </div>

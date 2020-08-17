@@ -32,37 +32,37 @@ const HowItWorksSection = () => {
           <Grid item xs={4}>
             <HowItWorks
               image="/assets/images/icons/account-icon.png"
-              step="Create an Account."
+              step="Create An Account."
             />
           </Grid>
           <Grid item xs={4}>
             <HowItWorks
               image="/assets/images/icons/upload-icon.png"
-              step="Upload a Cause"
+              step="Upload A Cause Or Event"
             />
           </Grid>
           <Grid item xs={4}>
             <HowItWorks
               image="/assets/images/icons/category-icon.png"
-              step="Cause gets Vetted by Professional in Category"
+              step="The Cause Get Reviewed"
             />
           </Grid>
           <Grid item xs={4}>
             <HowItWorks
               image="/assets/images/icons/vote-icon.png"
-              step="Upon approval Cause is put up for voting"
+              step="Upon Review by our professionals within 24 Hours"
             />
           </Grid>
           <Grid item xs={4}>
             <HowItWorks
-              image="/assets/images/icons/donations-icon.png"
-              step="When Voting is Succesful Cause is made public to receive donations"
+              image="/assets/images/icons/notification.png"
+              step="You will get notification of Approval message"
             />
           </Grid>
           <Grid item xs={4}>
             <HowItWorks
-              image="/assets/images/icons/contractor-icon.png"
-              step="When Target donation amount is reached an approved contractor is chosen"
+              image="/assets/images/icons/help.png"
+              step="Help is delivereed to you"
             />
           </Grid>
           <Grid item xs={6} md={4} style={{ marginLeft: "30px" }}>

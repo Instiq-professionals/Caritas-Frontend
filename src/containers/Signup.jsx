@@ -9,6 +9,7 @@ import {
   TextField,
   FormControl,
   Radio,
+  Checkbox,
   RadioGroup,
   FormControlLabel,
   FormLabel,
@@ -141,6 +142,10 @@ const useStyles = makeStyles((theme) => ({
       width: "100% !important",
     },
   },
+  checkbox: {
+    display: "block",
+    color: Colors.appRed
+  },
   regForm: {
     width: "800px !important",
     display: "block",
@@ -170,7 +175,8 @@ const Signup = (props) => {
     dateOfBirth: "",
     title: "Select Title",
     gender: "Select Gender",
-    dob: ""
+    dob: "",
+    agreeToTandC:false
   });
 
   let [partner, setPartner] = useState({
@@ -371,7 +377,9 @@ const Signup = (props) => {
   const handleConfirmPasswordChange = (event) => {
     setUser({ ...user, confirmPassword: event.target.value.trim() });
   };
-
+  const handleCheck = () => {
+    setUser({ ...user, agreeToTandC:!user.agreeToTandC });
+  }
   const handleInstitutionNameChange = (event) => {
     setInstitution({ ...institution, name: event.target.value });
   };
@@ -399,6 +407,7 @@ const Signup = (props) => {
   const handleInstitutionAddressChange = (event) => {
     setInstitution({ ...institution, address: event.target.value });
   };
+
 
   const handleChangeVolunteer =  name => (e) => { 
     setVolunteer({
@@ -1062,6 +1071,24 @@ const Signup = (props) => {
                   />
                 </FormControl>
               </Grid>
+              <Grid item xs={12}>
+             <TermsAndCondition />
+             </Grid>
+             <Grid item xs={12}>
+             <FormControlLabel
+                    className={classes.checkbox}
+                    style={{ marginTop: "20px" }}
+                    control={
+                      <Checkbox
+                        checked={user.agreeToTandC}
+                        // onChange={handleChange}
+                        name="agreeToTandC"
+                        onChange={handleCheck}
+                      />
+                    }
+                    label={`I agree to the terms and conditions.`}
+                  />
+             </Grid>
               <Grid item xs={12}>
                 <div>
                   <Button

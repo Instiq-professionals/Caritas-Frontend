@@ -76,9 +76,8 @@ export default function FullScreenDialog() {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Read Terms and Conditions
-      </Button>
+       <p style={{ color: Colors.appRed}} onClick={handleClickOpen}><a href="#" 
+                    style={{color: "inherit", fontWeight: "bold", fontSize: 14}}>Read full T&amp;C’s</a></p>
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>

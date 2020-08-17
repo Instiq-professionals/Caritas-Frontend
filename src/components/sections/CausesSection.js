@@ -138,9 +138,9 @@ const CausesSection = (props) => {
                 direction="Cough into it"
               />
               <Precautions
-                src="/assets/images/icons/face.png"
+                src="/assets/images/icons/nosemask.jpeg"
                 body="FACE"
-                direction="Don’t touch it"
+                direction="Wear a nose mask"
               />
               <Precautions
                 src="/assets/images/icons/distance.png"
