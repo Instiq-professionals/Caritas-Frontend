@@ -123,10 +123,15 @@ const Profile = () => {
     photo: "",
     first_name: "",
     last_name: "",
+    middle_name: "",
     email: "",
     phone_number: "",
     account_type: "",
     address: "",
+    date_of_birth: "",
+    local_govt: "",
+    state: "",
+    title: "",
     bank_name: "",
     account_name: "",
     account_number: "",
@@ -152,7 +157,6 @@ const Profile = () => {
     };
     getTheProfile();
   }, []);
-
   const handleChange = (field, event) => {
     setProfile({ ...profile, [field]: event.target.value });
   };
@@ -221,21 +225,6 @@ const Profile = () => {
       setProgress(false);
       return;
     }
-    if (profile.bank_name === "Select Bank") {
-      setErrorMessage("Please select your bank");
-      setProgress(false);
-      return;
-    }
-    if (profile.account_name === "") {
-      setErrorMessage("Your account name is empty");
-      setProgress(false);
-      return;
-    }
-    if (profile.account_number === "") {
-      setErrorMessage("Your account number is empty");
-      setProgress(false);
-      return;
-    }
     if (!isValidEmail(profile.email)) {
       setErrorMessage("Ïnvalid email address");
       setProgress(false);
@@ -257,9 +246,10 @@ const Profile = () => {
       <PrimaryAppBar />
       <Grid container className={classes.authPage}>
         <Container style={{ marginTop: "200px" }}>
-          <Grid container>
+          <Grid container >
             <AddProfileImage
               onClick={handleAddImageClick}
+              getImage={baseUrl + profile.photo}
               image={
                 typeof profile.image == String
                   ? processPhoto(profile.image)
@@ -305,7 +295,21 @@ const Profile = () => {
                     />
                   </FormControl>
                 </Grid>
-              </Grid>
+                <Grid item xs={6}>
+                  <FormControl className={classes.formControl}>
+                    <MyTextField
+                      id="middle_name"
+                      type="text"
+                      name="middle_name"
+                      required="required"
+                      label="middle name"
+                      placeholder="Enter your middle name"
+                      value={profile.middle_name}
+                      onChange={() => handleChange("middle_name", window.event)}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={6}>
               <FormControl className={classes.formControl}>
                 <MyTextField
                   id="email"
@@ -318,7 +322,25 @@ const Profile = () => {
                   onChange={() => handleChange("email", window.event)}
                 />
               </FormControl>
-              <FormControl className={classes.formControl}>
+              </Grid>
+              </Grid>
+              <Grid container spacing={3}>
+                <Grid item xs={6}>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="dob"
+                    type="date"
+                    name="dob"
+                    required="required"
+                    label="Date of birth"
+                    placeholder="Enter your date of birth"
+                    value={profile.date_of_birth}
+                    onChange={() => handleChange("date_of_birth", window.event)}
+                  />
+                </FormControl>
+                </Grid>
+                <Grid item xs={6}>
+                <FormControl className={classes.formControl}>
                 <MyTextField
                   id="phone"
                   type="phone"
@@ -330,7 +352,11 @@ const Profile = () => {
                   onChange={() => handleChange("phone_number", window.event)}
                 />
               </FormControl>
-              <FormControl className={classes.formControl}>
+                </Grid>
+              </Grid>
+              <Grid container spacing={3}>
+                <Grid item xs={6}>
+                <FormControl className={classes.formControl}>
                 <MyTextField
                   id="address"
                   type="text"
@@ -342,97 +368,20 @@ const Profile = () => {
                   onChange={() => handleChange("address", window.event)}
                 />
               </FormControl>
-
-              <FormControl
-                className={classes.formControl}
-                style={{ marginBottom: "20px" }}
-              >
-                <Select
-                  labelId="bank-name"
-                  id="bank-name"
-                  value={profile.bank_name}
-                  onChange={(event) =>
-                    setProfile({ ...profile, bank_name: event.target.value })
-                  }
-                  variant="outlined"
-                  style={{ width: "100% !important" }}
-                  // margin="dense"
-                  fullWidth
-                >
-                  <MenuItem value="Select Bank">Select Bank</MenuItem>
-                  <MenuItem value="UBA">UBA</MenuItem>
-                  <MenuItem value="GT Bank">GT Bank</MenuItem>
-                  <MenuItem value="Zenith">Zenith</MenuItem>
-                  <MenuItem value="First Bank">First Bank</MenuItem>
-                  <MenuItem value="Keystone Bank">Keystone Bank</MenuItem>
-                  <MenuItem value="Access Bank">Access Bank</MenuItem>
-                  <MenuItem value="FCMB">FCMB</MenuItem>
-                  <MenuItem value="Fidelity">Fidelity</MenuItem>
-                  <MenuItem value="Polaris">Polaris</MenuItem>
-                  <MenuItem value="Eko Bank">Eko Bank</MenuItem>
-                  <MenuItem value="Wema Bank">Wema Bank</MenuItem>
-                  <MenuItem value="Heritage Bank">Heritage Bank</MenuItem>
-                  <MenuItem value="Sterling Bank">Sterling Bank</MenuItem>
-                  <MenuItem value="Standard Chartered Bank">
-                    Standard Chartered Bank
-                  </MenuItem>
-                  <MenuItem value="Stanbic IBTC">Stanbic IBTC Bank</MenuItem>
-                  <MenuItem value="Titan Bank">Titan Bank</MenuItem>
-                  <MenuItem value="Unity Bank">Unity Bank</MenuItem>
-                  <MenuItem value="Union Bank">Union Bank</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl className={classes.formControl}>
-                <MyTextField
-                  id="account-name"
-                  type="text"
-                  name="account_name"
-                  required="required"
-                  label="Account Name"
-                  placeholder="Enter your account name"
-                  value={profile.account_name}
-                  onChange={() => handleChange("account_name", window.event)}
-                />
-              </FormControl>
-
-              <Grid container spacing={3}>
-                <Grid item xs={6}>
-                  <FormControl className={classes.formControl}>
-                    <MyTextField
-                      id="account_number"
-                      type="number"
-                      name="account_number"
-                      required="required"
-                      label="Account Number"
-                      placeholder="Enter your account number"
-                      value={profile.account_number}
-                      onChange={() =>
-                        handleChange("account_number", window.event)
-                      }
-                    />
-                  </FormControl>
                 </Grid>
                 <Grid item xs={6}>
-                  <FormControl className={classes.formControl}>
-                    <Select
-                      labelId="account-type"
-                      id="acount-type"
-                      value={profile.account_type}
-                      onChange={() => (event) =>
-                        setProfile({
-                          ...profile,
-                          account_type: event.target.value,
-                        })}
-                      variant="outlined"
-                      style={{ width: "100% !important" }}
-                      // margin="dense"
-                      fullWidth
-                    >
-                      <MenuItem value="Savings">Savings</MenuItem>
-                      <MenuItem value="Current">Current</MenuItem>
-                      <MenuItem value="Other">Other</MenuItem>
-                    </Select>
-                  </FormControl>
+                <FormControl className={classes.formControl}>
+                <MyTextField
+                  id="state"
+                  type="text"
+                  name="state"
+                  required="required"
+                  label="state"
+                  placeholder="Enter your state"
+                  value={profile.state}
+                  onChange={() => handleChange("state", window.event)}
+                />
+              </FormControl>
                 </Grid>
               </Grid>
 

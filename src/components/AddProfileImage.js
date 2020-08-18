@@ -111,7 +111,7 @@ class AddProfileImage extends Component {
         onClick={this.handleClick}
       >
         <img
-          src={this.state.image}
+          src={this.state.image?this.state.image:this.props.getImage}
           alt={isAuthenticated() ? getAuthenticatedUser().first_name : ""}
           style={
             window.innerWidth > 768
