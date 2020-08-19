@@ -240,7 +240,7 @@ const MyEventDetails = (props) => {
                     //float: "right",
                   }}
                 >
-                 Delete cause
+                 Delete event
                 </Button>
                 <Button
                   onClick={() => props.history.push(`/dashboard/editEvent/${eventId}`)}
@@ -252,7 +252,7 @@ const MyEventDetails = (props) => {
                     //float: "right",
                   }}
                 >
-                 Edit cause
+                 Edit event
                 </Button>
               </div>
             </Grid>

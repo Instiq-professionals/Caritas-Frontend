@@ -127,6 +127,7 @@ const EditEvent = (props) => {
         category: eventDetails.category,
         title: eventDetails.title,
         description: eventDetails.description,
+        pictures: eventDetails.pictures,
         video: eventDetails.video,
         budget: parseInt(eventDetails.budget),
         budget_breakdown: eventDetails.budget_breakdown,
@@ -180,8 +181,10 @@ const EditEvent = (props) => {
     });
  };
   const handleSubmit = () => {
+    editEvent.uploadFiles = uploadFiles;
+    console.log('edited',editEvent)
     props.editMyEvent(token,event_id,editEvent);
-   setTimeout(() => (window.location = "/dashboard"), 1000);
+   setTimeout(() => (window.location = "/dashboard/myevents"), 1000);
   }
 
   return (

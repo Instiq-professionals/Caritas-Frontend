@@ -187,6 +187,22 @@ export const editMyEvent = (token,event_id,content) => {
         formData.append("venue", content.venue);
         formData.append("expected_no_of_impact", content.expected_no_of_impact);
         formData.append("video", content.video);
+        formData.append("pictures", content.uploadFiles.image1);
+        if (content.uploadFiles.image2) {
+            formData.append("pictures", content.uploadFiles.image2);
+          }
+          if (content.uploadFiles.image3) {
+            formData.append("pictures", content.uploadFiles.image3);
+          }
+          if (content.uploadFiles.image4) {
+            formData.append("pictures", content.uploadFiles.image4);
+          }
+          if (content.uploadFiles.image5) {
+            formData.append("pictures", content.uploadFiles.image5);
+          }
+          if (content.uploadFiles.image6) {
+            formData.append("pictures", content.uploadFiles.image6);
+          }
          axios({
             method : 'put',
             data: formData,
