@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from "react";
 import { PrimaryAppBar } from "../commons";
 import { Footer } from "../components";
 import { useStyles } from "../helpers";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import {
   HomeHeaderSection,
@@ -9,6 +10,7 @@ import {
   CausesSection,
   HowItWorksSection,
   StoriesSection,
+  Carousel
 } from "../components/sections";
 
 const Home = () => {

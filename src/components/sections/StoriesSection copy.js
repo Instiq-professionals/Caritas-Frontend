@@ -7,7 +7,7 @@ import { Colors } from "../../constants";
 import { withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 import { baseUrl  } from "../../constants";
-import Carousel from "./Carousel";
+import CarouselStoryContent from "../CarouselCauseContent";
 import * as actions from '../../store/actions/index';
 
 // const stories = [
@@ -63,14 +63,21 @@ const StoriesSection = (props) => {
         >
           Success Stories
         </Typography>
-          <div>
-            <Carousel>
-              {stories.map((story, index) => (
+        <Grid
+          container
+          spacing={3}
+          style={{
+            display: "flex",
+          }}
+        >
+          {stories.length > 0 &&
+            stories.map((story, index) => (
+              <Grid item xs={12} md={6}>
                 <Story image={baseUrl + story.pictures} title={'Success story'}>
-                {story.testimonial}
-              </Story>
-              ))}
-            </Carousel>
+                  {story.testimonial}
+                </Story>
+              </Grid>
+            ))}
           {stories.length === 0 && (
             <div
               style={{
@@ -88,7 +95,7 @@ const StoriesSection = (props) => {
               section will be updated.
             </div>
           )}
-        </div>
+        </Grid>
         <SubscriptionBox />
       </Container>
     </section>

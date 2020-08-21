@@ -182,7 +182,6 @@ const EditEvent = (props) => {
  };
   const handleSubmit = () => {
     editEvent.uploadFiles = uploadFiles;
-    console.log('edited',editEvent)
     props.editMyEvent(token,event_id,editEvent);
    setTimeout(() => (window.location = "/dashboard/myevents"), 1000);
   }

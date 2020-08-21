@@ -275,15 +275,15 @@ const AddCause = () => {
 
   const handleSubmit = async () => {
     // setPage(3);
-    if (!causeOptions.agreeToTandC) {
-      setPositiveDialog(false);
-      setDialogTitle("Terms and Conditions");
-      setDialogMessage(
-        `To be able to upload this cause, you must agree to the terms and conditions`
-      );
-      setOpenDialog(true);
-      return;
-    }
+    // if (!causeOptions.agreeToTandC) {
+    //   setPositiveDialog(false);
+    //   setDialogTitle("Terms and Conditions");
+    //   setDialogMessage(
+    //     `To be able to upload this cause, you must agree to the terms and conditions`
+    //   );
+    //   setOpenDialog(true);
+    //   return;
+    // }
 
     if(causeTitle == ''){
       setPositiveDialog(false);

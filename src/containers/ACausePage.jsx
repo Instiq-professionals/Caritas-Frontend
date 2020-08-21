@@ -10,6 +10,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Colors, baseUrl } from "../constants";
 import { useLocation } from "react-router-dom";
 import { getCause, getAllCauses } from "../services/cause.service";
+import Carousel from "../components/sections/Carousel";
+import CarouselCauseContent from "../components/CarouselCauseContent";
 
 const causes = [
   {
@@ -223,25 +225,32 @@ const ACausePage = () => {
           >
             Similar Causes
           </Typography>
-          <Grid
-            container
-            spacing={3}
-            style={{
-              padding: 50,
-              display: "flex",
-              flexWrap: "no-wrap !important",
-            }}
-          >
-            {allCauses.map((cause, index) => (
-              <Grid item>
-                <CauseItem cause={cause} key={`cause-${cause._id}`}>
-                  {cause.brief_description}
-                </CauseItem>
-              </Grid>
-            ))}
-          </Grid>
+          <div>
+                <Carousel>
+                  {allCauses.map((cause, index) => (
+                      <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CarouselCauseContent>
+                  ))}
+                </Carousel>
+                {allCauses.length === 0 && (
+                    <div
+                      style={{
+                        backgroundColor: "rgba(255,255,255,.5)",
+                        boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
+                        borderRadius: "10px",
+                        padding: "16px",
+                        width: "300px",
+                        display: "block",
+                        margin: "auto",
+                      }}
+                    >
+                      Many causes are currently undergoing review post launching
+                      of this platform. This section will be updated.
+                    </div>
+                  )}
+                </div>
         </Container>
-
         <SubscriptionBox />
         <Footer />
       </main>

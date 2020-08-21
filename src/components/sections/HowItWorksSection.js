@@ -16,7 +16,7 @@ const HowItWorksSection = () => {
           component="p"
           style={{
             marginTop: 10,
-            fontSize: "12px",
+            fontSize: "14px",
             width: "300px",
             marginBottom: "50px",
           }}
@@ -65,10 +65,10 @@ const HowItWorksSection = () => {
               step="Help is delivereed to you"
             />
           </Grid>
-          <Grid item xs={6} md={4} style={{ marginLeft: "30px" }}>
+          <Grid item xs={12} md={4} style={{ marginLeft: "30px" }}>
             <Typography
-              variant="h5"
-              component="h5"
+               variant="h6"
+                component="h6"
               style={{ fontWeight: "bold", marginBottom: "10px" }}
             >
               Have a Cause in Mind?
@@ -76,7 +76,7 @@ const HowItWorksSection = () => {
             <Typography
               variant="body1"
               component="p"
-              style={{ fontSize: "10px", marginBottom: "10px" }}
+              style={{ fontSize: "14px", marginBottom: "10px" }}
             >
               Tell your story or stories of people in your community that needs
               urgent help. All you need to do is to share the details after

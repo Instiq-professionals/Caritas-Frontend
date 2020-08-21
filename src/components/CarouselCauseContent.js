@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import { Paper, Slider, Button } from "@material-ui/core";
+import { Paper, Slider, Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../constants";
 import { baseUrl } from "../constants";
@@ -12,8 +12,8 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none !important",
   },
   item: {
-    width: "550px",
-    height: "250px",
+    width: "100%",
+    height: "300px",
     display: "flex",
     padding: "0px !important",
     overflow: "hidden",
@@ -28,8 +28,7 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     [theme.breakpoints.down("xs")]: {
-      height: '500px',
-      width:'400px',
+      height: "500px",
       flexDirection: "column"
     },
   },
@@ -73,11 +72,11 @@ const useStyles = makeStyles((theme) => ({
   },
   style: {
     position: "absolute", 
-    bottom: 0,
+    bottom: 10,
      left: 0, 
      width: "100%",
      [theme.breakpoints.down("xs")]: {
-      bottom: 0,
+      bottom: 40,
     },
   },
   readMore: {
@@ -101,9 +100,7 @@ const CauseItem = (props) => {
       className={clsx(classes.item, classes.root)}
       onClick={() => (window.location = `/cause/${props.cause._id}`)}
     >
-      <div  
-      style={{backgroundImage:`url(${baseUrl}${props.cause.cause_photos})`}}
-      className={clsx(classes.image, classes.root)}></div>
+      <div className={clsx(classes.image, classes.root)} style={{backgroundImage:`url(${baseUrl}${props.cause.cause_photos})`}}></div>
       <div className={classes.right}>
         <div className={classes.desc}>
           <span className={classes.category}>{props.cause.category}</span>
@@ -133,8 +130,11 @@ const CauseItem = (props) => {
         <div
           className={clsx(classes.style, classes.root)}
         >
-          <button className={classes.donate}>Donate</button>
-          <button className={classes.readMore}>Read more</button>
+          <button 
+          className={classes.donate}>Donate</button>
+          <button className={classes.readMore}
+          >
+            Read more</button>
         </div>
       </div>
     </Paper>

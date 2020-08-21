@@ -9,24 +9,23 @@ const useStyles = makeStyles((theme) => ({
     padding: "0px !important",
   },
   item: {
-    width: "100%",
-    height: "400px",
+    width: "500px",
+    height: "200px",
     display: "flex",
     padding: "0px !important",
     overflow: "hidden",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("md")]: {
       display: "block",
       margin: "auto",
-      width: "100%",
+      width: "300px",
       height: "450px",
     },
   },
   image: {
     backgroundImage: (props) => "url(" + props.image + ")",
     backgroundSize: "cover",
-    height:'100%',
     flex: 0.45,
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down("md")]: {
       height: "200px",
     },
   },

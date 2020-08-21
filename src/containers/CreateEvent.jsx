@@ -111,6 +111,34 @@ const CreateEvent = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
   const [curUser, setCurUser] = useState(user);
+  const data = props.data;
+  const errorMsg = props.error;
+  useEffect(() => {
+    if (data && data.status) {
+      setDialogTitle(data.status);
+      setDialogMessage(data.message);
+
+      setPositiveDialog(true);
+
+      setOpenDialog(props.modalopen);
+      props.modalopen && setTimeout(() => (window.location = "/dashboard/myevents"), 1000);
+     } else if (errorMsg && errorMsg.status) {
+      setDialogTitle(errorMsg.status);
+      setDialogMessage(errorMsg.message);
+
+      setPositiveDialog(false);
+
+      setOpenDialog(props.modalopen);
+     } else {
+      setDialogTitle('');
+      setDialogMessage('');
+
+      setPositiveDialog(false);
+
+      setOpenDialog(false);
+     }
+    
+  },[data,errorMsg]);
 
 
 
@@ -214,7 +242,7 @@ const CreateEvent = (props) => {
       }
       console.log('submiting....',event)
     props.createAnEvent(token,event,uploadFiles);
-    setTimeout(() => (window.location = "/dashboard"), 1000);
+    //setTimeout(() => (window.location = "/dashboard"), 1000);
   }
 
   return (
@@ -228,7 +256,7 @@ const CreateEvent = (props) => {
       >
         {dialogMessage}
       </MyDialog>
-      <MyDialog
+      {/* <MyDialog
         title={props.error?props.error.status:'error'}
         openDialog={props.modalopen}
         positiveDialog={props.error?false:true}
@@ -243,7 +271,7 @@ const CreateEvent = (props) => {
         onClose={() => setOpenDialog(false)}
       >
         {props.data?props.data.message:'Something went wrong'}
-      </MyDialog>
+      </MyDialog> */}
       <Container style={{ marginTop: 150 }}>
         <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
           Good going, {getAuthenticatedUser().first_name}. 

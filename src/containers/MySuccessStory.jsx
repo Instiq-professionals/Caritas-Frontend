@@ -110,6 +110,34 @@ const MySuccessStory = (props) => {
   const token = JSON.parse(localStorage.getItem("user")).token;
   const [curUser, setCurUser] = useState(user);
   const cause_id = props.match.params.id;
+  const data = props.data;
+  const errorMsg = props.error;
+  useEffect(() => {
+    if (data && data.status) {
+      setDialogTitle(data.status);
+      setDialogMessage(data.message);
+
+      setPositiveDialog(true);
+
+      setOpenDialog(true);
+      setTimeout(() => (window.location = "/dashboard/myCauses"), 1000);
+     } else if (errorMsg && errorMsg.status) {
+      setDialogTitle(errorMsg.status);
+      setDialogMessage(errorMsg.message);
+
+      setPositiveDialog(false);
+
+      setOpenDialog(true);
+     } else {
+      setDialogTitle('');
+      setDialogMessage('');
+
+      setPositiveDialog(false);
+
+      setOpenDialog(false);
+     }
+    
+  },[data,errorMsg]);
 
 
   const classes = moreStyles();
@@ -153,7 +181,6 @@ const MySuccessStory = (props) => {
       return;
     }
     props.createSuccessStory(token,cause_id,testimonial,uploadFiles);
-    setTimeout(() => (window.location = "/dashboard/myCauses"), 1000);
   }
 
   return (
@@ -167,7 +194,7 @@ const MySuccessStory = (props) => {
       >
         {dialogMessage}
       </MyDialog>
-      <MyDialog
+      {/* <MyDialog
         title={props.error?props.error.status:'error'}
         openDialog={props.error?true:false}
         positiveDialog={props.error?false:true}
@@ -182,7 +209,7 @@ const MySuccessStory = (props) => {
         onClose={() => setOpenDialog(false)}
       >
         {props.data?props.data.message:'Something went wrong'}
-      </MyDialog>
+      </MyDialog> */}
       <Container style={{ marginTop: 150 }}>
         <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
           Good going, {getAuthenticatedUser().first_name}. 

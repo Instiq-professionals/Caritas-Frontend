@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { connect } from 'react-redux';
 import * as actionCreators from '../store/actions/index';
 // import ReactDom from "react-dom";
@@ -158,6 +158,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Signup = (props) => {
+  const userId = props.userId;
+  const errorMsg = props.errorMsg;
+  useEffect(() => {
+    if (userId && userId.status) {
+      setVolunteer({});
+      setDialogTitle(userId.status);
+      setDialogMessage(userId.message);
+
+      setPositiveDialog(true);
+
+      setOpenDialog(true);
+      setTimeout(() => (window.location = "/signin"), 5000);
+     } else if (errorMsg && errorMsg.status) {
+      setDialogTitle(errorMsg.status);
+      setDialogMessage(errorMsg.message);
+
+      setPositiveDialog(false);
+
+      setOpenDialog(true);
+     } else {
+      setDialogTitle('');
+      setDialogMessage('');
+
+      setPositiveDialog(false);
+
+      setOpenDialog(false);
+     }
+    
+  },[userId,errorMsg]);
   const classes = useStyles();
   let [user, setUser] = useState({
     firstName: "",
@@ -468,6 +497,15 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
+    if (!user.agreeToTandC) {
+      setPositiveDialog(false);
+      setDialogTitle("Terms and Conditions");
+      setDialogMessage(
+        `To be able to register on the platform, you must agree to the terms and conditions`
+      );
+      setOpenDialog(true);
+      return;
+    }
     return true;
   };
 
@@ -665,7 +703,7 @@ const Signup = (props) => {
     } 
   }
 
-  const handleVolunteerSubmit = async (event) => {
+  const handleVolunteerSubmit =  (event) => {
     const {email,first_name,last_name,role,address,phone_number,
       date_of_birth,local_govt,state,title,staff_strength,photo,
       category,company,position,religion,guarantor_name,relationship_with_guarantor,
@@ -673,8 +711,7 @@ const Signup = (props) => {
     if (event) event.preventDefault();
     progress === false ? setProgress(true) : setProgress(progress);
     if (validateVolunteerClick3()) {
-     await props.signUpUser(reg_credential,user.email,phone_number,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,uploadFiles.image,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record);
-     setTimeout(() => (window.location = "/signin"), 5000);
+     props.signUpUser(reg_credential,user.email,phone_number,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,uploadFiles.image,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record);
     }
     
   }
@@ -2536,22 +2573,6 @@ const Signup = (props) => {
        {page === 6 &&
         selectedType === "Volunteer" && (
         <Container style={{ marginTop: "100px" }}>
-          <MyDialog
-        title={props.errorMsg?props.errorMsg.status: 'error'}
-        openDialog={props.errorMsg?true:false}
-        positiveDialog={false}
-        onClose={() => setOpenDialog(false)}
-      >
-        {props.errorMsg?props.errorMsg.message: 'something went wrong'}
-      </MyDialog>
-      <MyDialog
-        title={props.userId?props.userId.status:"error"}
-        openDialog={props.userId?true:false}
-        positiveDialog={true}
-        onClose={() => setOpenDialog(false)}
-      >
-        {props.userId?props.userId.message: 'check your network and try again'}
-      </MyDialog>
           <Typography
             variant="h4"
             component="h4"

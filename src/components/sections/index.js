@@ -8,6 +8,7 @@ import CausesTabs from "./CausesTabs";
 import SubscriptionBox from "./SubscriptionBox";
 import ACauseHeader from "./ACauseHeader";
 import ReviewCauseTable from '../ReviewCauseTable';
+import Carousel from './Carousel'
 
 
 export {
@@ -21,4 +22,5 @@ export {
   SubscriptionBox,
   ACauseHeader,
   ReviewCauseTable,
+  Carousel
 };

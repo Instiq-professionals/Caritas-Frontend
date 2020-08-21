@@ -35,5 +35,5 @@ export {
   AddCauseImage,
   ReviewCauseTable,
   ApproveCauseTable,
-  ApproveVolunteerTable
+  ApproveVolunteerTable,
 };

@@ -13,8 +13,7 @@ import { FancyShape, useStyles } from "../../helpers";
 import { Colors } from "../../constants";
 import { Link } from "react-router-dom";
 import { CauseItem } from "../";
-import Carousel from "./Carousel";
-import CarouselCauseContent from "../CarouselCauseContent";
+import Carousel from "./Carousel"
 import { getAllCauses } from "../../services/cause.service";
 import { withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
@@ -49,13 +48,13 @@ const causes = [
 
 const CausesSection = (props) => {
   const classes = useStyles();
-  const causesByCategory = props.data;
   useEffect(() => {
     props.getAllCausesByCategory('Food');
   },[]);
 
   const [tab, setTab] = useState(0);
   const [allCauses, setAllCauses] = useState([]);
+  const causesByCategory = props.data;
 
   const handleTabChange = (value) => {
     setTab(value);
@@ -176,8 +175,7 @@ const CausesSection = (props) => {
                 Here are the top causes for today
               </Typography>
             </Grid>
-            <Grid item sm={12} md={6} 
-            style={{ textAlign: "right" }}>
+            <Grid item sm={12} md={6} style={{ textAlign: "right" }}>
               <Link to="/causes" style={{ float: "right" }}>
                 See all
               </Link>
@@ -200,15 +198,95 @@ const CausesSection = (props) => {
                 <Tab label="Food" style={{ textTransform: "none" }}  onClick={() => props.getAllCausesByCategory('Food')}/>
               </Tabs>
               {tab === 0 && (
-                <div>
-                <Carousel>
+                <Grid
+                  container
+                  spacing={3}
+                  style={{
+                    padding: 50,
+                    display: "flex",
+                    flexWrap: "no-wrap !important",
+                  }}
+                >
                   {allCauses.map((cause, index) => (
-                      <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
+                    <Grid item>
+                      <CauseItem cause={cause} key={`cause-${cause._id}`}>
                         {cause.brief_description}
-                      </CarouselCauseContent>
+                      </CauseItem>
+                    </Grid>
                   ))}
-                </Carousel>
-                {allCauses.length === 0 && (
+                  {allCauses.length === 0 && (
+                    <div
+                      style={{
+                        backgroundColor: "rgba(255,255,255,.5)",
+                        boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
+                        borderRadius: "10px",
+                        padding: "16px",
+                        width: "300px",
+                        display: "block",
+                        margin: "auto",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      Many causes are currently undergoing review post launching
+                      of this platform. This section will be updated.
+                    </div>
+                  )}
+                </Grid>
+              )}
+              {tab === 1 && (
+                <Grid
+                  container
+                  spacing={3}
+                  style={{
+                    padding: 50,
+                    display: "flex",
+                    flexWrap: "no-wrap !important",
+                  }}
+                >
+                  {causesByCategory.map((cause, index) => (
+                    <Grid item>
+                      <CauseItem cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CauseItem>
+                    </Grid>
+                  ))}
+                  {causesByCategory.length === 0 && (
+                    <div
+                      style={{
+                        backgroundColor: "rgba(255,255,255,.5)",
+                        boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
+                        borderRadius: "10px",
+                        padding: "16px",
+                        width: "300px",
+                        display: "block",
+                        margin: "auto",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      Many causes are currently undergoing review post launching
+                      of this platform. This section will be updated.
+                    </div>
+                  )}
+                </Grid>
+              )}
+              {tab === 2 && (
+                <Grid
+                  container
+                  spacing={3}
+                  style={{
+                    padding: 50,
+                    display: "flex",
+                    flexWrap: "no-wrap !important",
+                  }}
+                >
+                  {causesByCategory.map((cause, index) => (
+                    <Grid item>
+                      <CauseItem cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CauseItem>
+                    </Grid>
+                  ))}
+                  {causesByCategory.length === 0 && (
                     <div
                       style={{
                         backgroundColor: "rgba(255,255,255,.5)",
@@ -224,111 +302,77 @@ const CausesSection = (props) => {
                       of this platform. This section will be updated.
                     </div>
                   )}
-                </div>
-              )}
-              {tab === 1 && (
-                <div>
-                <Carousel>
-                {causesByCategory.map((cause, index) => (
-                    <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
-                    {cause.brief_description}
-                  </CarouselCauseContent>
-                ))}
-              </Carousel>
-              {props.error && (
-                <div
-                  style={{
-                    backgroundColor: "rgba(255,255,255,.5)",
-                    boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
-                    borderRadius: "10px",
-                    padding: "16px",
-                    width: "300px",
-                    display: "block",
-                    margin: "auto",
-                  }}
-                >
-                  {props.error.message}
-                </div>
-              )}
-              </div>
-              )}
-              {tab === 2 && (
-                <div>
-                <Carousel>
-                {causesByCategory.map((cause, index) => (
-                    <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
-                    {cause.brief_description}
-                  </CarouselCauseContent>
-                ))}
-              </Carousel>
-              {props.error && (
-                <div
-                  style={{
-                    backgroundColor: "rgba(255,255,255,.5)",
-                    boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
-                    borderRadius: "10px",
-                    padding: "16px",
-                    width: "300px",
-                    display: "block",
-                    margin: "auto",
-                  }}
-                >
-                  {props.error.message}
-                </div>
-              )}
-              </div>
+                </Grid>
               )}
               {tab === 3 && (
-                <div>
-                <Carousel>
-                {causesByCategory.map((cause, index) => (
-                    <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
-                    {cause.brief_description}
-                  </CarouselCauseContent>
-                ))}
-              </Carousel>
-              {props.error && (
-                <div
+                <Grid
+                  container
+                  spacing={3}
                   style={{
-                    backgroundColor: "rgba(255,255,255,.5)",
-                    boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
-                    borderRadius: "10px",
-                    padding: "16px",
-                    width: "300px",
-                    display: "block",
-                    margin: "auto",
+                    padding: 50,
+                    display: "flex",
+                    flexWrap: "no-wrap !important",
                   }}
                 >
-                  {props.error.message}
-                </div>
-              )}
-              </div>
+                  {causesByCategory.map((cause, index) => (
+                    <Grid item>
+                      <CauseItem cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CauseItem>
+                    </Grid>
+                  ))}
+                  {causesByCategory.length === 0 && (
+                    <div
+                      style={{
+                        backgroundColor: "rgba(255,255,255,.5)",
+                        boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
+                        borderRadius: "10px",
+                        padding: "16px",
+                        width: "300px",
+                        display: "block",
+                        margin: "auto",
+                      }}
+                    >
+                      Many causes are currently undergoing review post launching
+                      of this platform. This section will be updated.
+                    </div>
+                  )}
+                </Grid>
               )}
               {tab === 4 && (
-                <div>
-                <Carousel>
-                {causesByCategory.map((cause, index) => (
-                    <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
-                    {cause.brief_description}
-                  </CarouselCauseContent>
-                ))}
-              </Carousel>
-              {props.error && (
-                <div
+                <Grid
+                  container
+                  spacing={3}
                   style={{
-                    backgroundColor: "rgba(255,255,255,.5)",
-                    boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
-                    borderRadius: "10px",
-                    padding: "16px",
-                    width: "300px",
-                    display: "block",
-                    margin: "auto",
+                    padding: 50,
+                    display: "flex",
+                    flexWrap: "no-wrap !important",
                   }}
                 >
-                  {props.error.message}
-                </div>
-              )}
-              </div>
+                  {causesByCategory.map((cause, index) => (
+                    <Grid item>
+                      <CauseItem cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CauseItem>
+                    </Grid>
+                  ))}
+                  {causesByCategory.length === 0 && (
+                    <div
+                      style={{
+                        backgroundColor: "rgba(255,255,255,.5)",
+                        boxShadow: "2px 2px 5px rgba(0,0,0,.2)",
+                        borderRadius: "10px",
+                        padding: "16px",
+                        width: "300px",
+                        display: "block",
+                        margin: "auto",
+                      }}
+                    >
+                      Many causes are currently undergoing review post launching
+                      of this platform. This section will be updated.
+                    </div>
+                  )}
+                </Grid>
               )}
             </Grid>
           </Grid>
@@ -354,13 +398,13 @@ const useStyles2 = makeStyles((theme) => ({
   body: {
     fontWeight: "bold",
     textTransform: "uppercase",
-    fontSize: 20,
+    fontSize: 12,
     color: "black",
     marginBottom: "0px",
   },
   direction: {
     margin: 0,
-    fontSize: 15,
+    fontSize: 10,
     color: Colors.appBlack,
   },
 }));
