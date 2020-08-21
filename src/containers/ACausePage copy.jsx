@@ -133,6 +133,91 @@ const ACausePage = () => {
       <main className={classes.main}>
         <ACauseHeader cause={cause} user={user} />
         <Container>
+          <Tabs
+            value={tab}
+            indicatorColor="primary"
+            onChange={(tab, index) => handleTabChange(index)}
+            variant="fullWidth"
+          >
+            <Tab
+              label="Charity Information"
+              style={{ textTransform: "none" }}
+            />
+            <Tab
+              label="Additional Information"
+              style={{ textTransform: "none" }}
+            />
+            <Tab label="Comments/reviews" style={{ textTransform: "none" }} />
+          </Tabs>
+          {tab === 0 && (
+            <div style={{ paddingTop: "50px" }}>
+              <Typography
+                variant="body1"
+                component="p"
+                style={{ paddingBottom: "50px" }}
+              >
+                {cause ? cause.charity_information : ""}
+              </Typography>
+              <Grid container spacing={3} style={{ marginBottom: "100px" }}>
+                <Grid item xs={12} md={7}>
+                  <div className={classes2.tab1LeftImage}></div>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  md={5}
+                  style={{
+                    margin: "0px !important",
+                    padding: "0px !important",
+                  }}
+                >
+                  <div className={classes2.tab1TopRightImage}></div>
+                  <div className={classes2.tab1BottomRightImage}></div>
+                </Grid>
+              </Grid>
+            </div>
+          )}
+          {tab === 1 && (
+            <div style={{ paddingTop: "50px" }}>
+              <Typography
+                variant="body1"
+                component="p"
+                style={{ paddingBottom: "50px" }}
+              >
+                {cause ? cause.additional_information : ""}
+              </Typography>
+              <Grid container spacing={3} style={{ marginBottom: "100px" }}>
+                <Grid item xs={12} md={7}>
+                  <div className={classes2.tab1LeftImage}></div>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  md={5}
+                  style={{
+                    margin: "0px !important",
+                    padding: "0px !important",
+                  }}
+                >
+                  <div className={classes2.tab1TopRightImage}></div>
+                  <div className={classes2.tab1BottomRightImage}></div>
+                </Grid>
+              </Grid>
+            </div>
+          )}
+          {tab === 2 && (
+            <div style={{ paddingTop: "50px" }}>
+              <Typography
+                variant="body1"
+                component="p"
+                style={{ paddingBottom: "50px" }}
+              >
+                Comments unavailable
+              </Typography>
+            </div>
+          )}
+        </Container>
+        <Container>
           <Typography
             varant="h5"
             component="h5"
