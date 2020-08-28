@@ -3,42 +3,16 @@ import { PrimaryAppBar } from "../commons";
 import { Footer } from "../components";
 import { useStyles } from "../helpers";
 import { SubscriptionBox, ACauseHeader } from "../components/sections";
-import { CauseItem } from "../components";
 import { useParams } from "react-router-dom";
-import { Grid, Typography, Container, Tabs, Tab } from "@material-ui/core";
+import {  Typography, Container} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors, baseUrl } from "../constants";
-import { useLocation } from "react-router-dom";
 import { getCause, getAllCauses } from "../services/cause.service";
 import Carousel from "../components/sections/Carousel";
 import CarouselCauseContent from "../components/CarouselCauseContent";
+import SwipeableTextMobileStepper from "../components/sections/SwipeableText";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const causes = [
-  {
-    id: 2,
-    image: "/assets/images/classroom1.png",
-    category: "Health",
-    title: "Saint Johns School Needs Renovation",
-    currency: "$",
-    contribution: 200000,
-    target: 400000,
-    desc: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                        sed diam nonumy eirmod tempor invidunt ut labore et
-                        dolore magna aliquyam erat, sed diam voluptua.`,
-  },
-  {
-    id: 3,
-    image: "/assets/images/classroom1.png",
-    category: "Health",
-    title: "Saint Johns School Needs Renovation",
-    currency: "$",
-    contribution: 200000,
-    target: 400000,
-    desc: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                        sed diam nonumy eirmod tempor invidunt ut labore et
-                        dolore magna aliquyam erat, sed diam voluptua.`,
-  },
-];
 
 const moreStyles = makeStyles((theme) => ({
   tab1LeftImage: {
@@ -90,6 +64,7 @@ const ACausePage = () => {
   const [user, setUser] = useState(null);
   const [allCauses, setAllCauses] = useState([]);
   const { id } = useParams();
+  const matches = useMediaQuery('(min-width:600px)');
 
   const handleTabChange = (value) => {
     setTab(value);
@@ -141,13 +116,13 @@ const ACausePage = () => {
             Similar Causes
           </Typography>
           <div>
-                <Carousel>
+          {matches?<Carousel>
                   {allCauses.map((cause, index) => (
                       <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
-                        {cause.brief_description}
+                        {cause.brief_description.substr(0, 400)}
                       </CarouselCauseContent>
                   ))}
-                </Carousel>
+                </Carousel>: <SwipeableTextMobileStepper tutorialSteps={allCauses}/>}
                 {allCauses.length === 0 && (
                     <div
                       style={{

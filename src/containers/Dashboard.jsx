@@ -1,38 +1,22 @@
 import React, { useState, useEffect } from "react";
-import clsx from "clsx";
 import "../index.css";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Container,
   Grid,
   Typography,
-  FormControl,
-  Button,
-  Checkbox,
   Paper,
-  FormControlLabel,
 } from "@material-ui/core";
-import { useStyles } from "../helpers";
 import { userIsUser,cLeader,Volunteer, userIsModerator, userIsAnAdmin } from "../helpers/utils";
 
 import { Colors } from "../constants";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { PrimaryAppBar, MyTextField } from "../commons";
-import { yourCauses, trendingCauses, followedCauses, user } from "../mock";
-import { SlideableGridList, AddImage } from "../components";
-import {
-  isValidCauseTitle,
-  isValidFunds,
-  isValidBriefDescription,
-} from "../helpers/validator";
+import { PrimaryAppBar } from "../commons";
+import { SlideableGridList } from "../components";
 import {
   getAllCauses,
-  getAllCausesAsModerator,
-  getTimeToCreateAnewCauses
 } from "../services/cause.service";
-import { CausesTable, UsersTable } from "../components";
+import {  UsersTable } from "../components";
 import {PieChart, Pie} from 'recharts';
 import * as actions from '../store/actions/index';
 
@@ -97,7 +81,6 @@ const moreStyles = makeStyles((theme) => ({
 }));
 
 const Dashboard = (props) => {
-  let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
   const daysLeft = props.timeToCreateanotherCause;
  
@@ -143,21 +126,17 @@ const cLeaderEventsStatus = [];
 
 const userCausePendingLength = userCauseStatus.filter(element => element === "Awaiting Approval");
 const userApprovedCausesLength = userCauseStatus.filter(element => element === "Approved");
-const userResolvedCausesLength = userCauseStatus.filter(element => element === "Resolved");
+//const userResolvedCausesLength = userCauseStatus.filter(element => element === "Resolved");
 const volunteerCausePendingLength = volunterCauseStatus.filter(element => element === "Awaiting Approval");
 const cLeaderCausePendingLength = cLeaderCauseStatus.filter(element => element === "Awaiting Approval");
-const cLeaderApprovedLength = cLeaderCauseStatus.filter(element => element === "Approved");
-const cLeaderCauseResolvedLength = cLeaderCauseStatus.filter(element => element === "Resolved");
+//const cLeaderApprovedLength = cLeaderCauseStatus.filter(element => element === "Approved");
+//const cLeaderCauseResolvedLength = cLeaderCauseStatus.filter(element => element === "Resolved");
 console.log(' getMyEventdata...',getMyEventdata)
 
 
-  const [curUser, setCurUser] = useState(user);
+  //const [curUser, setCurUser] = useState(user);
 
-  let location = useLocation();
-  let history = useHistory();
-
-  const classes = moreStyles();
-  let [page, setPage] = useState(props.page ? props.page : 0);
+  //const classes = moreStyles();
 
   const handleCausesPageClick = () => {
     props.history.push('/dashboard/myCauses')

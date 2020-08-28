@@ -7,34 +7,18 @@ import {
   Container,
   Grid,
   Typography,
-  FormControl,
   Button,
-  Checkbox,
   Paper,
-  FormControlLabel,
-  Select,
-  MenuItem,
-  Grow, 
   Zoom
 } from "@material-ui/core";
-import { useStyles } from "../helpers";
 import { Colors } from "../constants";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { PrimaryAppBar, MyTextField } from "../commons";
-import { yourCauses, trendingCauses, followedCauses} from "../mock";
-import { SlideableGridList, AddImage, AddCauseImage, AddVideo, ApproveCauseTable  } from "../components";
-import {
-  isValidCauseTitle,
-  isValidFunds,
-  isValidBriefDescription,
-} from "../helpers/validator";
-import { createCause } from "../services/cause.service";
-import { MyDialog, MyButton } from "../components";
+import { PrimaryAppBar } from "../commons";
+import { MyDialog } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
 import * as actions from '../store/actions/index';
-import { MyConfirmationDialog, MyPromptDialog } from "../commons";
+import { MyConfirmationDialog } from "../commons";
 import YouTubeMedia from "../components/YoutubeMedia";
 import Moment from 'react-moment';
 import { baseUrl  } from "../constants";
@@ -112,7 +96,6 @@ const moreStyles = makeStyles((theme) => ({
 }));
 
 const ResolveEvent = (props) => {
-  let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
   const singleEvent = props.data;
   const eventId = props.match.params.id;
@@ -122,11 +105,6 @@ const ResolveEvent = (props) => {
     props.checkEventDetails(event_id);
 
   },[]);
-
-  const [curUser, setCurUser] = useState(user);
-
-  let location = useLocation();
-  let history = useHistory();
 
   const classes = moreStyles();
  

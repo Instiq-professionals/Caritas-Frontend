@@ -6,7 +6,6 @@ import clsx from "clsx";
 import {
   Grid,
   Container,
-  TextField,
   FormControl,
   Radio,
   Checkbox,
@@ -15,14 +14,13 @@ import {
   FormLabel,
   Typography,
   Button,
-  Zoom,
   Select,
   MenuItem,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { PrimaryAppBar, MyTextField } from "../commons";
+import { MyTextField } from "../commons";
 import { Link } from "react-router-dom";
-import { Colors, recaptchaKey } from "../constants";
+import { Colors } from "../constants";
 import { registerUser } from "../services/user.service";
 import {
   isValidFirstName,
@@ -33,9 +31,7 @@ import {
   isValidVolunteer
 } from "../helpers/validator";
 import { MyButton, MyDialog } from "../components";
-import ReCAPTCHA from "react-google-recaptcha";
 import { AddProfileImage } from "../components";
-import { getToken } from "../helpers/utils";
 import TermsAndCondition from "../components/TermsAndCondition"
 
 const useStyles = makeStyles((theme) => ({
@@ -208,30 +204,30 @@ const Signup = (props) => {
     agreeToTandC:false
   });
 
-  let [partner, setPartner] = useState({
-    partnerType: "",
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    accountType: "",
-    address: "",
-    bankName: "",
-    accountName: "",
-    accountNumber: "",
-    password: "",
-    confirmPassword: "",
-    institutionName: "",
-    institutionType: "Select Institution Type",
-    staffStrength: 0,
-    RCNumber: "",
-    institutionEmail: "",
-    institutionPhone: "",
-    institutionAddress: "",
-    institutionState: "",
-    institutionLga: "",
-  });
+  // let [partner, setPartner] = useState({
+  //   partnerType: "",
+  //   firstName: "",
+  //   middleName: "",
+  //   lastName: "",
+  //   email: "",
+  //   phone: "",
+  //   accountType: "",
+  //   address: "",
+  //   bankName: "",
+  //   accountName: "",
+  //   accountNumber: "",
+  //   password: "",
+  //   confirmPassword: "",
+  //   institutionName: "",
+  //   institutionType: "Select Institution Type",
+  //   staffStrength: 0,
+  //   RCNumber: "",
+  //   institutionEmail: "",
+  //   institutionPhone: "",
+  //   institutionAddress: "",
+  //   institutionState: "",
+  //   institutionLga: "",
+  // });
 
   let [errorMessage, setErrorMessage] = useState("");
   let [progress, setProgress] = useState(false);
@@ -263,7 +259,6 @@ const Signup = (props) => {
 
   const  reg_credential =  user.email !== "" ? user.email : user.phone;
   const password = user.password;
-  const volunteer_photo = uploadFiles.image;
 
   const [volunteer, setVolunteer] = useState({
     first_name: "",
@@ -276,7 +271,6 @@ const Signup = (props) => {
     company:"",
     position:"",
     guarantor_name:"",
-    relationship_with_guarantor:"",
     guarantor_address:"",
     guarantor_company:"",
     guarantor_position:"",
@@ -382,21 +376,21 @@ const Signup = (props) => {
   const handleDOBChange = (event) => {
     setUser({ ...user, dob: event.target.value });
   };
-  const handleAccountNumberChange = (event) => {
-    setUser({ ...user, accountName: event.target.value.trim() });
-  };
-  const handleAccountNameChange = (event) => {
-    setUser({ ...user, accountName: event.target.value });
-  };
-  const handleAccountTypeChange = (event) => {
-    setUser({ ...user, accountType: event.target.value });
-  };
+  // const handleAccountNumberChange = (event) => {
+  //   setUser({ ...user, accountName: event.target.value.trim() });
+  // };
+  // const handleAccountNameChange = (event) => {
+  //   setUser({ ...user, accountName: event.target.value });
+  // };
+  // const handleAccountTypeChange = (event) => {
+  //   setUser({ ...user, accountType: event.target.value });
+  // };
   const handlePasswordChange = (event) => {
     setUser({ ...user, password: event.target.value.trim() });
   };
-  const handleBankNameChange = (event) => {
-    setUser({ ...user, bankName: event.target.value });
-  };
+  // const handleBankNameChange = (event) => {
+  //   setUser({ ...user, bankName: event.target.value });
+  // };
   const handleGenderChange = (event) => {
     setUser({ ...user, gender: event.target.value });
   };
@@ -514,19 +508,19 @@ const Signup = (props) => {
 
     setProgress(true);
 
-    if (user.email.trim() != "" && !isValidEmail(user.email)) {
+    if (user.email.trim() !== "" && !isValidEmail(user.email)) {
       setErrorMessage("Invalid email address");
       setProgress(false);
       return;
     }
 
-    if (user.phone.trim() != "" && !isValidPhoneNumber(user.phone)) {
+    if (user.phone.trim() !== "" && !isValidPhoneNumber(user.phone)) {
       setErrorMessage("Invalid phone number");
       setProgress(false);
       return;
     }
 
-    if(user.email.trim() == "" && user.phone.trim() == ""){
+    if(user.email.trim() === "" && user.phone.trim() === ""){
       setErrorMessage("You must provide a valid phone number if you don't have an email address");
       setProgress(false);
       return;
@@ -538,7 +532,7 @@ const Signup = (props) => {
       return;
     }
 
-    if(user.password.trim() != user.confirmPassword.trim()){
+    if(user.password.trim() !== user.confirmPassword.trim()){
       setErrorMessage("Passwords don't match");
       setProgress(false);
       return;
@@ -552,7 +546,7 @@ const Signup = (props) => {
     setPage(2);
   }
   const validateVolunteerClick1 = () => {
-    if (uploadFiles.image == null) {
+    if (uploadFiles.image === null) {
       setPositiveDialog(false);
       setDialogTitle("Wait a minute");
       setDialogMessage(`You must upload at least one image for your cause`);
@@ -569,13 +563,13 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (!isValidVolunteer(volunteer.first_name.trim()) ||volunteer.first_name == undefined || volunteer.first_name.length<3) {
+    if (!isValidVolunteer(volunteer.first_name.trim()) ||volunteer.first_name === undefined || volunteer.first_name.length<3) {
       setErrorMessage("Ïnvalid First name");
       setProgress(false);
       return;
     }
 
-    if (!isValidVolunteer(volunteer.last_name.trim())||volunteer.last_name == undefined || volunteer.last_name.length<3) {
+    if (!isValidVolunteer(volunteer.last_name.trim())||volunteer.last_name === undefined || volunteer.last_name.length<3) {
       setErrorMessage("Ïnvalid Last name");
       setProgress(false);
       return;
@@ -585,7 +579,7 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (!isValidPhoneNumber(volunteer.phone_number.trim()) || volunteer.phone_number == undefined ) {
+    if (!isValidPhoneNumber(volunteer.phone_number.trim()) || volunteer.phone_number === undefined ) {
       setErrorMessage("Ïnvalid phone number");
       setProgress(false);
       return;
@@ -613,12 +607,12 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (!isValidVolunteer(volunteer.guarantor_name.trim())||volunteer.guarantor_name == undefined || volunteer.guarantor_name.length<3) {
+    if (!isValidVolunteer(volunteer.guarantor_name.trim())||volunteer.guarantor_name === undefined || volunteer.guarantor_name.length<3) {
       setErrorMessage("Ïnvalid guarantor's first name");
       setProgress(false);
       return;
     }
-    if (!isValidVolunteer(volunteer.guarantor_last_name.trim())||volunteer.guarantor_last_name == undefined || volunteer.guarantor_last_name.length<3) {
+    if (!isValidVolunteer(volunteer.guarantor_last_name.trim())||volunteer.guarantor_last_name === undefined || volunteer.guarantor_last_name.length<3) {
       setErrorMessage("Ïnvalid guarantor's last name");
       setProgress(false);
       return;
@@ -628,12 +622,12 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (!isValidEmail(volunteer.guarantor_email.trim()) || volunteer.guarantor_email == undefined ) {
+    if (!isValidEmail(volunteer.guarantor_email.trim()) || volunteer.guarantor_email === undefined ) {
       setErrorMessage("Ïnvalid guarantor's email address");
       setProgress(false);
       return;
     }
-    if (!isValidPhoneNumber(volunteer.guarantor_phone_number.trim()) || volunteer.guarantor_phone_number == undefined ) {
+    if (!isValidPhoneNumber(volunteer.guarantor_phone_number.trim()) || volunteer.guarantor_phone_number === undefined ) {
       setErrorMessage("Ïnvalid guarantor's phone number");
       setProgress(false);
       return;
@@ -656,7 +650,7 @@ const Signup = (props) => {
     return true;
   }
   const validateVolunteerClick3 = () => {
-    if (volunteer.religious_group == undefined || volunteer.religious_group.length<1) {
+    if (volunteer.religious_group === undefined || volunteer.religious_group.length<1) {
       setErrorMessage("Choose if you are in a religious group");
       setProgress(false);
       return;
@@ -666,17 +660,17 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (volunteer.above_18 == undefined || volunteer.above_18.length<1) {
+    if (volunteer.above_18 === undefined || volunteer.above_18.length<1) {
       setErrorMessage("State if  you are above 18 years old");
       setProgress(false);
       return;
     }
-    if (volunteer.criminal_record == undefined || volunteer.criminal_record.length<1) {
+    if (volunteer.criminal_record === undefined || volunteer.criminal_record.length<1) {
       setErrorMessage("State if  you have any criminal record");
       setProgress(false);
       return;
     }
-    if (volunteer.agreed == undefined || volunteer.agreed.length<1) {
+    if (volunteer.agreed === undefined || volunteer.agreed.length<1) {
       setPositiveDialog(false);
       setDialogTitle("Terms and Conditions");
       setDialogMessage(
@@ -726,11 +720,11 @@ const Signup = (props) => {
         alignItems: "center",
         cursor: "pointer",
         boxShadow:
-          props.type == selectedType || props.type == volunteerType || props.type == partnerType
+          props.type == selectedType || props.type === volunteerType || props.type === partnerType
             ? "0px 0px 20px rgba(252, 99, 107, 0.7)"
             : "none",
         backgroundColor:
-          props.type == selectedType || props.type == volunteerType || props.type == partnerType
+          props.type === selectedType || props.type === volunteerType || props.type === partnerType
             ? "rgba(255,255,255,.7)"
             : "transparent",
 

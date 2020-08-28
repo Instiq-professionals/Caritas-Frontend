@@ -2,36 +2,18 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Naira from 'react-naira';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import clsx from "clsx";
 import {
   Container,
   Grid,
   Typography,
-  FormControl,
   Button,
-  Checkbox,
   Paper,
-  FormControlLabel,
-  Select,
-  MenuItem,
-  Grow, 
   Zoom
 } from "@material-ui/core";
-import { useStyles } from "../helpers";
 import { Colors } from "../constants";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { PrimaryAppBar, MyTextField } from "../commons";
-import { yourCauses, trendingCauses, followedCauses} from "../mock";
-import { SlideableGridList, AddImage, AddCauseImage, AddVideo, ApproveCauseTable  } from "../components";
-import {
-  isValidCauseTitle,
-  isValidFunds,
-  isValidBriefDescription,
-} from "../helpers/validator";
-import { createCause } from "../services/cause.service";
-import { MyDialog, MyButton } from "../components";
+import { PrimaryAppBar } from "../commons";
+import { MyDialog } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
 import * as actions from '../store/actions/index';
 import YouTubeMedia from "../components/YoutubeMedia";
@@ -111,47 +93,18 @@ const moreStyles = makeStyles((theme) => ({
 }));
 
 const MyEventDetails = (props) => {
-  let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
   const singleEvent = props.data;
   const eventId = props.match.params.id;
-  //5f25c0cc97b1ed04536c55c9
   useEffect(() => {
     const event_id = props.match.params.id;
     props.checkEventDetails(event_id);
 
   },[]);
 
-  const [curUser, setCurUser] = useState(user);
-
-  let location = useLocation();
-  let history = useHistory();
-
   const classes = moreStyles();
-  let [page, setPage] = useState(1);
-
-  let [briefDescription, setBriefDescription] = useState("");
-  let [causeOptions, setCauseOptions] = useState({
-    enableComments: false,
-    enableWatching: true,
-    fundStatus: true,
-    socialMediaSharing: true,
-    agreeToTandC: false,
-  });
-  
-
-  // let [category, setCategory] = useState("Food");
-  let [errorMessage, setErrorMessage] = useState("");
   let [openDialog, setOpenDialog] = useState(false);
-  let [dialogMessage, setDialogMessage] = useState("");
-  let [dialogTitle, setDialogTitle] = useState("");
-  let [positiveDialog, setPositiveDialog] = useState(false);
-  let [selectedOwner, setSelectedOwner] = useState("Self");
   const [deleteCause, setDeleteCause] = useState(false);
-  const handleViewCauses = () => {
-    setPage(2);
-    //props.getAsingleCauseDetails(token,cause_id);
-  }
 
 
   const handleDeleteCause = (id) => {

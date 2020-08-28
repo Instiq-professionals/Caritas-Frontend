@@ -2,36 +2,18 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Naira from 'react-naira';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import clsx from "clsx";
 import {
   Container,
   Grid,
   Typography,
-  FormControl,
   Button,
-  Checkbox,
   Paper,
-  FormControlLabel,
-  Select,
-  MenuItem,
-  Grow, 
   Zoom
 } from "@material-ui/core";
-import { useStyles } from "../helpers";
 import { Colors } from "../constants";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { PrimaryAppBar, MyTextField } from "../commons";
-import { yourCauses, trendingCauses, followedCauses} from "../mock";
-import { SlideableGridList, AddImage, AddCauseImage, AddVideo, ApproveCauseTable  } from "../components";
-import {
-  isValidCauseTitle,
-  isValidFunds,
-  isValidBriefDescription,
-} from "../helpers/validator";
-import { createCause } from "../services/cause.service";
-import { MyDialog, MyButton } from "../components";
+import { PrimaryAppBar } from "../commons";
+import { MyDialog } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
 import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
@@ -110,58 +92,20 @@ const moreStyles = makeStyles((theme) => ({
 }));
 
 const CauseDetailsbySingleUser = (props) => {
-  let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
-  const data = [];
   const singleCause = props.singleCauseDetails;
   const createdBy = props.createdBy;
-  const cause_id = localStorage.getItem('cause_id' );
   const causeId = props.match.params.id;
-  //5f25c0cc97b1ed04536c55c9
   useEffect(() => {
     const cause_id = props.match.params.id;
     props.getAsingleCauseDetails(token,cause_id);
 
   },[]);
-  // useEffect(() => {
-  //   props.getAsingleCauseDetails(token,cause_id);
 
-  // },[]);
-  const [curUser, setCurUser] = useState(user);
-
-  let location = useLocation();
-  let history = useHistory();
 
   const classes = moreStyles();
-  let [page, setPage] = useState(1);
-
-  let [causeTitle, setCauseTitle] = useState("");
-  let [amountRequired, setAmountRequired] = useState("0");
-  let [briefDescription, setBriefDescription] = useState("");
-  let [charityInformation, setCharityInformation] = useState("");
-  let [additionalInformation, setAdditionalInformation] = useState("");
-  let [causeOptions, setCauseOptions] = useState({
-    enableComments: false,
-    enableWatching: true,
-    fundStatus: true,
-    socialMediaSharing: true,
-    agreeToTandC: false,
-  });
-  
-
-  // let [category, setCategory] = useState("Food");
-  let [errorMessage, setErrorMessage] = useState("");
   let [openDialog, setOpenDialog] = useState(false);
-  let [dialogMessage, setDialogMessage] = useState("");
-  let [dialogTitle, setDialogTitle] = useState("");
-  let [positiveDialog, setPositiveDialog] = useState(false);
-  let [selectedOwner, setSelectedOwner] = useState("Self");
   const [deleteCause, setDeleteCause] = useState(false);
-  const handleViewCauses = () => {
-    setPage(2);
-    //props.getAsingleCauseDetails(token,cause_id);
-  }
-
 
   const handleDeleteCause = (id) => {
     props.deleteCause(token,id);
@@ -176,67 +120,6 @@ const CauseDetailsbySingleUser = (props) => {
     setDeleteCause(false);
   }
 
-  const handleBriefDescriptionChange = (event) => {
-    setBriefDescription(event.target.value);
-  };
-  const validateForm = () => {
-    if (!isValidBriefDescription(briefDescription) || briefDescription.length < 5) {
-      setErrorMessage("Please enter a valid description");
-      return;
-    }
-    return true
-  }
-  const handleSubmit = (event) => {
-    if (event) event.preventDefault();
-    if (validateForm()) {
-      setErrorMessage('');
-      props.recommendAcause(briefDescription,token,cause_id);
-      setTimeout(() => (window.location = "/dashboard/review"), 3000);
-    }
-  }
-
-  
-  const CauseOwnerSelection = (props) => {
-    const useStyles = makeStyles((theme) => ({
-      root: {
-        display: "flex",
-        flexDirection: "column",
-        padding: "20px",
-        alignItems: "center",
-        cursor: "pointer",
-        boxShadow:
-          props.type == selectedOwner
-            ? "0px 0px 20px rgba(252, 99, 107, 0.7)"
-            : "none",
-        backgroundColor:
-          props.type == selectedOwner
-            ? "rgba(255,255,255,.7)"
-            : "transparent",
-
-        "&:hover": {
-          boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
-          backgroundColor: "rgba(255,255,255,.7)",
-        },
-      },
-
-      active: {
-        boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
-      },
-    }));
-
-    const classes2 = useStyles();
-    return (
-      <div
-        className={clsx(classes2.root)}
-        onClick={() => {
-          setSelectedOwner(props.type);
-        }}
-      >
-        <img src={props.image} alt="" style={{ height: "80px" }} />
-        <p style={{ textAlign: "center" }}>{props.type}</p>
-      </div>
-    );
-  };
   let CauseIsMounted = props.loading && <CircularProgress disableShrink className={classes.Circular }/>;
   if (singleCause ) {
     CauseIsMounted = <div>

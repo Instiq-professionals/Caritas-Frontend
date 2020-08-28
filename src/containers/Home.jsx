@@ -10,7 +10,6 @@ import {
   CausesSection,
   HowItWorksSection,
   StoriesSection,
-  Carousel
 } from "../components/sections";
 
 const Home = () => {

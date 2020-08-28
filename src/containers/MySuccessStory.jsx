@@ -8,30 +8,14 @@ import {
   Typography,
   FormControl,
   Button,
-  Checkbox,
   Paper,
-  FormControlLabel,
-  Select,
-  MenuItem,
 } from "@material-ui/core";
-import { useStyles } from "../helpers";
 import * as actions from '../store/actions/index';
 import { Colors } from "../constants";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { PrimaryAppBar, MyTextField } from "../commons";
-import { yourCauses, trendingCauses, followedCauses} from "../mock";
-import { SlideableGridList, AddImage, AddCauseImage, AddVideo } from "../components";
-import {
-  isValidCauseTitle,
-  isValidFunds,
-  isValidBriefDescription,
-} from "../helpers/validator";
-import { createCause } from "../services/cause.service";
-import { MyDialog, MyButton} from "../components";
+import { MyDialog } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
-import {MyConfirmationDialog,MyPromptDialog } from "../commons"
 import { AddProfileImage } from "../components";
 
 const moreStyles = makeStyles((theme) => ({
@@ -106,9 +90,7 @@ const moreStyles = makeStyles((theme) => ({
 }));
 
 const MySuccessStory = (props) => {
-  let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
-  const [curUser, setCurUser] = useState(user);
   const cause_id = props.match.params.id;
   const data = props.data;
   const errorMsg = props.error;
@@ -166,7 +148,7 @@ const MySuccessStory = (props) => {
   };
  
   const handleSubmit = () => {
-    if (uploadFiles.image1 == null) {
+    if (uploadFiles.image1 === null) {
       setPositiveDialog(false);
       setDialogTitle("Upload Failure");
       setDialogMessage(`You must upload at least one image for your cause`);
@@ -194,22 +176,6 @@ const MySuccessStory = (props) => {
       >
         {dialogMessage}
       </MyDialog>
-      {/* <MyDialog
-        title={props.error?props.error.status:'error'}
-        openDialog={props.error?true:false}
-        positiveDialog={props.error?false:true}
-        onClose={() => setOpenDialog(false)}
-      >
-        {props.error?props.error.message:'Network error'}
-      </MyDialog>
-      <MyDialog
-        title={props.data?props.data.status:'network'}
-        openDialog={props.data?true:false}
-        positiveDialog={props.data?true:false}
-        onClose={() => setOpenDialog(false)}
-      >
-        {props.data?props.data.message:'Something went wrong'}
-      </MyDialog> */}
       <Container style={{ marginTop: 150 }}>
         <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
           Good going, {getAuthenticatedUser().first_name}. 
@@ -267,7 +233,7 @@ const MySuccessStory = (props) => {
                  </Grid>
               </form>  
             </div>
-            {props.loading && <CircularProgress disableShrink className={classes.Circular } className={classes.Circular }/>}
+            {props.loading && <CircularProgress disableShrink  className={classes.Circular }/>}
             <div style={{
                   marginTop: "30px",
                   marginBottom: "30px",

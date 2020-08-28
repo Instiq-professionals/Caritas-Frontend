@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import { Paper, Hidden } from "@material-ui/core";
 import { Colors } from "../constants";
-import { makeStyles } from "@material-ui/core/styles";
-// import "../add_cause.module.css";
-import { Avatar } from "@material-ui/core";
 import { isAuthenticated, getAuthenticatedUser } from "../helpers/utils";
 
 const styles = {
@@ -120,8 +116,8 @@ class AddProfileImage extends Component {
           }
         />
 
-        {(this.state.image == "/assets/images/icons/upload-image.png" ||
-          this.state.image == undefined) && (
+        {(this.state.image === "/assets/images/icons/upload-image.png" ||
+          this.state.image === undefined) && (
           <p
             style={{
               position: "absolute",

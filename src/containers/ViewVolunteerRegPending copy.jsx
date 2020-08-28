@@ -120,42 +120,17 @@ const ViewVolunteerRegPending = (props) => {
     props.getVolunteersForApproval(token);
 
   },[]);
-  // useEffect(() => {
-  //   props.getAsingleCauseDetails(token,cause_id);
-
-  // },[]);
-  const [curUser, setCurUser] = useState(user);
-
-  let location = useLocation();
-  let history = useHistory();
 
   const classes = moreStyles();
   let [page, setPage] = useState(1);
 
-  let [causeTitle, setCauseTitle] = useState("");
-  let [amountRequired, setAmountRequired] = useState("0");
   let [briefDescription, setBriefDescription] = useState("");
-  let [charityInformation, setCharityInformation] = useState("");
-  let [additionalInformation, setAdditionalInformation] = useState("");
-  let [causeOptions, setCauseOptions] = useState({
-    enableComments: false,
-    enableWatching: true,
-    fundStatus: true,
-    socialMediaSharing: true,
-    agreeToTandC: false,
-  });
-  
-
-  // let [category, setCategory] = useState("Food");
   let [errorMessage, setErrorMessage] = useState("");
   let [openDialog, setOpenDialog] = useState(false);
-  let [dialogMessage, setDialogMessage] = useState("");
-  let [dialogTitle, setDialogTitle] = useState("");
   let [positiveDialog, setPositiveDialog] = useState(false);
   let [selectedOwner, setSelectedOwner] = useState("Self");
   const handleViewCauses = () => {
     setPage(2);
-    //props.getAsingleCauseDetails(token,cause_id);
   }
 
 

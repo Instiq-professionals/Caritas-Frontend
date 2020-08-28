@@ -1,13 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 // import ReactDom from "react-dom";
 import clsx from "clsx";
 import {
   Grid,
   Container,
-  TextField,
   FormControl,
   Typography,
-  Button,
   Zoom,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -156,7 +154,7 @@ const ResetPassword = () => {
     if (!isValidPassword(password.trim())) {
       setErrorMessage("Password is not valid. Must be at least 8 characters");
       return false;
-    } else if (password.trim() != confirmPassword.trim()) {
+    } else if (password.trim() !== confirmPassword.trim()) {
       setErrorMessage("Passwords don't match");
       return false;
     }

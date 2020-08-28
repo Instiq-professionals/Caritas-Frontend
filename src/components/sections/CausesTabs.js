@@ -61,7 +61,7 @@ const CausesTabs = (props) => {
                   {allCauses.map((cause, index) => (
                     <Grid item>
                       <CauseItem cause={cause} key={`cause-${cause._id}`}>
-                        {cause.brief_description}
+                        {cause.brief_description.substr(0, 400)}
                       </CauseItem>
                     </Grid>
                   ))}
@@ -97,7 +97,7 @@ const CausesTabs = (props) => {
                   {causesByCategory.map((cause, index) => (
                     <Grid item>
                       <CauseItem cause={cause} key={`cause-${cause._id}`}>
-                        {cause.brief_description}
+                        {cause.brief_description.substr(0, 400)}
                       </CauseItem>
                     </Grid>
                   ))}
@@ -133,7 +133,7 @@ const CausesTabs = (props) => {
                   {causesByCategory.map((cause, index) => (
                     <Grid item>
                       <CauseItem cause={cause} key={`cause-${cause._id}`}>
-                        {cause.brief_description}
+                        {cause.brief_description.substr(0, 400)}
                       </CauseItem>
                     </Grid>
                   ))}
@@ -168,7 +168,7 @@ const CausesTabs = (props) => {
                   {causesByCategory.map((cause, index) => (
                     <Grid item>
                       <CauseItem cause={cause} key={`cause-${cause._id}`}>
-                        {cause.brief_description}
+                        {cause.brief_description.substr(0, 400)}
                       </CauseItem>
                     </Grid>
                   ))}
@@ -203,7 +203,7 @@ const CausesTabs = (props) => {
                   {causesByCategory.map((cause, index) => (
                     <Grid item>
                       <CauseItem cause={cause} key={`cause-${cause._id}`}>
-                        {cause.brief_description}
+                        {cause.brief_description.substr(0, 400)}
                       </CauseItem>
                     </Grid>
                   ))}

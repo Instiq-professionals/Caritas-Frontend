@@ -409,14 +409,14 @@ export default function CausesTable(props) {
                         {moment(aCause.created_at).format("ddd, MMM Do, hh:mm")}
                       </TableCell>
                       <TableCell align="left">
-                        {aCause.isApproved == 1 && "Approved"}
-                        {aCause.reason_for_disapproval != null && "Rejected"}
-                        {aCause.reason_for_disapproval == null &&
-                          aCause.isApproved == 0 &&
+                        {aCause.isApproved === 1 && "Approved"}
+                        {aCause.reason_for_disapproval !== null && "Rejected"}
+                        {aCause.reason_for_disapproval === null &&
+                          aCause.isApproved === 0 &&
                           "Pending"}
                       </TableCell>
                       <TableCell align="left">
-                        {aCause.isResolved == 1 && "resolved"}
+                        {aCause.isResolved === 1 && "resolved"}
                         {aCause.reason_for_disapproval != null && (
                           <Button
                             margin="dense"
@@ -429,7 +429,7 @@ export default function CausesTable(props) {
                             Resolve
                           </Button>
                         )}
-                        {aCause.isApproved == 1 && aCause.resolved == 0 && (
+                        {aCause.isApproved === 1 && aCause.resolved === 0 && (
                           <Button
                             margin="dense"
                             color="primary"

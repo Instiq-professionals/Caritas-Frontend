@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   Container,
@@ -8,31 +7,17 @@ import {
   Typography,
   FormControl,
   Button,
-  Checkbox,
   Paper,
-  FormControlLabel,
   Select,
   MenuItem,
 } from "@material-ui/core";
-import { useStyles } from "../helpers";
 import * as actions from '../store/actions/index';
 import { Colors } from "../constants";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { PrimaryAppBar, MyTextField } from "../commons";
-import { yourCauses, trendingCauses, followedCauses} from "../mock";
-import { SlideableGridList, AddImage, AddCauseImage, AddVideo } from "../components";
-import {
-  isValidCauseTitle,
-  isValidFunds,
-  isValidBriefDescription,
-} from "../helpers/validator";
-import { createCause } from "../services/cause.service";
-import { MyDialog, MyButton } from "../components";
+import { MyDialog } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
 import { AddProfileImage } from "../components";
-import { baseUrl  } from "../constants";
 
 const moreStyles = makeStyles((theme) => ({
   sectionHead: {
@@ -106,9 +91,7 @@ const moreStyles = makeStyles((theme) => ({
 }));
 
 const EditCause = (props) => {
-  let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
-  const [curUser, setCurUser] = useState(user);
   const singleCause = props.singleCauseDetails;
   const createdBy = props.createdBy;
   const cause_id = props.match.params.id;
@@ -131,34 +114,30 @@ const EditCause = (props) => {
   });
 
   let [openDialog, setOpenDialog] = useState(false);
-  let [dialogMessage, setDialogMessage] = useState("");
-  let [dialogTitle, setDialogTitle] = useState("");
-  let [positiveDialog, setPositiveDialog] = useState(false);
 
   
   useEffect(() => {
     if (singleCause) {
       setEditCause({
-        cause_title:singleCause.cause_title,
-        brief_description:singleCause.brief_description,
-        amount_required:singleCause.amount_required,
-        category:singleCause.category,
-        address:singleCause.address,
-        local_government:singleCause.local_government,
-        account_number:singleCause.account_number,
-        bank:singleCause.bank,
-        gender:singleCause.gender,
-        title:singleCause.title,
-        cause_photos:singleCause.cause_photos,
-        cause_video:singleCause.cause_video,
-        brief_presentation_of_cause:singleCause.brief_presentation_of_cause,
-        first_name:singleCause.first_name,
-        last_name:singleCause.last_name
+        cause_title: singleCause.cause_title,
+        brief_description: singleCause.brief_description,
+        amount_required: singleCause.amount_required,
+        category: singleCause.category,
+        address: singleCause.address,
+        local_government: singleCause.local_government,
+        account_number: singleCause.account_number,
+        bank: singleCause.bank,
+        gender: singleCause.gender,
+        title: singleCause.title,
+        cause_photos: singleCause.cause_photos,
+        cause_video: singleCause.cause_video,
+        brief_presentation_of_cause: singleCause.brief_presentation_of_cause,
+        first_name: singleCause.first_name,
+        last_name: singleCause.last_name
       })
     };
     
   },[singleCause,createdBy,setEditCause]);
-  console.log('lets start editing...',editCause)
 
   const handleChangeEdit =  name => (e) => { 
     setEditCause({

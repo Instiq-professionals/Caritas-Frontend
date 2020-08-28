@@ -4,29 +4,19 @@ import clsx from "clsx";
 import {
   Grid,
   Container,
-  TextField,
   FormControl,
-  Typography,
-  Button,
-  Zoom,
-  Select,
-  MenuItem,
-  Avatar,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { PrimaryAppBar, MyTextField } from "../commons";
-import { Link } from "react-router-dom";
 import { Colors, recaptchaKey, baseUrl } from "../constants";
-import { registerUser } from "../services/user.service";
 import {
   isValidFirstName,
   isValidLastName,
   isValidEmail,
-  isValidPassword,
 } from "../helpers/validator";
 import { MyButton, MyDialog } from "../components";
 import ReCAPTCHA from "react-google-recaptcha";
-import { getAuthenticatedUser, getToken, processPhoto } from "../helpers/utils";
+import {  getToken, processPhoto } from "../helpers/utils";
 import { getProfile, updateProfile } from "../services/user.service";
 import { useEffect } from "react";
 import { AddProfileImage } from "../components";

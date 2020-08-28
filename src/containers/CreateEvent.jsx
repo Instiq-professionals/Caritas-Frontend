@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   Container,
@@ -8,32 +7,15 @@ import {
   Typography,
   FormControl,
   Button,
-  Checkbox,
   Paper,
-  FormControlLabel,
-  Select,
-  MenuItem,
 } from "@material-ui/core";
-import { useStyles } from "../helpers";
 import * as actions from '../store/actions/index';
 import { Colors } from "../constants";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { PrimaryAppBar, MyTextField } from "../commons";
-import { yourCauses, trendingCauses, followedCauses} from "../mock";
-import { SlideableGridList, AddImage, AddCauseImage, AddVideo } from "../components";
-import {
-  isValidCauseTitle,
-  isValidFunds,
-  isValidBriefDescription,
-} from "../helpers/validator";
-import { createCause } from "../services/cause.service";
-import { MyDialog, MyButton} from "../components";
+import { MyDialog } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
-import {MyConfirmationDialog,MyPromptDialog } from "../commons"
 import { AddProfileImage } from "../components";
-import MyVideo from "../components/ReactYoutube";
 import YouTubeMedia from "../components/YoutubeMedia";
 
 const moreStyles = makeStyles((theme) => ({
@@ -143,7 +125,6 @@ const CreateEvent = (props) => {
 
 
   const classes = moreStyles();
-  const [testimonial,setTestimonial] = useState('');
   const [event, setEvent] = useState({
       category: curUser.role[1],
       title: '',

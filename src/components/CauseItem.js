@@ -111,29 +111,10 @@ const CauseItem = (props) => {
             {props.cause.cause_title}
           </h4>
           <p style={{ fontSize: 10 }}>{props.children}</p>
-          <div className={classes.root}>
-            <Slider
-              value={parseInt(props.cause.amount_donated)}
-              max={parseInt(props.cause.amount_required)}
-            />
-            <p
-              style={{
-                textAlign: "center",
-                padding: 0,
-                margin: 0,
-                color: Colors.appRed,
-                fontSize: "10px",
-              }}
-            >
-              <Naira>{props.cause.amount_donated?props.cause.amount_donated:0}</Naira>
-               - <Naira>{props.cause.amount_required}</Naira>
-            </p>
-          </div>
         </div>
         <div
           className={clsx(classes.style, classes.root)}
         >
-          <button className={classes.donate}>Donate</button>
           <button className={classes.readMore}>Read more</button>
         </div>
       </div>

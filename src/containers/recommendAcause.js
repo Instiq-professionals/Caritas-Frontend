@@ -9,29 +9,17 @@ import {
   Typography,
   FormControl,
   Button,
-  Checkbox,
   Paper,
-  FormControlLabel,
-  Select,
-  MenuItem,
-  Grow, 
   Zoom
 } from "@material-ui/core";
-import { useStyles } from "../helpers";
 import { Colors } from "../constants";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { PrimaryAppBar, MyTextField } from "../commons";
-import { yourCauses, trendingCauses, followedCauses} from "../mock";
-import { SlideableGridList, AddImage, AddCauseImage, AddVideo, ReviewCauseTable  } from "../components";
 import {
-  isValidCauseTitle,
-  isValidFunds,
   isValidBriefDescription,
 } from "../helpers/validator";
-import { createCause } from "../services/cause.service";
-import { MyDialog, MyButton } from "../components";
+import { MyDialog } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
 import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
@@ -118,37 +106,13 @@ const RecommendAcause = (props) => {
     props.getAsingleCauseDetails(token,cause_id);
 
   },[]);
-  // useEffect(() => {
-  //   props.getAsingleCauseDetails(token,cause_id);
-
-  // },[]);
-  const [curUser, setCurUser] = useState(user);
-
-  let location = useLocation();
-  let history = useHistory();
 
   const classes = moreStyles();
   let [page, setPage] = useState(1);
 
-  let [causeTitle, setCauseTitle] = useState("");
-  let [amountRequired, setAmountRequired] = useState("0");
   let [briefDescription, setBriefDescription] = useState("");
-  let [charityInformation, setCharityInformation] = useState("");
-  let [additionalInformation, setAdditionalInformation] = useState("");
-  let [causeOptions, setCauseOptions] = useState({
-    enableComments: false,
-    enableWatching: true,
-    fundStatus: true,
-    socialMediaSharing: true,
-    agreeToTandC: false,
-  });
-  
-
-  // let [category, setCategory] = useState("Food");
   let [errorMessage, setErrorMessage] = useState("");
   let [openDialog, setOpenDialog] = useState(false);
-  let [dialogMessage, setDialogMessage] = useState("");
-  let [dialogTitle, setDialogTitle] = useState("");
   let [positiveDialog, setPositiveDialog] = useState(false);
   let [selectedOwner, setSelectedOwner] = useState("Self");
 
@@ -173,48 +137,6 @@ const RecommendAcause = (props) => {
     }
   }
 
-  
-  const CauseOwnerSelection = (props) => {
-    const useStyles = makeStyles((theme) => ({
-      root: {
-        display: "flex",
-        flexDirection: "column",
-        padding: "20px",
-        alignItems: "center",
-        cursor: "pointer",
-        boxShadow:
-          props.type == selectedOwner
-            ? "0px 0px 20px rgba(252, 99, 107, 0.7)"
-            : "none",
-        backgroundColor:
-          props.type == selectedOwner
-            ? "rgba(255,255,255,.7)"
-            : "transparent",
-
-        "&:hover": {
-          boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
-          backgroundColor: "rgba(255,255,255,.7)",
-        },
-      },
-
-      active: {
-        boxShadow: "0px 0px 30px rgba(252, 99, 107, 0.7)",
-      },
-    }));
-
-    const classes2 = useStyles();
-    return (
-      <div
-        className={clsx(classes2.root)}
-        onClick={() => {
-          setSelectedOwner(props.type);
-        }}
-      >
-        <img src={props.image} alt="" style={{ height: "80px" }} />
-        <p style={{ textAlign: "center" }}>{props.type}</p>
-      </div>
-    );
-  };
   let CauseIsMounted = props.loading && <CircularProgress disableShrink />;
   if (singleCause ) {
     CauseIsMounted = <div>

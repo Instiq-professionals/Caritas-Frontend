@@ -1,41 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Naira from 'react-naira';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import clsx from "clsx";
 import {
   Container,
   Grid,
   Typography,
-  FormControl,
   Button,
-  Checkbox,
-  Paper,
-  FormControlLabel,
-  Select,
-  MenuItem,
-  Grow, 
+  Paper, 
   Zoom
 } from "@material-ui/core";
-import { useStyles } from "../helpers";
 import { Colors } from "../constants";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { PrimaryAppBar, MyTextField } from "../commons";
-import { yourCauses, trendingCauses, followedCauses} from "../mock";
-import { SlideableGridList, AddImage, AddCauseImage, AddVideo, ApproveCauseTable  } from "../components";
-import {
-  isValidCauseTitle,
-  isValidFunds,
-  isValidBriefDescription,
-} from "../helpers/validator";
-import { createCause } from "../services/cause.service";
-import { MyDialog, MyButton } from "../components";
+import { PrimaryAppBar } from "../commons";
+import { MyDialog } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
 import * as actions from '../store/actions/index';
-import YouTubeMedia from "../components/YoutubeMedia";
-import Moment from 'react-moment';
 import { baseUrl  } from "../constants";
 
 
@@ -110,55 +89,26 @@ const moreStyles = makeStyles((theme) => ({
   }
 }));
 
-const MyEventDetails = (props) => {
-  let user = JSON.parse(localStorage.getItem("user")).data;
-  const token = JSON.parse(localStorage.getItem("user")).token;
+const MySucessStoryDetails = (props) => {
   const StoryData = props.StoryData;
   const UserData = props.UserData;
-  console.log('data=======',UserData )
-  const eventId = props.match.params.id;
-  //5f25c0cc97b1ed04536c55c9
+  const storyId = props.match.params.id;
   useEffect(() => {
-    const event_id = props.match.params.id;
-    props.checkEventDetails(event_id);
+    const story_id = props.match.params.id;
+    props.checkSuccessDetails(story_id);
 
   },[]);
 
-  const [curUser, setCurUser] = useState(user);
 
-  let location = useLocation();
-  let history = useHistory();
 
   const classes = moreStyles();
-  let [page, setPage] = useState(1);
-
-  let [briefDescription, setBriefDescription] = useState("");
-  let [causeOptions, setCauseOptions] = useState({
-    enableComments: false,
-    enableWatching: true,
-    fundStatus: true,
-    socialMediaSharing: true,
-    agreeToTandC: false,
-  });
-  
-
-  // let [category, setCategory] = useState("Food");
-  let [errorMessage, setErrorMessage] = useState("");
   let [openDialog, setOpenDialog] = useState(false);
-  let [dialogMessage, setDialogMessage] = useState("");
-  let [dialogTitle, setDialogTitle] = useState("");
-  let [positiveDialog, setPositiveDialog] = useState(false);
-  let [selectedOwner, setSelectedOwner] = useState("Self");
   const [deleteCause, setDeleteCause] = useState(false);
-  const handleViewCauses = () => {
-    setPage(2);
-    //props.getAsingleCauseDetails(token,cause_id);
-  }
 
 
-  const handleDeleteCause = (id) => {
-    props.deleteMyEvent(token,id);
-    setTimeout(() => (window.location = "/dashboard/myevents"), 1000);
+  const handleDeleteSuccessStory = (id) => {
+    // props.deleteMySuccessStory(token,id);
+    // setTimeout(() => (window.location = "/dashboard/myevents"), 1000);
    };
 
    const onPressDelete = () => {
@@ -176,7 +126,7 @@ const MyEventDetails = (props) => {
         <Grid container spacing={5} style={{marginTop: "30px"}}>
             <Grid item xs={12}>
             <Typography variant="h6" component="h6" style={{color: "#FC636B", textAlign: "center", fontWeight: "bold"}}>
-            {`${UserData.first_name} ${UserData.last_name} cause details`}
+            {`${UserData.first_name} ${UserData.last_name} story details`}
             </Typography>
             </Grid>
              </Grid>
@@ -219,7 +169,7 @@ const MyEventDetails = (props) => {
                 </Button>
                 <Button
                 disabled 
-                  onClick={() => props.history.push(`/dashboard/editEvent/${eventId}`)}
+                  onClick={() => props.history.push(`/dashboard/editEvent/${storyId}`)}
                   variant="contained"
                   color="primary"
                   style={{
@@ -265,7 +215,7 @@ const MyEventDetails = (props) => {
                 No
               </Button>
               <Button
-                onClick={() =>  handleDeleteCause(eventId)}
+                onClick={() =>  handleDeleteSuccessStory(storyId)}
                 variant="contained"
                 color="primary"
                 style={{
@@ -308,9 +258,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    checkEventDetails : (id) => dispatch(actions.checkSuccessStoryDetails(id)),
-    deleteMyEvent : (token,event_id) => dispatch(actions.deleteMyEvent(token,event_id))
+    checkSuccessDetails : (id) => dispatch(actions.checkSuccessStoryDetails(id)),
+    //deleteMySuccessStory : (token,event_id) => dispatch(actions.deleteMyEvent(token,event_id))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyEventDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(MySucessStoryDetails);

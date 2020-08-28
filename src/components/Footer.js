@@ -1,5 +1,4 @@
 import React from "react";
-import clsx from "clsx";
 import { Grid, Container, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../constants";
@@ -9,6 +8,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: "50px",
     backgroundColor: Colors.appRed,
+    [theme.breakpoints.down('xs')]: {
+      width: "100%",
+      padding: 0,
+    },
   },
   sectionHead: {
     marginBottom: "24px",
@@ -23,6 +26,14 @@ const useStyles = makeStyles((theme) => ({
     width: 30,
     marginRight: "30px",
   },
+  goal: {
+    fontSize: "14px",
+     width: "80%" ,
+     [theme.breakpoints.down('xs')]: {
+      width: "100%",
+      fontSize: "14px",
+    },
+  }
 }));
 
 const Footer = (props) => {
@@ -31,10 +42,10 @@ const Footer = (props) => {
     <div className={classes.root}>
       <Container>
         <Grid container spacing={5}>
-          <Grid item xs={12} md={4} style={{ color: "white", height: "300px" }}>
+          <Grid item xs={12} sm={6} md={4} style={{ color: "white" }}>
             <Typography
-              variant="h4"
-              component="h4"
+              variant="h5"
+              component="h5"
               className={classes.sectionHead}
             >
               QCare...
@@ -42,7 +53,8 @@ const Footer = (props) => {
             <Typography
               variant="body1"
               component="p"
-              style={{ fontSize: "10px", width: "80%" }}
+              className={classes.goal}
+              //style={{ fontSize: "10px", width: "80%" }}
             >
               Our goal is to make an impact of 500Million in the next five
               years. We know food, healthcare support, shelter, and human right
@@ -54,10 +66,10 @@ const Footer = (props) => {
               people's life.
             </Typography>
           </Grid>
-          <Grid item xs={12} md={4} style={{ color: "white", height: "300px" }}>
+          <Grid item xs={12} sm={3} md={2} style={{ color: "white" }}>
             <Typography
-              variant="h4"
-              component="h4"
+              variant="h5"
+              component="h5"
               className={classes.sectionHead}
             >
               Links
@@ -80,10 +92,10 @@ const Footer = (props) => {
             </Link>
             <br />
           </Grid>
-          <Grid item xs={12} md={4} style={{ color: "white", height: "300px" }}>
+          <Grid item xs={12} sm={3} md={3} style={{ color: "white"}}>
             <Typography
-              variant="h4"
-              component="h4"
+              variant="h5"
+              component="h5"
               className={classes.sectionHead}
             >
               Want to help?
@@ -102,19 +114,14 @@ const Footer = (props) => {
             </Link>
             <br />
           </Grid>
-        </Grid>
-        <Grid container spacing={5} style={{ padding: "50px 0px" }}>
-          <Grid item xs={4} style={{ color: "white" }}>
-            <Typography
-              variant="body1"
-              component="p"
-              style={{ fontSize: "10px" }}
+          <Grid item xs={12} sm={12} md={3} style={{ color: "white" }}>
+          <Typography
+              variant="h5"
+              component="h5"
+              className={classes.sectionHead}
             >
-              Copyright &copy; 2020 | All Rights Reserved | qcare.ng
+              We are social
             </Typography>
-          </Grid>
-          <Grid item xs={4} style={{ color: "white" }}></Grid>
-          <Grid item xs={4} style={{ color: "white" }}>
             <a href="https://www.facebook.com">
             <img
                 src="/assets/images/icons/facebook.png"
@@ -136,6 +143,17 @@ const Footer = (props) => {
                 className={classes.socialMedia}
               />
             </a>
+          </Grid>
+        </Grid>
+        <Grid container spacing={5} style={{ padding: "50px 0px" }}>
+          <Grid item xs={12} style={{ color: "white" }}>
+            <Typography
+              variant="body1"
+              component="p"
+              style={{ fontSize: "10px" }}
+            >
+              Copyright &copy; 2020 | All Rights Reserved | qcare.ng
+            </Typography>
           </Grid>
         </Grid>
       </Container>

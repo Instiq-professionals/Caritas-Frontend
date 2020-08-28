@@ -10,24 +10,19 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-import { MyButton, MyDialog } from "../commons";
 import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import { Select, Avatar } from "@material-ui/core";
-import { Colors, baseUrl } from "../constants";
+import {  Avatar } from "@material-ui/core";
 import { getAllUsersAsModerator } from "../services/cause.service";
 import * as moment from "moment";
-import { processPhoto } from "../helpers/utils";
+import { baseUrl } from "../constants";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -113,11 +108,11 @@ const headCells = [
 function EnhancedTableHead(props) {
   const {
     classes,
-    onSelectAllClick,
+    //onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
+   // numSelected,
+    //rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -399,7 +394,7 @@ export default function UsersTable(props) {
                         align="left"
                       >
                         <Avatar
-                          src={processPhoto(aUser.photo)}
+                          src={baseUrl + aUser.photo}
                           alt=""
                           style={{ height: "40px" }}
                         />

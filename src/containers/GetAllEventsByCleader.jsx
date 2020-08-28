@@ -1,46 +1,22 @@
-import React, { useState, useEffect } from "react";
-//import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect } from "react";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-//import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
-//import Button from '@material-ui/core/Button';
-import Naira from 'react-naira';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import clsx from "clsx";
 import {
   Container,
   Grid,
   Typography,
-  FormControl,
   Button,
-  Checkbox,
   Paper,
-  FormControlLabel,
-  Select,
-  MenuItem,
-  Grow, 
-  Zoom
 } from "@material-ui/core";
-import { useStyles } from "../helpers";
 import { Colors } from "../constants";
-import { useLocation, useHistory, Link } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { PrimaryAppBar, MyTextField } from "../commons";
-import { yourCauses, trendingCauses, followedCauses} from "../mock";
-import { SlideableGridList, AddImage, AddCauseImage, AddVideo, ReviewCauseTable  } from "../components";
-import {
-  isValidCauseTitle,
-  isValidFunds,
-  isValidBriefDescription,
-} from "../helpers/validator";
-import { createCause } from "../services/cause.service";
-import { MyDialog, MyButton } from "../components";
+import { PrimaryAppBar } from "../commons";
 import {getAuthenticatedUser} from "../helpers/utils";
 import * as actions from '../store/actions/index';
 import { baseUrl  } from "../constants";
@@ -127,7 +103,6 @@ const useTableStyles = makeStyles(theme => ({
 }));
 
 const GetAllEventsByCleader = (props) => {
-  let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
   const eventData = props.data;
   const eventError = props.error;
@@ -135,13 +110,9 @@ const GetAllEventsByCleader = (props) => {
     props.getEventByCleader(token);
   },[]);
 
-  const [deleteCause, setDeleteCause] = useState(false);
-  let [openDialog, setOpenDialog] = useState(false);
-
   const classes = moreStyles();
   const tableClass = useTableStyles();
 
-  let [selectedOwner, setSelectedOwner] = useState("Self");
   const rows = [];
   for (const data of eventData) {
      rows.push(data);

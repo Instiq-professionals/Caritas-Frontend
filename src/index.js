@@ -28,6 +28,7 @@ import {
   ResolveEvent,
   ViewVolunteerRegPending ,
   ApproveVolunteer,
+  VisitorsSuccessStoryPage,
   Causes,
   HowItWorks,
   Signup,
@@ -149,6 +150,7 @@ const App = () => {
             <Route path="/about" component={About} />
             <Route path="/FAQ" component={FAQ} />
             <Route path="/causes" exact component={Causes} />
+            <Route path="/story/:id" exact component={VisitorsSuccessStoryPage} />
             <GuestRoute path="/signin" component={Signin} />
             <GuestRoute path="/signup" component={Signup} />
             <GuestRoute path="/recover-password" component={RecoverPassword} />

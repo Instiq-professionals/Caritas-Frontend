@@ -4,14 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Colors } from "../../constants";
 import "../../index.css";
 import { baseUrl } from "../../constants";
-import {  useParams } from "react-router";
+import Moment from 'react-moment';
 
 const moreStyles = makeStyles((theme) => ({
   mainImage: {
-    // backgroundImage: (cause) => {
-    //   console.log("Making styles", cause);
-    //   return `url('${cause !== [] ? cause.cause_photos[0] : "null"}')`;
-    // },
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     height: "400px",
@@ -28,24 +24,16 @@ const moreStyles = makeStyles((theme) => ({
   },
 }));
 
-const ACauseHeader = (props) => {
-
-  const causeId = useParams().id;
-
-  console.log("param id: ", causeId);
-
+const AstoryHeader = (props) => {
   const classes2 = moreStyles(props);
-
-  console.log("Cause on page", props.cause);
-
   return (
     <Container>
-      <Grid container spacing={4} style={{ marginBottom: "100px" }}>
+      {props.error?<div>{props.error.message}</div>:<Grid container spacing={4} style={{ marginBottom: "100px" }}>
         <Grid item xs={12} md={6} className={classes2.mainImage}>
-          {props.cause.cause_photos && (
+          {props.StoryData.pictures && (
             <img
-              src={baseUrl + props.cause.cause_photos}
-              alt=""
+              src={baseUrl + props.StoryData.pictures}
+              alt={"pic"}
               style={{ width: "100%", height: "100%" }}
             />
           )}
@@ -56,14 +44,14 @@ const ACauseHeader = (props) => {
             component="h6"
             className={classes2.headerTitle}
           >
-            {props.cause.category || "Test"}
+            <Moment >{props.StoryData.createdAt }</Moment>
           </Typography>
           <Typography
             variant="h5"
             component="h5"
             style={{ fontWeight: "bold", marginBottom: "20px" }}
           >
-            {props.cause.cause_title || "Title goes here"}
+            {`${props.UserData.first_name} ${props.UserData.last_name}` }
           </Typography>
 
           <Typography
@@ -71,12 +59,12 @@ const ACauseHeader = (props) => {
             component="p"
             style={{ fontSize: "14px", marginBottom: "20px" }}
           >
-            {props.cause.brief_description || "Description goes here"}
+            {props.StoryData.testimonial }
           </Typography>
         </Grid>
-      </Grid>
+      </Grid>}
     </Container>
   );
 };
 
-export default ACauseHeader;
+export default AstoryHeader;

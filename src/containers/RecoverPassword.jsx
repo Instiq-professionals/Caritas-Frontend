@@ -123,7 +123,6 @@ const RecoverPassword = () => {
   let [dialogMessage, setDialogMessage] = useState("");
   let [openDialog, setOpenDialog] = useState();
   let [positiveDialog, setPositiveDialog] = useState(true);
-  let [errorMessage, setErrorMessage] = useState(true);
 
   let [verified, setVerified] = useState(false);
   const classes = useStyles();

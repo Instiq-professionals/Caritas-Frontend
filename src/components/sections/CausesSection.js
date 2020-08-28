@@ -15,44 +15,22 @@ import { Link } from "react-router-dom";
 import { CauseItem } from "../";
 import Carousel from "./Carousel";
 import CarouselCauseContent from "../CarouselCauseContent";
+import SwipeableTextMobileStepper from "./SwipeableText";
 import { getAllCauses } from "../../services/cause.service";
 import { withRouter } from 'react-router-dom';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { connect } from "react-redux";
 import * as actions from '../../store/actions/index';
 
-const causes = [
-  {
-    id: 2,
-    image: "/assets/images/classroom1.png",
-    category: "Health",
-    title: "Saint Johns School Needs Renovation",
-    currency: "$",
-    contribution: 200000,
-    target: 400000,
-    desc: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                        sed diam nonumy eirmod tempor invidunt ut labore et
-                        dolore magna aliquyam erat, sed diam voluptua.`,
-  },
-  {
-    id: 3,
-    image: "/assets/images/classroom1.png",
-    category: "Health",
-    title: "Saint Johns School Needs Renovation",
-    currency: "$",
-    contribution: 200000,
-    target: 400000,
-    desc: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                        sed diam nonumy eirmod tempor invidunt ut labore et
-                        dolore magna aliquyam erat, sed diam voluptua.`,
-  },
-];
 
 const CausesSection = (props) => {
   const classes = useStyles();
   const causesByCategory = props.data;
+  const matches = useMediaQuery('(min-width:600px)');
+  const [category, setCategory] = useState('Food')
   useEffect(() => {
-    props.getAllCausesByCategory('Food');
-  },[]);
+    props.getAllCausesByCategory(category);
+  },[category]);
 
   const [tab, setTab] = useState(0);
   const [allCauses, setAllCauses] = useState([]);
@@ -119,16 +97,60 @@ const CausesSection = (props) => {
         <Slide in={true} direction="up" timeout={3000} mountOnEnter>
           <Grid
             container
-            style={{ paddingTop: "100px", paddingBottom: "200px" }}
+            className={classes.stopCorona}
           >
+            <Grid item xs={12}>
             <Typography
               variant="h6"
               component="h6"
               className={classes.sectionTitle}
             >
-              Do the Five - Help stop Corona Virus
+              Do the six - Help stop Corona Virus
             </Typography>
-            <Grid item xs={12} style={{ display: "flex", flexWrap: "wrap" }}>
+            </Grid>
+            <Grid item xs={6} sm={4} md={2}>
+            <Precautions
+                src="/assets/images/icons/hands.png"
+                body="HANDS"
+                direction="Wash them often"
+              />
+            </Grid>
+            <Grid item xs={6} sm={4} md={2}>
+            <Precautions
+               src="/assets/images/icons/elbow.png"
+               body="ELBOW"
+               direction="Cough into it"
+              />
+            </Grid>
+            <Grid item xs={6} sm={4} md={2}>
+            <Precautions
+                src="/assets/images/icons/nosemask.jpeg"
+                body="FACE"
+                direction="Wear a nose mask"
+              />
+            </Grid>
+            <Grid item xs={6} sm={4} md={2}>
+            <Precautions
+                src="/assets/images/icons/distance.png"
+                body="SPACE"
+                direction="Keep safe distance"
+              />
+            </Grid>
+            <Grid item xs={6} sm={4} md={2}>
+            <Precautions
+                src="/assets/images/icons/disinfect.jpeg"
+                body="sanitize"
+                direction="Be diligent about disinfecting."
+              />
+            </Grid>
+            <Grid item xs={6} sm={4} md={2}>
+            <Precautions
+                src="/assets/images/icons/home.png"
+                body="HOME"
+                direction="Stay if you can"
+              />
+            </Grid>
+            {/* <Grid item xs={12} style={{ display: "flex", flexWrap: "wrap" }}>
               <Precautions
                 src="/assets/images/icons/hands.png"
                 body="HANDS"
@@ -154,7 +176,7 @@ const CausesSection = (props) => {
                 body="HOME"
                 direction="Stay if you can"
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Slide>
         <Slide in={true} direction="up" timeout={3000} mountOnEnter>
@@ -179,7 +201,7 @@ const CausesSection = (props) => {
             <Grid item sm={12} md={6} 
             style={{ textAlign: "right" }}>
               <Link to="/causes" style={{ float: "right" }}>
-                See all
+              <FancyShape>See all</FancyShape>
               </Link>
             </Grid>
             <Grid
@@ -194,20 +216,20 @@ const CausesSection = (props) => {
                 onChange={(tab, index) => handleTabChange(index)}
               >
                 <Tab label="All" style={{ textTransform: "none" }} />
-                <Tab label="Education" style={{ textTransform: "none" }} onClick={() => props.getAllCausesByCategory('Education')}/>
-                <Tab label="Health" style={{ textTransform: "none" }} onClick={() => props.getAllCausesByCategory('Health')}/>
-                <Tab label="Human Rights" style={{ textTransform: "none" }} onClick={() => props.getAllCausesByCategory('Human Rights')} />
-                <Tab label="Food" style={{ textTransform: "none" }}  onClick={() => props.getAllCausesByCategory('Food')}/>
+                <Tab label="Education" style={{ textTransform: "none" }} onClick={() => setCategory('Education')}/>
+                <Tab label="Health" style={{ textTransform: "none" }} onClick={() => setCategory('Health')}/>
+                <Tab label="Food" style={{ textTransform: "none" }}  onClick={() => setCategory('Food')}/>
+                <Tab label="Human Rights" style={{ textTransform: "none" }} onClick={() => setCategory('Human Rights')} />
               </Tabs>
               {tab === 0 && (
                 <div>
-                <Carousel>
+                {matches?<Carousel>
                   {allCauses.map((cause, index) => (
                       <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
-                        {cause.brief_description}
+                        {cause.brief_description.substr(0, 400)}
                       </CarouselCauseContent>
                   ))}
-                </Carousel>
+                </Carousel>: <SwipeableTextMobileStepper tutorialSteps={allCauses}/>}
                 {allCauses.length === 0 && (
                     <div
                       style={{
@@ -228,13 +250,13 @@ const CausesSection = (props) => {
               )}
               {tab === 1 && (
                 <div>
-                <Carousel>
-                {causesByCategory.map((cause, index) => (
-                    <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
-                    {cause.brief_description}
-                  </CarouselCauseContent>
-                ))}
-              </Carousel>
+                {matches?<Carousel>
+                  {causesByCategory.map((cause, index) => (
+                      <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CarouselCauseContent>
+                  ))}
+                </Carousel>: <SwipeableTextMobileStepper tutorialSteps={causesByCategory}/>}
               {props.error && (
                 <div
                   style={{
@@ -254,13 +276,13 @@ const CausesSection = (props) => {
               )}
               {tab === 2 && (
                 <div>
-                <Carousel>
-                {causesByCategory.map((cause, index) => (
-                    <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
-                    {cause.brief_description}
-                  </CarouselCauseContent>
-                ))}
-              </Carousel>
+                {matches?<Carousel>
+                  {causesByCategory.map((cause, index) => (
+                      <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CarouselCauseContent>
+                  ))}
+                </Carousel>: <SwipeableTextMobileStepper tutorialSteps={causesByCategory}/>}
               {props.error && (
                 <div
                   style={{
@@ -280,13 +302,13 @@ const CausesSection = (props) => {
               )}
               {tab === 3 && (
                 <div>
-                <Carousel>
-                {causesByCategory.map((cause, index) => (
-                    <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
-                    {cause.brief_description}
-                  </CarouselCauseContent>
-                ))}
-              </Carousel>
+               {matches?<Carousel>
+                  {causesByCategory.map((cause, index) => (
+                      <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CarouselCauseContent>
+                  ))}
+                </Carousel>: <SwipeableTextMobileStepper tutorialSteps={causesByCategory}/>}
               {props.error && (
                 <div
                   style={{
@@ -306,13 +328,13 @@ const CausesSection = (props) => {
               )}
               {tab === 4 && (
                 <div>
-                <Carousel>
-                {causesByCategory.map((cause, index) => (
-                    <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
-                    {cause.brief_description}
-                  </CarouselCauseContent>
-                ))}
-              </Carousel>
+                {matches?<Carousel>
+                  {causesByCategory.map((cause, index) => (
+                      <CarouselCauseContent cause={cause} key={`cause-${cause._id}`}>
+                        {cause.brief_description}
+                      </CarouselCauseContent>
+                  ))}
+                </Carousel>: <SwipeableTextMobileStepper tutorialSteps={causesByCategory}/>}
               {props.error && (
                 <div
                   style={{

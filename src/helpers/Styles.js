@@ -161,8 +161,20 @@ const useStyles = makeStyles((theme) => ({
         "url('/assets/images/corona-background1.png'), url('/assets/images/corona-background2.png')",
       backgroundRepeat: "no-repeat, no-repeat",
       backgroundPosition: "left 480px, right 520px",
-      backgroundSize: "250px, 250px",
+      backgroundSize: "250px, 120px",
     },
+    [theme.breakpoints.down("xs")]:{
+      paddingTop: "22px",
+    }
+  },
+
+  stopCorona: {
+    paddingTop: "100px", 
+    paddingBottom: "200px",
+    [theme.breakpoints.down("xs")]:{
+      paddingTop: 40,
+      paddingBottom:40
+    }
   },
 
   howItWorks: {

@@ -8,7 +8,10 @@ import CausesTabs from "./CausesTabs";
 import SubscriptionBox from "./SubscriptionBox";
 import ACauseHeader from "./ACauseHeader";
 import ReviewCauseTable from '../ReviewCauseTable';
-import Carousel from './Carousel'
+import Carousel from './Carousel';
+import SwipeableTextMobileStepper from './SwipeableText';
+import SuccessStoryHeader from './AsuccessStoryHeader';
+
 
 
 export {
@@ -22,5 +25,7 @@ export {
   SubscriptionBox,
   ACauseHeader,
   ReviewCauseTable,
-  Carousel
+  Carousel,
+  SwipeableTextMobileStepper,
+  SuccessStoryHeader
 };

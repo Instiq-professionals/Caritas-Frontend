@@ -10,21 +10,15 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
-import { MyButton, MyDialog } from "../commons";
 import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import { Select } from "@material-ui/core";
-import { Colors, baseUrl } from "../constants";
 import { getAllCausesAsModerator } from "../services/cause.service";
 import * as moment from "moment";
 import { processPhoto } from "../helpers/utils";
@@ -106,11 +100,11 @@ const headCells = [
 function EnhancedTableHead(props) {
   const {
     classes,
-    onSelectAllClick,
+    //onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
+    // numSelected,
+    // rowCount,
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
@@ -409,14 +403,14 @@ export default function CausesTable(props) {
                         {moment(aCause.created_at).format("ddd, MMM Do, hh:mm")}
                       </TableCell>
                       <TableCell align="left">
-                        {aCause.isApproved == 1 && "Approved"}
-                        {aCause.reason_for_disapproval != null && "Rejected"}
-                        {aCause.reason_for_disapproval == null &&
-                          aCause.isApproved == 0 &&
+                        {aCause.isApproved === 1 && "Approved"}
+                        {aCause.reason_for_disapproval !== null && "Rejected"}
+                        {aCause.reason_for_disapproval === null &&
+                          aCause.isApproved === 0 &&
                           "Pending"}
                       </TableCell>
                       <TableCell align="left">
-                        {aCause.isResolved == 1 && "resolved"}
+                        {aCause.isResolved === 1 && "resolved"}
                         {aCause.reason_for_disapproval != null && (
                           <Button
                             margin="dense"
@@ -429,7 +423,7 @@ export default function CausesTable(props) {
                             Resolve
                           </Button>
                         )}
-                        {aCause.isApproved == 1 && aCause.resolved == 0 && (
+                        {aCause.isApproved === 1 && aCause.resolved === 0 && (
                           <Button
                             margin="dense"
                             color="primary"

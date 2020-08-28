@@ -8,41 +8,14 @@ import { withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 import { baseUrl  } from "../../constants";
 import Carousel from "./Carousel";
+import SuccessStoryForMobile from "./SucessStoryForMobile";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import * as actions from '../../store/actions/index';
 
-// const stories = [
-//   {
-//     image: "/assets/images/classroom1.png",
-//     title: "Recent Stories - 1",
-//     story: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-//                         sed diam nonumy eirmod tempor invidunt ut labore et
-//                         dolore magna aliquyam erat, sed diam voluptua.`,
-//   },
-//   {
-//     image: "/assets/images/classroom2.png",
-//     title: "Recent Stories - 2",
-//     story: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-//                         sed diam nonumy eirmod tempor invidunt ut labore et
-//                         dolore magna aliquyam erat, sed diam voluptua.`,
-//   },
-//   {
-//     image: "/assets/images/sick-child.png",
-//     title: "Recent Stories - 3",
-//     story: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-//                         sed diam nonumy eirmod tempor invidunt ut labore et
-//                         dolore magna aliquyam erat, sed diam voluptua.`,
-//   },
-//   {
-//     image: "/assets/images/smiling-kid.png",
-//     title: "Recent Stories - 4",
-//     story: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-//                         sed diam nonumy eirmod tempor invidhhhhunt ut labore et
-//                         dolore magna aliquyam erat, sed diam voluptua.`,
-//   },
-// ];
 
 const StoriesSection = (props) => {
-  const stories = props.data
+  const stories = props.data;
+  const matches = useMediaQuery('(min-width:600px)');
   useEffect(() => {
     props.getAllSuccessStories();
   },[]);
@@ -64,13 +37,13 @@ const StoriesSection = (props) => {
           Success Stories
         </Typography>
           <div>
-            <Carousel>
+            {matches?<Carousel>
               {stories.map((story, index) => (
-                <Story image={baseUrl + story.pictures} title={'Success story'}>
-                {story.testimonial}
+                <Story image={baseUrl + story.pictures} title={'Success story'} causeId={story.cause_id}>
+                {story.testimonial.substr(0, 400)}
               </Story>
               ))}
-            </Carousel>
+            </Carousel>:<SuccessStoryForMobile tutorialSteps={stories}/>}
           {stories.length === 0 && (
             <div
               style={{

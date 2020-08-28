@@ -35,6 +35,7 @@ import MakeAdecisionOnEventByCleader from './MakeAdecisionOnEventByCleader';
 import GetAllEventsByDirector from './GetAllEventsToBeResolve';
 import ResolveEvent from './ResolveEvent';
 import AllCausesPage from './AllCausesPage';
+import VisitorsSuccessStoryPage from './VisitorsSuccessStoryPage';
 
 export {
   Home,
@@ -65,6 +66,7 @@ export {
   ApproveVolunteer,
   AllCausesPage,
   Causes,
+  VisitorsSuccessStoryPage,
   HowItWorks,
   Signup,
   RecoverPassword,
