@@ -36,6 +36,7 @@ import GetAllEventsByDirector from './GetAllEventsToBeResolve';
 import ResolveEvent from './ResolveEvent';
 import AllCausesPage from './AllCausesPage';
 import VisitorsSuccessStoryPage from './VisitorsSuccessStoryPage';
+import NotFound from './NotFound';
 
 export {
   Home,
@@ -76,4 +77,5 @@ export {
   ModeratorCausePage,
   VerifyEmailPage,
   ResetPassword,
+  NotFound
 };

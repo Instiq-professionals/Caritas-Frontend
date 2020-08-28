@@ -39,6 +39,7 @@ import {
   ModeratorCausePage,
   VerifyEmailPage,
   ResetPassword,
+  NotFound
 } from "./containers";
 import * as serviceWorker from "./serviceWorker";
 import "./index.css";
@@ -150,10 +151,12 @@ const App = () => {
             <Route path="/about" component={About} />
             <Route path="/FAQ" component={FAQ} />
             <Route path="/causes" exact component={Causes} />
+            <Route path="/cause/:id" exact component={ACausePage} />
             <Route path="/story/:id" exact component={VisitorsSuccessStoryPage} />
             <GuestRoute path="/signin" component={Signin} />
             <GuestRoute path="/signup" component={Signup} />
             <GuestRoute path="/recover-password" component={RecoverPassword} />
+            <GuestRoute  component={NotFound} />
             <GuestRoute
               path="/users/verify_email/:token"
               component={VerifyEmailPage}
@@ -169,7 +172,7 @@ const App = () => {
               component={AddCause}
             />
             <ProtectedRoute path="/dashboard/myCauses" component={MyCauses} exact/>
-            <ProtectedRoute path="/dashboard/myCauses/:id" component={MyCauseDetails} exact/>
+            <ProtectedRoute path="/dashboard/myCauses/:id" exact component={MyCauseDetails} />
             <ProtectedRoute path="/dashboard/myCauses/:id/:cause_id" component={EditCause} />
             <ProtectedRoute path="/dashboard/profile" component={Profile} />
             <ProtectedRoute path="/dashboard/getMySuccessStory/:id" component={GetMySuccessStoryDetails} />
@@ -180,7 +183,6 @@ const App = () => {
             <ProtectedRoute path="/dashboard/createEvent" component={CreateEvent} />
             <ProtectedRoute path="/dashboard/editEvent/:id" component={EditEvent} />
             <CleaderRoute path="/dashboard/approveVolunteer/:id" component={ApproveVolunteer} />
-            <Route path="/cause/:id" component={ACausePage} />
             <VolunteerRoute path="/dashboard/review" component={ReviewCauses } exact/>
             <VolunteerRoute path="/dashboard/review/:id" component={RecommendAcause }/>
             <CleaderRoute exact path="/dashboard/approve" component={GetAllCausesForCleadersDecision}/>
