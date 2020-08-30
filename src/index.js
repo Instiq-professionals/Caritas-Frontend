@@ -156,7 +156,6 @@ const App = () => {
             <GuestRoute path="/signin" component={Signin} />
             <GuestRoute path="/signup" component={Signup} />
             <GuestRoute path="/recover-password" component={RecoverPassword} />
-            <GuestRoute  component={NotFound} />
             <GuestRoute
               path="/users/verify_email/:token"
               component={VerifyEmailPage}
@@ -197,6 +196,7 @@ const App = () => {
               path="/dashboard/cause/:id"
               component={ModeratorCausePage}
             />
+            <Route  component={NotFound} />
           </Switch>
         </BrowserRouter>
       </MuiThemeProvider>
