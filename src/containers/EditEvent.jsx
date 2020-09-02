@@ -94,6 +94,8 @@ const EditEvent = (props) => {
   const token = JSON.parse(localStorage.getItem("user")).token;
   const event_id = props.match.params.id;
   const eventDetails = props.bigData;
+  const editedData = props.editData;
+  const editedError = props.editError;
   const[ editEvent, setEditEvent] = useState();
 
   useEffect(() => {
@@ -101,6 +103,33 @@ const EditEvent = (props) => {
     props.checkEventDetails(event_id);
 
   },[]);
+
+  useEffect(() => {
+    if (editedData && editedData.status) {
+      setDialogTitle(editedData.status);
+      setDialogMessage(editedData.message);
+
+      setPositiveDialog(true);
+
+      setOpenDialog(true);
+      setTimeout(() => (window.location = "/dashboard/myevents"), 1000);
+     } else if (editedError && editedError.status) {
+      setDialogTitle(editedError.status);
+      setDialogMessage(editedError.message);
+
+      setPositiveDialog(false);
+
+      setOpenDialog(true);
+     } else {
+      setDialogTitle('');
+      setDialogMessage('');
+
+      setPositiveDialog(false);
+
+      setOpenDialog(false);
+     }
+    
+  },[editedData,editedError]);
 
   useEffect(() => {
     if (eventDetails) {
@@ -119,6 +148,7 @@ const EditEvent = (props) => {
     };
     
   },[eventDetails,setEditEvent]);
+
 
   const classes = moreStyles();
   let [uploadFiles, setUploadFiles] = useState({
@@ -152,7 +182,6 @@ const EditEvent = (props) => {
   const handleSubmit = () => {
     editEvent.uploadFiles = uploadFiles;
     props.editMyEvent(token,event_id,editEvent);
-   setTimeout(() => (window.location = "/dashboard/myevents"), 1000);
   }
 
   return (
@@ -165,22 +194,6 @@ const EditEvent = (props) => {
         onClose={() => setOpenDialog(false)}
       >
         {dialogMessage}
-      </MyDialog>
-      <MyDialog
-        title={props.error?props.error.status:'error'}
-        openDialog={props.modalopen}
-        positiveDialog={props.error?false:true}
-        onClose={() => setOpenDialog(false)}
-      >
-        {props.error?props.error.message:'Network error'}
-      </MyDialog>
-      <MyDialog
-        title={props.data?props.data.status:'network'}
-        openDialog={props.modalopen}
-        positiveDialog={props.data?true:false}
-        onClose={() => setOpenDialog(false)}
-      >
-        {props.data?props.data.message:'Something went wrong'}
       </MyDialog>
       <Container style={{ marginTop: 150 }}>
         <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
@@ -392,9 +405,10 @@ const EditEvent = (props) => {
 const mapStateToProps = state => {
   return {
     loading : state.crudEvent.loading,
-    data: state.crudEvent.event,
+    editData: state.crudEvent.editData,
     bigData: state.crudEvent.event?state.crudEvent.event.data:[],
     error: state.crudEvent.error,
+    editError: state.crudEvent.editError,
     modalopen: state.crudEvent.modalopen
   }
 };

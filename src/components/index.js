@@ -13,9 +13,12 @@ import CausesTable from "./CausesTable";
 import AddVideo from "./AddVideo";
 import AddProfileImage from "./AddProfileImage";
 import UsersTable from "./UsersTable";
+import AdminsCausesTable from "./AllCauseTable";
+import AdminsEventsTable from "./AllEventsTable";
 import ReviewCauseTable from "./ReviewCauseTable";
 import ApproveCauseTable from './ApproveCauseTable';
 import ApproveVolunteerTable from './ApproveVolunteerTable';
+import Number from './Number';
 
 export {
   CauseItem,
@@ -30,10 +33,13 @@ export {
   MyDialog,
   CausesTable,
   UsersTable,
+  AdminsEventsTable,
+  AdminsCausesTable,
   AddVideo,
   AddProfileImage,
   AddCauseImage,
   ReviewCauseTable,
   ApproveCauseTable,
   ApproveVolunteerTable,
+  Number
 };

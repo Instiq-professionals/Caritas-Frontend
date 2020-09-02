@@ -36,6 +36,10 @@ import {
   ACausePage,
   AddCause,
   Profile,
+  UserDetails,
+  ViewALLUsers,
+  ViewALLCausesByAdmins,
+  ViewAllEventsByAdmins,
   ModeratorCausePage,
   VerifyEmailPage,
   ResetPassword,
@@ -66,19 +70,17 @@ import {
   crudEvent,
   makeDecisionOnEventByCleader,
   resolveEvent,
-  getAllCausesByCategory
+  getAllCausesByCategory,
+  admins
 } from './store/reducers/index'
-//import signUpreducer from './store/reducers/signupreducers';
-//import displayCausesForReview from './store/reducers/reviewCauses';
-//import displayCause from './store/reducers/causeDetails';
-//import recommendCause from './store/reducers/recommendAcause';
-//import store from "./store";
+
 import { Colors } from "./constants";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import ModeratorRoute from "./components/ModeratorRoute";
 import VolunteerRoute from "./components/VolunteerRoute";
 import CleaderRoute from "./components/CleaderRoute";
+import AdminAndChairmanRoute from "./components/AdminAndChairmanRoute"
 
 function logger({ getState }) {
   return next => action => {
@@ -116,7 +118,8 @@ getAllSuccessStories,
 crudEvent,
 makeDecisionOnEventByCleader,
 resolveEvent,
-getAllCausesByCategory
+getAllCausesByCategory,
+admins
 })
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger, ReduxThunk)))
@@ -196,6 +199,10 @@ const App = () => {
               path="/dashboard/cause/:id"
               component={ModeratorCausePage}
             />
+            <AdminAndChairmanRoute exact path="/dashboard/users" component={ViewALLUsers}/>
+            <AdminAndChairmanRoute exact path="/dashboard/user/:id" component={UserDetails}/>
+            <AdminAndChairmanRoute exact path="/dashboard/viewCausesAsAleader" component={ViewALLCausesByAdmins}/>
+            <AdminAndChairmanRoute exact path="/dashboard/viewEventsAsAleader" component={ViewAllEventsByAdmins}/>
             <Route  component={NotFound} />
           </Switch>
         </BrowserRouter>

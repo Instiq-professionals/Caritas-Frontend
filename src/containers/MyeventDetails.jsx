@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import { PrimaryAppBar } from "../commons";
 import { MyDialog } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
+import { cLeader,Volunteer } from "../helpers/utils";
 import * as actions from '../store/actions/index';
 import YouTubeMedia from "../components/YoutubeMedia";
 import Moment from 'react-moment';
@@ -109,7 +110,7 @@ const MyEventDetails = (props) => {
 
   const handleDeleteCause = (id) => {
     props.deleteMyEvent(token,id);
-    setTimeout(() => (window.location = "/dashboard/myevents"), 1000);
+    //setTimeout(() => (window.location = "/dashboard/myevents"), 1000);
    };
 
    const onPressDelete = () => {
@@ -177,7 +178,7 @@ const MyEventDetails = (props) => {
               </Grid>
               </Grid>
               <Grid>
-              <div style={{
+              {(cLeader() || Volunteer()) && <div style={{
                     marginTop: "30px",
                     marginBottom: "30px",
                     textAlign: "center",
@@ -207,7 +208,7 @@ const MyEventDetails = (props) => {
                 >
                  Edit event
                 </Button>
-              </div>
+              </div>}
             </Grid>
     </div>
   }
@@ -258,9 +259,6 @@ const MyEventDetails = (props) => {
         <Container style={{ marginTop: 150 }}>
           <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
             Good going, {getAuthenticatedUser().first_name}. 
-          </Typography>
-          <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{textAlign: "center"}}>
-            Start the process of adding a new cause
           </Typography>
           <Typography component="h1" variant="h5" className={classes.Circular}>
           </Typography>

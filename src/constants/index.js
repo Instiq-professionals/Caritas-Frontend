@@ -53,6 +53,7 @@ const Routes = {
   get_profile: host + "users/profile",
   update_profile: host + "users/profile/update",
   moderator_all_users: host + "users",
+  get_a_user: host + "users/", //the id must be apended
   
   get_causes_by_category: host + "cause/category/",  //the cause category is appended
   create_success_story: host + "success_stories/create/", //requires the auth token 
@@ -76,6 +77,9 @@ const Routes = {
   fetch_all_closed_event: host + "events/closed", //requires authentication
 
   fetch_all_event: host + "events", //This endpoint fetches all approved events and it doesnt require authentication
+
+  fetch_all_events_by_admins: host + "events/all", //this route is accessible by chairman, it fetches but approved and unapproved events
+  fetch_all_causes_by_admins: host + "cause/all",  //this route is accessible by chairman , it fetches but approved and unapproved causes
 };
 
 const Actions = {

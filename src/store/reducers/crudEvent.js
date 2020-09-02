@@ -4,6 +4,8 @@ import { updatedObject } from '../utility';
 const initialState = {
     events : null,
     event : null,
+    editData: null,
+    editError: null,
     error : null,
     deletedStatus: null,
     deletedMessage:null,
@@ -80,15 +82,15 @@ const checkMyEventDetailsFail = (state, action) => {
 };
 
 const editMyEventStart = (state, action) => {
-    return updatedObject(state, {error: null, loading:true})
+    return updatedObject(state, {editError: null, loading:true})
 };
 
 const editMyEventSuccess = (state, action) => {
     return updatedObject(state, {
-        event: action.payload,
+        editData: action.payload,
+        editError: null,
         editStatus: action.payload.status,
         editMessage: action.payload.message,
-        error: null,
         loading : false,
         modalopen: true
     })
@@ -98,7 +100,7 @@ const editMyEventFail = (state, action) => {
     return updatedObject(state, {
         editStatus: null,
         editMessage: null,
-        error: action.error,
+        editError: action.error,
         loading : false,
         modalopen: true
     })

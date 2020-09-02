@@ -4,6 +4,7 @@ import MyButton from "./MyButton";
 import MyDialog from "./MyDialog";
 import MyConfirmationDialog from "./MyConfirmationDialog";
 import MyPromptDialog from "./MyPromptDialog";
+import TableaCard from "./TableCard";
 
 export {
   PrimaryAppBar,
@@ -12,4 +13,5 @@ export {
   MyDialog,
   MyConfirmationDialog,
   MyPromptDialog,
+  TableaCard
 };

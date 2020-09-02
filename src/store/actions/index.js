@@ -4,7 +4,8 @@ export {
     accountDetails
 } from './signup';
 export {
-    profile
+    profile,
+    getProfileAsAdmin
 } from './profile';
 export {
     getAllMyCauses,
@@ -54,6 +55,10 @@ export {
 export {
     getAllCausesByCategory
 } from './getAllCauseByCategory';
+export {
+    getCausesAsAdmin, //these routes are accessible to chairman for now
+    getEventsAsAdmin
+} from './admins';
 export {
     getVolunteersForApproval,
     checkVolunteerDetails,

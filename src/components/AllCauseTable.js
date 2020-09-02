@@ -20,8 +20,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import {  Avatar } from "@material-ui/core";
-import { getAllUsersAsModerator } from "../services/cause.service";
-import * as moment from "moment";
+import {  getAllCausesAsAdmins } from "../services/cause.service";
+import Naira from 'react-naira';
 import { baseUrl } from "../constants";
 
 function descendingComparator(a, b, orderBy) {
@@ -54,47 +54,28 @@ const headCells = [
   { id: "checked", numeric: false, disablePadding: false, label: "" },
   { id: "thumbnail", numeric: false, disablePadding: false, label: "" },
   {
-    id: "first_name",
+    id: "cause_title",
     numeric: false,
     disablePadding: false,
-    label: "First name",
+    label: "Cause title",
   },
   {
-    id: "last_name",
+    id: "amount_required",
     numeric: false,
     disablePadding: false,
-    label: "Last name",
+    label: "Amount required",
   },
   {
-    id: "email",
+    id: "cause_status",
     numeric: false,
     disablePadding: false,
-    label: "Email",
+    label: "Status",
   },
   {
-    id: "phone",
+    id: "category",
     numeric: false,
     disablePadding: false,
-    label: "Phone no",
-  },
-  {
-    id: "roles",
-    numeric: false,
-    disablePadding: false,
-    label: "Role(s)",
-  },
-  {
-    id: "active",
-    numeric: false,
-    disablePadding: false,
-    label: "Account status",
-  },
-
-  {
-    id: "date",
-    numeric: false,
-    disablePadding: false,
-    label: "Added",
+    label: "Category",
   },
 
   {
@@ -256,7 +237,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UsersTable(props) {
+export default function CausesTable(props) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -320,7 +301,7 @@ export default function UsersTable(props) {
     rowsPerPage - Math.min(rowsPerPage, allUsers.length - page * rowsPerPage);
 
   const moderatorFetchAllUsers = async () => {
-    return await getAllUsersAsModerator();
+    return await getAllCausesAsAdmins();
   };
 
   useEffect(() => {
@@ -394,36 +375,21 @@ export default function UsersTable(props) {
                         align="left"
                       >
                         <Avatar
-                          src={baseUrl + aUser.photo}
+                          src={baseUrl + aUser.cause_photos}
                           alt=""
                           style={{ height: "40px" }}
                         />
                       </TableCell>
-                      <TableCell align="left">{aUser.first_name}</TableCell>
-                      <TableCell align="left">{aUser.last_name}</TableCell>
-                      <TableCell align="left">{aUser.email}</TableCell>
-                      <TableCell align="left">{aUser.phone_number}</TableCell>
-                      <TableCell align="left">
-                        {aUser.role.map((role) => (
-                          <>
-                            <span>{role}</span>
-                            <br />
-                          </>
-                        ))}
-                      </TableCell>
-                      <TableCell align="left">
-                        {aUser.isEmailVerified ? "Active" : "Unverified"}
-                      </TableCell>
-                      <TableCell align="left">
-                        {moment(aUser.created_at).format("ddd, MMM Do, hh:mm")}
-                      </TableCell>
-
+                      <TableCell align="left">{aUser.cause_title}</TableCell>
+                      <TableCell align="left"><Naira>{aUser.amount_required}</Naira></TableCell>
+                      <TableCell align="left">{aUser.cause_status}</TableCell>
+                      <TableCell align="left">{aUser.category}</TableCell>
                       <TableCell align="left">
                         <Button
                         style={{backgroundColor:'#FC636B',color:'#fff'}}
                           margin="dense"
                           onClick={() => {
-                            window.location = `/dashboard/user/${aUser._id}`;
+                            window.location = `/cause/${aUser._id}`;
                           }}
                         >
                           View

@@ -187,7 +187,9 @@ export const editMyEvent = (token,event_id,content) => {
         formData.append("venue", content.venue);
         formData.append("expected_no_of_impact", content.expected_no_of_impact);
         formData.append("video", content.video);
-        formData.append("pictures", content.uploadFiles.image1);
+        if (content.uploadFiles.image1) {
+            formData.append("pictures", content.uploadFiles.image1);
+        }
         if (content.uploadFiles.image2) {
             formData.append("pictures", content.uploadFiles.image2);
           }
@@ -217,7 +219,7 @@ export const editMyEvent = (token,event_id,content) => {
           })
           .catch(err => {
             console.log(err.response);
-            dispatch(editMyEventFail(err.response.message))
+            dispatch(editMyEventFail(err.response.data))
           })
     }
 };

@@ -7,7 +7,7 @@ import {
   Typography,
   Paper,
 } from "@material-ui/core";
-import { userIsUser,cLeader,Volunteer, userIsModerator, userIsAnAdmin } from "../helpers/utils";
+import { userIsUser,cLeader,Volunteer, userIsModerator, userIsAnAdmin, userIsChairman } from "../helpers/utils";
 
 import { Colors } from "../constants";
 import { connect } from "react-redux";
@@ -15,8 +15,9 @@ import { PrimaryAppBar } from "../commons";
 import { SlideableGridList } from "../components";
 import {
   getAllCauses,
+  getAllUsersAsModerator
 } from "../services/cause.service";
-import {  UsersTable } from "../components";
+import {  UsersTable, Number } from "../components";
 import {PieChart, Pie} from 'recharts';
 import * as actions from '../store/actions/index';
 
@@ -83,6 +84,7 @@ const moreStyles = makeStyles((theme) => ({
 const Dashboard = (props) => {
   const token = JSON.parse(localStorage.getItem("user")).token;
   const daysLeft = props.timeToCreateanotherCause;
+  const user = props.profile;
  
   useEffect(() => {
     props.getProfile(token);
@@ -94,6 +96,8 @@ const Dashboard = (props) => {
     !userIsUser() && props.getAllMyEvents(token);
     cLeader() && props.getEventByCleader(token);
     userIsModerator() && props.getEventByDirector(token)
+    userIsChairman() && props.getCausesAsAdmin(token)
+    userIsChairman() && props.getEventByAdmins(token)
   },[]);
   const CausesData = props.data;
   const errorMsg = props.error;
@@ -103,6 +107,11 @@ const Dashboard = (props) => {
   const getAllEventsByCleader = props.getAllEventsByCleader;
   const getMyEventdata = props.getMyEventdata;
   const getsAllEventByDirectorData = props.getsAllEventByDirectorData;
+  const getAllCausesAsAdmin = props.getAllCausesAsAdmin;
+  const getAllEventsByAdmins = props.getAllEventByAdmins;
+  const adminsError = props.adminsError
+
+
 
   const userCauseStatus = [];
   for (const data of CausesData ) {
@@ -124,14 +133,30 @@ const cLeaderEventsStatus = [];
     cLeaderEventsStatus.push(data.event_status );
 };
 
+const adminsCauseStatus = [];
+   for (const data of getAllCausesAsAdmin) {
+    adminsCauseStatus.push(data.cause_status)
+   }
+
+   const adminsEventsStatus = [];
+   for (const data of getAllEventsByAdmins) {
+    adminsEventsStatus.push(data.event_status)
+   }
+
 const userCausePendingLength = userCauseStatus.filter(element => element === "Awaiting Approval");
 const userApprovedCausesLength = userCauseStatus.filter(element => element === "Approved");
-//const userResolvedCausesLength = userCauseStatus.filter(element => element === "Resolved");
 const volunteerCausePendingLength = volunterCauseStatus.filter(element => element === "Awaiting Approval");
 const cLeaderCausePendingLength = cLeaderCauseStatus.filter(element => element === "Awaiting Approval");
-//const cLeaderApprovedLength = cLeaderCauseStatus.filter(element => element === "Approved");
+const pendingCausesInAdminsDashboard = adminsCauseStatus.filter(element => element === "Awaiting Approval");
+const approvedCausesInAdminsDashboard = adminsCauseStatus.filter(element => element === "Approved");
+const disApprovedCausesInAdminsDashboard = adminsCauseStatus.filter(element => element === "Disapproved");
+const resolvedCausesInAdminsDashboard = adminsCauseStatus.filter(element => element === "Resolved");
+const approvedEventsInAdminsDashboard = adminsEventsStatus.filter(element => element === "Approved");
+const pendingEventsInAdminsDashboard = adminsEventsStatus.filter(element => element === "Awaiting approval");
+const disApprovedEventsInAdminsDashboard = adminsEventsStatus.filter(element => element === "Disapproved");
+const closedEventsInAdminsDashboard = adminsEventsStatus.filter(element => element === "Closed");
 //const cLeaderCauseResolvedLength = cLeaderCauseStatus.filter(element => element === "Resolved");
-console.log(' getMyEventdata...',getMyEventdata)
+console.log(' adminsCauseStatus...',closedEventsInAdminsDashboard)
 
 
   //const [curUser, setCurUser] = useState(user);
@@ -145,14 +170,30 @@ console.log(' getMyEventdata...',getMyEventdata)
 
   return (
     <>
-      <PrimaryAppBar />
+      <PrimaryAppBar user={user}/>
       <Summary 
       userCausesDataLength={errorMsg?'0':CausesData.length}
       userPendingCausesLength={userCausePendingLength.length}
       userApprovedCausesLength={userApprovedCausesLength.length}
-      daysLeft={daysLeft?`${daysLeft} days left`:'0'}
+      daysLeft={daysLeft?`${daysLeft} days left `:'0'}
       clickToCausesPage={handleCausesPageClick}
       />
+      {userIsChairman() && <Chairman
+      totalCauses={adminsError?0:getAllCausesAsAdmin.length}
+      totalEvents={adminsError?0:getAllEventsByAdmins.length}
+      pendingCauses={adminsError?0:pendingCausesInAdminsDashboard.length}
+      approvedCauses={adminsError?0:approvedCausesInAdminsDashboard.length}
+      disApprovedCauses={adminsError?0:disApprovedCausesInAdminsDashboard.length}
+      resolvedCauses={adminsError?0:resolvedCausesInAdminsDashboard.length}
+      pendingEvents={adminsError?0:pendingEventsInAdminsDashboard.length}
+      approvedEvents={adminsError?0:approvedEventsInAdminsDashboard.length}
+      disApprovedEvents={adminsError?0:disApprovedEventsInAdminsDashboard.length}
+      closedEvents={adminsError?0:closedEventsInAdminsDashboard.length}
+      successStories={0}
+      clickToUsersPage={() => {
+        window.location = `/dashboard/users`;
+      }}
+       />}
       {userIsModerator() && <Director
         approved={props.directordataError?'0':props.directordata.length}
         getsAllEventByDirectorData={getsAllEventByDirectorData.length}
@@ -179,6 +220,87 @@ console.log(' getMyEventdata...',getMyEventdata)
         />}
     </>
   );
+};
+
+const Chairman = (props) => {
+  const classes = moreStyles();
+  let [allUsers, setAllUsers] = useState([]);
+
+  const moderatorFetchAllUsers = async () => {
+    return await getAllUsersAsModerator();
+  };
+
+  useEffect(() => {
+    async function setTheUsers() {
+      let returnedUsers = await moderatorFetchAllUsers();
+      if (Array.isArray(returnedUsers)) setAllUsers(returnedUsers.length);
+      else setAllUsers([]);
+    }
+    setTheUsers();
+  }, []);
+  const data = [
+    {
+      "name": "Cause countdown",
+      "value": 5
+    },
+    
+  ];
+  return (
+    <Container style={{ marginTop: 200 }}>
+        <Grid container spacing={2}>
+           <Grid item xs={12}>
+             <Typography
+               variant="h4"
+               component="h4"
+               className={classes.sectionHead}
+             >
+               Activity Summary
+             </Typography>            
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick={props.clickToUsersPage}>
+              <SummaryCard title="Total Users" value={allUsers?allUsers:0} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick={() => {
+            window.location = `/dashboard/viewCausesAsAleader`;
+            }}>
+              <SummaryCard title="Total Causes" value={props.totalCauses} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick={() => {
+            window.location = `/dashboard/viewEventsAsAleader`;
+            }}>
+              <SummaryCard title="Total Events" value={props.totalEvents} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick={props.clickToEventsPage}>
+              <SummaryCard title="Pending Causes" value={props.pendingCauses} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick={props.clickToEventsPage}>
+              <SummaryCard title="Pending Events" value={props.pendingEvents} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick={props.clickToEventsPage}>
+              <SummaryCard title="Approved Causes" value={props.approvedCauses} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
+              <SummaryCard title="Approved Events" value={props.approvedEvents} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick={props.clickToEventsPage}>
+              <SummaryCard title="Disapproved Causes" value={props.disApprovedCauses} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
+              <SummaryCard title="Disapproved Events" value={props.disApprovedEvents} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
+              <SummaryCard title="Resolved Causes" value={props.resolvedCauses} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
+              <SummaryCard title="Closed Events" value={props.closedEvents} />
+           </Grid>
+           <Grid item xs={12} sm={6} md={3}>
+           <SummaryPie title="Sucess Stories" data={data} Text={props.successStories}/>
+           </Grid>
+           </Grid>
+    </Container>
+  )
+  
 };
 
 const Director = (props) => {
@@ -407,7 +529,7 @@ const Summary = (props) => {
               <SummaryCard title="Approved Causes" value={props.userApprovedCausesLength}/>
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryPie title="Cause counddown" data={data} daysLeftToLogAnotherCause={props.daysLeft}/>
+              <SummaryPie title="Cause countdown" data={data} Text={props.daysLeft}/>
            </Grid>
 
         </Grid>
@@ -506,26 +628,7 @@ const Summary = (props) => {
         </Grid>
         </>
       )}
-
-      {/* {(userIsModerator())&& (
-        <>
-          <Typography
-            variant="h6"
-            component="h6"
-            style={{
-              color: Colors.appRed,
-              fontWeight: "bold",
-              marginBottom: "30px",
-            }}
-          >
-            All Causes
-          </Typography>
-          <Grid container spacing={5}>
-            <CausesTable />
-          </Grid>
-        </>
-      )} */}
-      {userIsAnAdmin()  && (
+      {userIsAnAdmin() && (
         <>
           <Typography
             variant="h6"
@@ -555,7 +658,7 @@ const SummaryCard = (props) => {
   return (
     <Paper className={classes.summaryCard} >
         <Typography component="h6" variant="h6" style={{fontSize: '12px', color: 'black', marginBottom: "10px"}}>{props.title}</Typography>
-        <Typography component="h4" variant="h4" style={{fontWeight:  'bold'}}>{props.value}</Typography>
+        <Typography component="h4" variant="h4" style={{fontWeight:  'bold'}}><Number number={props.value}/></Typography>
     </Paper>
   )
 
@@ -573,7 +676,7 @@ const SummaryPie = (props) => {
           <Pie data={props.data} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill={Colors.appRed} label />
         
         </PieChart>
-        <Typography component="h3" variant="h3" style={{fontSize: '20px', fontWeight: 'bold',  color: Colors.appRed, alignSelf: 'center', position: 'absolute', top: '50%'}}>{props.daysLeftToLogAnotherCause}</Typography>
+        <Typography component="h3" variant="h3" style={{fontSize: '20px', fontWeight: 'bold',  color: Colors.appRed, alignSelf: 'center', position: 'absolute', top: '50%'}}><Number number={props.Text} /></Typography>
     </Paper>
   )
 
@@ -582,6 +685,7 @@ const SummaryPie = (props) => {
 const mapStateToProps = state => {
   return {
     timeToCreateanotherCause: state.profile.timeToCreateAnotherCause,
+    profile: state.profile.details?state.profile.details.data:[],
     loading : state.getAllMyCauses.loading,
     data: state.getAllMyCauses.causes?state.getAllMyCauses.causes.data:"There is no cause found",
     error: state.getAllMyCauses.error,
@@ -597,6 +701,9 @@ const mapStateToProps = state => {
     getMyEventdataError: state.crudEvent.error,
     getsAllEventByDirectorData: state.resolveEvent.events?state.resolveEvent.events.data:[],
     getsAllEventByDirectorError: state.resolveEvent.error,
+    getAllCausesAsAdmin: state.admins.causes?state.admins.causes.data:[],
+    getAllEventByAdmins: state.admins.events?state.admins.events.data:[],
+    adminsError: state.admins.error,
   }
 };
 
@@ -611,6 +718,8 @@ const mapDispatchToProps = dispatch => {
     getAllMyEvents : (token) => dispatch(actions.getAllMyEvents(token)),
     getEventByCleader : (token) => dispatch(actions.getEventByCleader(token)),
     getEventByDirector : (token) => dispatch(actions.getEventForResolution(token)),
+    getCausesAsAdmin : (token) => dispatch(actions.getCausesAsAdmin(token)),
+    getEventByAdmins : (token) => dispatch(actions.getEventsAsAdmin(token)),
   }
 }
 

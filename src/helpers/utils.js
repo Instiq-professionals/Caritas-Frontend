@@ -25,6 +25,12 @@ const userIsUser = () => {
   return user.role[0] === "User";
 };
 
+const userIsChairman = () => {
+  const user = getAuthenticatedUser();
+  //return user.role[0] === "Moderator";
+  return user.role.find((role) => role === "Chairman") != null;
+};
+
 const userIsModerator = () => {
   const user = getAuthenticatedUser();
   //return user.role[0] === "Moderator";
@@ -75,5 +81,6 @@ export {
   processPhoto,
   userIsAnAdmin,
   cLeader,
-  Volunteer
+  Volunteer,
+  userIsChairman
 };

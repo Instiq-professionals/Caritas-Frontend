@@ -33,8 +33,12 @@ import EditEvent from './EditEvent';
 import GetAllEventsByCleader from './GetAllEventsByCleader';
 import MakeAdecisionOnEventByCleader from './MakeAdecisionOnEventByCleader';
 import GetAllEventsByDirector from './GetAllEventsToBeResolve';
+import ViewALLUsers from './Users'
+import UserDetails from './UserDetails';
 import ResolveEvent from './ResolveEvent';
 import AllCausesPage from './AllCausesPage';
+import ViewALLCausesByAdmins from './AllCausesForAdmins';
+import ViewAllEventsByAdmins from './AllEventsForAdmins';
 import VisitorsSuccessStoryPage from './VisitorsSuccessStoryPage';
 import NotFound from './NotFound';
 
@@ -67,6 +71,9 @@ export {
   ApproveVolunteer,
   AllCausesPage,
   Causes,
+  ViewALLUsers,
+  ViewALLCausesByAdmins,
+  ViewAllEventsByAdmins,
   VisitorsSuccessStoryPage,
   HowItWorks,
   Signup,
@@ -74,6 +81,7 @@ export {
   ACausePage,
   AddCause,
   Profile,
+  UserDetails,
   ModeratorCausePage,
   VerifyEmailPage,
   ResetPassword,

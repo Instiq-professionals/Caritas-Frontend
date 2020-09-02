@@ -18,6 +18,9 @@ import { Colors } from "../constants";
 import { NavLink } from "react-router-dom";
 import { FancyShape, FancyButton } from "../helpers";
 import { LoggedInAvatar } from "../components";
+import { withRouter } from 'react-router-dom';
+import { connect } from "react-redux";
+import * as actions from '../store/actions/index';
 // import { user } from "../mock";
 import {
   isAuthenticated,
@@ -53,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     color: Colors.appBlack,
     textDecoration: "none",
     marginRight: "50px",
-    "&:hover": {
+    "&:hover": {   
       color: Colors.appRed,
     },
   },
@@ -147,14 +150,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+ function PrimarySearchAppBar(props) {
   const classes = useStyles();
   const location = useLocation();
   const [scrolling, setScrolling] = useState(false);
+  const token =  isAuthenticated() ? JSON.parse(localStorage.getItem("user")).token : null;
+  useEffect(() => {
+    props.getProfile(token);
+  }, []);
   const [user, setUser] = useState(
     isAuthenticated() ? getAuthenticatedUser() : null
   );
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const myProfile =  props.profile;
+  const [anchorEl, setAnchorEl] = React.useState(null) 
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   let [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const authPage =
@@ -399,7 +407,7 @@ export default function PrimarySearchAppBar() {
                     </NavLink>
 
                     {isAuthenticated() ? (
-                      <LoggedInAvatar user={user} />
+                      <LoggedInAvatar user={myProfile} />
                     ) : (
                       <NavLink
                         to="/signin"
@@ -455,7 +463,7 @@ export default function PrimarySearchAppBar() {
                       </div>
                     )}
 
-                    <LoggedInAvatar user={user} />
+                    <LoggedInAvatar user={myProfile} />
                   </>
                 )}
               </div>
@@ -479,3 +487,17 @@ export default function PrimarySearchAppBar() {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    profile: state.profile.details?state.profile.details.data:[],
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getProfile : (token) => dispatch(actions.profile(token)),
+  }
+}
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(PrimarySearchAppBar))

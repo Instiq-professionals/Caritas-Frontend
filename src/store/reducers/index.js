@@ -56,3 +56,6 @@ export {
 export {
     getAllCausesByCategory
 } from './getAllCausesByCategory';
+export {
+    admins
+} from './admins'

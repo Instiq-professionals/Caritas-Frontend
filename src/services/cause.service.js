@@ -36,6 +36,42 @@ const getAllCausesAsModerator = async () => {
     });
 };
 
+const getAllCausesAsAdmins = async () => {
+  console.log("admin fetching causes");
+  return await axios({
+    method: "get",
+    url: Routes.fetch_all_causes_by_admins,
+
+    headers: { "x-auth-token": getToken() },
+  })
+    .then((res) => {
+      console.log("All causes gotten by admin", res.data.data);
+      return res.data.data;
+    })
+    .catch((err) => {
+      console.log("Admin fetching error", err.response);
+      return err;
+    });
+};
+
+const getAllEventsAsAdmins = async () => {
+  console.log("admin fetching events");
+  return await axios({
+    method: "get",
+    url: Routes.fetch_all_events_by_admins,
+
+    headers: { "x-auth-token": getToken() },
+  })
+    .then((res) => {
+      console.log("All events gotten by admin", res.data.data);
+      return res.data.data;
+    })
+    .catch((err) => {
+      console.log("Admin fetching error", err.response);
+      return err;
+    });
+};
+
 const getAllUsersAsModerator = async () => {
   console.log("Moderator fetching users");
   return await axios({
@@ -196,6 +232,8 @@ export {
   getCause,
   getAllCausesAsModerator,
   getAllUsersAsModerator,
+  getAllCausesAsAdmins,
+  getAllEventsAsAdmins,
   approveACause,
   rejectACause,
 };
