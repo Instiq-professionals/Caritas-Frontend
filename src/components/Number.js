@@ -8,7 +8,7 @@ const myObject = {
 const Number = props => {
   const [total, setTotal] = useState(props.number);
   useEffect(() => {
-    TweenLite.to(myObject, 0.5, {
+    TweenLite.to(myObject, 1, {
       totalValue: props.number,
       roundProps: "totalValue",
       onUpdate: () => {

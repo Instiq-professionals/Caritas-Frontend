@@ -146,7 +146,6 @@ const adminsCauseStatus = [];
 const userCausePendingLength = userCauseStatus.filter(element => element === "Awaiting Approval");
 const userApprovedCausesLength = userCauseStatus.filter(element => element === "Approved");
 const volunteerCausePendingLength = volunterCauseStatus.filter(element => element === "Awaiting Approval");
-const cLeaderCausePendingLength = cLeaderCauseStatus.filter(element => element === "Awaiting Approval");
 const pendingCausesInAdminsDashboard = adminsCauseStatus.filter(element => element === "Awaiting Approval");
 const approvedCausesInAdminsDashboard = adminsCauseStatus.filter(element => element === "Approved");
 const disApprovedCausesInAdminsDashboard = adminsCauseStatus.filter(element => element === "Disapproved");
@@ -156,7 +155,7 @@ const pendingEventsInAdminsDashboard = adminsEventsStatus.filter(element => elem
 const disApprovedEventsInAdminsDashboard = adminsEventsStatus.filter(element => element === "Disapproved");
 const closedEventsInAdminsDashboard = adminsEventsStatus.filter(element => element === "Closed");
 //const cLeaderCauseResolvedLength = cLeaderCauseStatus.filter(element => element === "Resolved");
-console.log(' adminsCauseStatus...',closedEventsInAdminsDashboard)
+console.log('getsAllEventByDirectorData.length...',getsAllEventByDirectorData.length)
 
 
   //const [curUser, setCurUser] = useState(user);
@@ -202,7 +201,7 @@ console.log(' adminsCauseStatus...',closedEventsInAdminsDashboard)
        />}
       {Volunteer() && <VolunteerDashboard
        userCausesDataLength={errorMsg?'0':CausesData.length}
-        CausePending={volunteerCausePendingLength.length}
+        CausePending={volunteersReviewData.length}
         getMyEventdata={getMyEventdata.length}
         clickToCausesPage={() => props.history.push('/dashboard/review')}
         clickToEventPage={() => props.history.push('/dashboard/myevents')}
@@ -211,8 +210,8 @@ console.log(' adminsCauseStatus...',closedEventsInAdminsDashboard)
       {cLeader() && <CleadersDashboard
       userCausesDataLength={errorMsg?'0':CausesData.length}
         RegPendingData={props.volunteersRegPendingDataError?'0':RegPendingData.length}
-        Pending={cLeaderCausePendingLength.length}
-        Event={cLeaderEventsStatus.length}
+        Pending={cLeaderData.length}
+        Event={getAllEventsByCleader.length}
         clickToCausesPage={() => props.history.push('/dashboard/approve')}
         clickToRegPendingPage={() => props.history.push('/dashboard/approveVolunteer')}
         clickToEventPage={() => props.history.push('/dashboard/getEventsByCleader')}
@@ -263,39 +262,40 @@ const Chairman = (props) => {
            <Grid item xs={12} sm={6} md={3} onClick={() => {
             window.location = `/dashboard/viewCausesAsAleader`;
             }}>
-              <SummaryCard title="Total Causes" value={props.totalCauses} />
+              <SummaryCard title="Total Causes" Text={props.totalCauses} Text={props.totalCauses}/>
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick={() => {
             window.location = `/dashboard/viewEventsAsAleader`;
             }}>
-              <SummaryCard title="Total Events" value={props.totalEvents} />
+              <SummaryCard title="Total Events" Text={props.totalEvents} />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick={props.clickToEventsPage}>
-              <SummaryCard title="Pending Causes" value={props.pendingCauses} />
+              <SummaryCard title="Pending Causes" Text={props.pendingCauses} />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick={props.clickToEventsPage}>
-              <SummaryCard title="Pending Events" value={props.pendingEvents} />
+              <SummaryCard title="Pending Events" Text={props.pendingEvents} />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick={props.clickToEventsPage}>
-              <SummaryCard title="Approved Causes" value={props.approvedCauses} />
+              <SummaryCard title="Approved Causes" Text={props.approvedCauses} />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
-              <SummaryCard title="Approved Events" value={props.approvedEvents} />
+              <SummaryCard title="Approved Events" Text={props.approvedEvents} />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick={props.clickToEventsPage}>
-              <SummaryCard title="Disapproved Causes" value={props.disApprovedCauses} />
+              <SummaryCard title="Disapproved Causes" Text={props.disApprovedCauses} />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
-              <SummaryCard title="Disapproved Events" value={props.disApprovedEvents} />
+              <SummaryCard title="Disapproved Events" Text={props.disApprovedEvents} />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
-              <SummaryCard title="Resolved Causes" value={props.resolvedCauses} />
+              <SummaryCard title="Resolved Causes" Text={props.resolvedCauses} />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
-              <SummaryCard title="Closed Events" value={props.closedEvents} />
+              <SummaryCard title="Closed Events" Text={props.closedEvents} />
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-           <SummaryPie title="Sucess Stories" data={data} Text={props.successStories}/>
+           <SummaryPie title="Impacts" data={data} Text={551}
+           />
            </Grid>
            </Grid>
     </Container>
@@ -318,16 +318,16 @@ const Director = (props) => {
              </Typography>            
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Total C.Leaders" value="4" />
+              <SummaryCard title="Total C.Leaders" Text="4" />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick={props.clickToEventsPage}>
-              <SummaryCard title="Approved events in your category" value={props.getsAllEventByDirectorData} />
+              <SummaryCard title="Approved events in your category" Text={props.getsAllEventByDirectorData} />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
-              <SummaryCard title="Approved Causes in your category" value={props.approved} />
+              <SummaryCard title="Approved Causes in your category" Text={props.approved} />
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Impacts" value="31" />
+              <SummaryCard title="Impacts" value="551" />
            </Grid>
            </Grid>
     </Container>
@@ -350,16 +350,16 @@ const VolunteerDashboard = (props) => {
              </Typography>            
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToMyCausesPage}>
-              <SummaryCard title="My Causes" value={props.userCausesDataLength}  />
+              <SummaryCard title="My Causes" Text={props.userCausesDataLength}  />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
-              <SummaryCard title="Pending Causes in Your Category" value={props.CausePending}/>
+              <SummaryCard title="Pending Causes in Your Category" value={props.CausePending} Text={props.CausePending}/>
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToEventPage}>
-              <SummaryCard title="My events" value={props.getMyEventdata} />
+              <SummaryCard title="My events" Text={props.getMyEventdata} />
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Next event" value="Sep,24" />
+              <SummaryCard title="Next event" Text="Sep,24" />
            </Grid>
            </Grid>
     </Container>
@@ -382,16 +382,16 @@ const CleadersDashboard = (props) => {
              </Typography>            
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToMyCausesPage}>
-              <SummaryCard title="My Causes" value={props.userCausesDataLength}  />
+              <SummaryCard title="My Causes" Text={props.userCausesDataLength}  />
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage}>
-              <SummaryCard title="Pending Causes in Your Category" value={props.Pending} />
+              <SummaryCard title="Pending Causes in Your Category" value={props.Pending} Text={props.Pending}/>
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToEventPage}>
-              <SummaryCard title="Pending Event in your category" value={props.Event}/>
+              <SummaryCard title="Pending Event in your category" Text={props.Event}/>
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToRegPendingPage}>
-             <SummaryCard title="volunteer Registration Pending" value={props.RegPendingData} />
+             <SummaryCard title="volunteer Registration Pending" Text={props.RegPendingData} />
            </Grid>
            </Grid>
     </Container>
@@ -519,17 +519,20 @@ const Summary = (props) => {
            <Grid item xs={12} sm={6} md={3} onClick = {props.clickToCausesPage} >
               <SummaryCard 
               title="Total Causes" 
-              value={props.userCausesDataLength} 
+              Text={props.userCausesDataLength}
               />
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Pending Causes" value={props.userPendingCausesLength} />
+              <SummaryCard title="Pending Causes"  Text={props.userPendingCausesLength}/>
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Approved Causes" value={props.userApprovedCausesLength}/>
+              <SummaryCard title="Approved Causes" Text={props.userApprovedCausesLength}/>
            </Grid>
            <Grid item xs={12} sm={6} md={3}>
-              <SummaryPie title="Cause countdown" data={data} Text={props.daysLeft}/>
+              <SummaryPie 
+              title="Cause countdown"
+               data={data} 
+               value={props.daysLeft}/>
            </Grid>
 
         </Grid>
@@ -658,7 +661,7 @@ const SummaryCard = (props) => {
   return (
     <Paper className={classes.summaryCard} >
         <Typography component="h6" variant="h6" style={{fontSize: '12px', color: 'black', marginBottom: "10px"}}>{props.title}</Typography>
-        <Typography component="h4" variant="h4" style={{fontWeight:  'bold'}}><Number number={props.value}/></Typography>
+        <Typography component="h4" variant="h4" style={{fontWeight:  'bold'}}>{props.value?<Number number={props.value} />:props.Text}</Typography>
     </Paper>
   )
 
@@ -676,7 +679,9 @@ const SummaryPie = (props) => {
           <Pie data={props.data} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill={Colors.appRed} label />
         
         </PieChart>
-        <Typography component="h3" variant="h3" style={{fontSize: '20px', fontWeight: 'bold',  color: Colors.appRed, alignSelf: 'center', position: 'absolute', top: '50%'}}><Number number={props.Text} /></Typography>
+        <Typography component="h3" variant="h3" style={{fontSize: '20px', fontWeight: 'bold',  color: Colors.appRed, alignSelf: 'center', position: 'absolute', top: '50%'}}>
+          {props.value?<Number number={props.value} />:props.Text}
+          </Typography>
     </Paper>
   )
 
@@ -687,13 +692,13 @@ const mapStateToProps = state => {
     timeToCreateanotherCause: state.profile.timeToCreateAnotherCause,
     profile: state.profile.details?state.profile.details.data:[],
     loading : state.getAllMyCauses.loading,
-    data: state.getAllMyCauses.causes?state.getAllMyCauses.causes.data:"There is no cause found",
+    data: state.getAllMyCauses.causes?state.getAllMyCauses.causes.data:[],
     error: state.getAllMyCauses.error,
-    volunteersRegPendingData: state.getVolunteersForApproval.volunteers?state.getVolunteersForApproval.volunteers.data:'loading...',
+    volunteersRegPendingData: state.getVolunteersForApproval.volunteers?state.getVolunteersForApproval.volunteers.data:[],
     volunteersRegPendingDataError: state.getVolunteersForApproval.error,
-    volunteersReviewData: state.reviewCauses.causes?state.reviewCauses.causes.data:"There is no cause found",
-    CleadersDashboard: state.makeDecisionOnCause.causes?state.makeDecisionOnCause.causes.data:"There is no cause found",
-    directordata: state.resolveCause.causes?state.resolveCause.causes.data:"There is no cause found",
+    volunteersReviewData: state.reviewCauses.causes?state.reviewCauses.causes.data:[],
+    CleadersDashboard: state.makeDecisionOnCause.causes?state.makeDecisionOnCause.causes.data:[],
+    directordata: state.resolveCause.causes?state.resolveCause.causes.data:[],
     directordataError: state.resolveCause.error,
     getAllEventsByCleader: state.makeDecisionOnEventByCleader.events?state.makeDecisionOnEventByCleader.events.data:[],
     getAllEventsByCleaderError: state.makeDecisionOnEventByCleader.error,
