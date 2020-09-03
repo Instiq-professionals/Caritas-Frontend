@@ -278,6 +278,18 @@ const useStyles = makeStyles((theme) => ({
               Create a cause
             </NavLink>
           </MenuItem>
+          {!userIsUser() && <MenuItem>
+            <NavLink
+              to="/dashboard/createEvent"
+              className={
+                location.pathname === "/dashboard/createEvent"
+                  ? classes.active
+                  : classes.inactive
+              }
+            >
+              Create an event
+            </NavLink>
+          </MenuItem>}
           <MenuItem>
             <NavLink
               to="/dashboard/profile"
@@ -430,35 +442,65 @@ const useStyles = makeStyles((theme) => ({
                   )}
                 {location.pathname.includes("/dashboard") && (
                   <>
+                      <div>
+                          <NavLink to="/dashboard">
+                          <FancyButton label="Dasboard" />{" "}
+                         </NavLink>
+                      </div>
                     {!location.pathname.includes("/dashboard/create-cause") && (
                       <div>
                           <NavLink to="/dashboard/create-cause">
                           <FancyButton label="+ Add a Cause" />{" "}
                          </NavLink>
-                         {!userIsUser() && (
+                      </div>
+                    )}
+
+                    {!location.pathname.includes("/dashboard/createEvent") && (
+                      <div>
+                        {!userIsUser() && (
                            <NavLink to="/dashboard/createEvent">
-                           <FancyButton label="+ Add an Event" />{" "}
-                          </NavLink>
+                             <FancyButton label="+ Add an Event" />{" "}
+                           </NavLink>
                          )} 
-                       {(Volunteer() || userIsAnAdmin()) && (
-                      <NavLink to="/dashboard/review">
-                      <FancyButton label="Review Causes" />{" "}
-                     </NavLink>
+                      </div>
+                    )}
+
+                    {!location.pathname.includes("/dashboard/review") && (
+                      <div>
+                        {(Volunteer()) && (
+                          <NavLink to="/dashboard/review">
+                            <FancyButton label="Review Causes" />{" "}
+                          </NavLink>
                        )}
-                       {(cLeader() || userIsAnAdmin() )&& (
-                      <NavLink to="/dashboard/approve">
-                      <FancyButton label="Approve Causes" />{" "}
-                     </NavLink>
+                      </div>
+                    )}
+
+                    {!location.pathname.includes("/dashboard/approve") && (
+                      <div>
+                        {(cLeader() ) && (
+                         <NavLink to="/dashboard/approve">
+                           <FancyButton label="Approve Causes" />{" "}
+                         </NavLink>
                        )}
-                       {userIsModerator() && (
-                         <NavLink to="/dashboard/resolve">
+                      </div>
+                    )}
+
+                    {!location.pathname.includes("/dashboard/resolve") && (
+                      <div>
+                        {userIsModerator() && (
+                        <NavLink to="/dashboard/resolve">
                          <FancyButton label="Resolve Causes" />{" "}
                         </NavLink>
                        )}
-                       {(cLeader())&& (
+                      </div>
+                    )}
+
+                    {!location.pathname.includes("/dashboard/approveVolunteer") && (
+                      <div>
+                        {(cLeader()) && (
                       <NavLink to="/dashboard/approveVolunteer">
-                      <FancyButton label="Approve Volunteers" />{" "}
-                     </NavLink>
+                        <FancyButton label="Approve Volunteers" />{" "}
+                      </NavLink>
                        )}
                       </div>
                     )}
