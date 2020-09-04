@@ -12,12 +12,13 @@ import { userIsUser,cLeader,Volunteer, userIsModerator, userIsAnAdmin, userIsCha
 import { Colors } from "../constants";
 import { connect } from "react-redux";
 import { PrimaryAppBar } from "../commons";
-import { SlideableGridList } from "../components";
+import { SlideableGridList, Graph, Barchat } from "../components";
 import {
   getAllCauses,
   getAllUsersAsModerator
 } from "../services/cause.service";
 import {  UsersTable, Number } from "../components";
+//import Graph from './graph'
 import {PieChart, Pie} from 'recharts';
 import * as actions from '../store/actions/index';
 
@@ -85,6 +86,21 @@ const Dashboard = (props) => {
   const token = JSON.parse(localStorage.getItem("user")).token;
   const daysLeft = props.timeToCreateanotherCause;
   const user = props.profile;
+
+  let [allUsers, setAllUsers] = useState([]);
+
+  const moderatorFetchAllUsers = async () => {
+    return await getAllUsersAsModerator();
+  };
+
+  useEffect(() => {
+    async function setTheUsers() {
+      let returnedUsers = await moderatorFetchAllUsers();
+      if (Array.isArray(returnedUsers)) setAllUsers(returnedUsers.length);
+      else setAllUsers([]);
+    }
+    setTheUsers();
+  }, []);
  
   useEffect(() => {
     props.getProfile(token);
@@ -95,8 +111,8 @@ const Dashboard = (props) => {
     Volunteer() && props.reviewCauses(token);
     !userIsUser() && props.getAllMyEvents(token);
     cLeader() && props.getEventByCleader(token);
-    userIsModerator() && props.getEventByDirector(token)
-    (userIsChairman() || userIsAnAdmin()) && props.getCausesAsAdmin(token)
+    userIsModerator() && props.getEventByDirector(token);
+    (userIsChairman()|| userIsAnAdmin()) && props.getCausesAsAdmin(token);
     (userIsChairman() || userIsAnAdmin()) && props.getEventByAdmins(token)
   },[]);
   const CausesData = props.data;
@@ -155,7 +171,43 @@ const pendingEventsInAdminsDashboard = adminsEventsStatus.filter(element => elem
 const disApprovedEventsInAdminsDashboard = adminsEventsStatus.filter(element => element === "Disapproved");
 const closedEventsInAdminsDashboard = adminsEventsStatus.filter(element => element === "Closed");
 //const cLeaderCauseResolvedLength = cLeaderCauseStatus.filter(element => element === "Resolved");
-console.log('getsAllEventByDirectorData.length...',getsAllEventByDirectorData.length)
+console.log('getsAllEventByDirectorData.length...',getsAllEventByDirectorData.length);
+
+const Data = [{
+  type: "column",
+  dataPoints: [
+    { label: "Total Users", y: allUsers?allUsers:0},
+    { label: "Total Causes", y: adminsError?0:getAllCausesAsAdmin.length},
+    { label: "Total Events", y: userCausePendingLength.length},
+    { label: "Pending Causes", y: adminsError?0:pendingCausesInAdminsDashboard.length},
+    { label: "Pending Events", y: adminsError?0:pendingEventsInAdminsDashboard.length},
+    { label: "Approved Causes", y: adminsError?0:approvedCausesInAdminsDashboard.length},
+    { label: "Approved Events", y: adminsError?0:approvedEventsInAdminsDashboard.length},	
+    { label: "Disapproved Causes", y: adminsError?0:disApprovedCausesInAdminsDashboard.length},
+    { label: "Disapproved Events", y: adminsError?0:disApprovedEventsInAdminsDashboard.length},
+    { label: "Resolved Causes", y: adminsError?0:resolvedCausesInAdminsDashboard.length},
+    { label: "Impacts", y: 551}	
+  ]
+}]
+
+const DataPoint = [{
+  type: "pie",
+	indexLabel: "{label}: {y}%",		
+	startAngle: -90,
+  dataPoints: [
+    { label: "Total Users", y: allUsers?allUsers:0},
+    { label: "Total Causes", y: adminsError?0:getAllCausesAsAdmin.length},
+    { label: "Total Events", y: userCausePendingLength.length},
+    { label: "Pending Causes", y: adminsError?0:pendingCausesInAdminsDashboard.length},
+    { label: "Pending Events", y: adminsError?0:pendingEventsInAdminsDashboard.length},
+    { label: "Approved Causes", y: adminsError?0:approvedCausesInAdminsDashboard.length},
+    { label: "Approved Events", y: adminsError?0:approvedEventsInAdminsDashboard.length},	
+    { label: "Disapproved Causes", y: adminsError?0:disApprovedCausesInAdminsDashboard.length},
+    { label: "Disapproved Events", y: adminsError?0:disApprovedEventsInAdminsDashboard.length},
+    { label: "Resolved Causes", y: adminsError?0:resolvedCausesInAdminsDashboard.length},
+    { label: "Impacts", y: 551}	
+  ]
+}]
 
 
   //const [curUser, setCurUser] = useState(user);
@@ -177,7 +229,7 @@ console.log('getsAllEventByDirectorData.length...',getsAllEventByDirectorData.le
       daysLeft={daysLeft?`${daysLeft} days left `:'0'}
       clickToCausesPage={handleCausesPageClick}
       />
-      {userIsChairman() || userIsAnAdmin() && <Chairman
+      {(userIsChairman() || userIsAnAdmin() ) && <Chairman
       totalCauses={adminsError?0:getAllCausesAsAdmin.length}
       totalEvents={adminsError?0:getAllEventsByAdmins.length}
       pendingCauses={adminsError?0:pendingCausesInAdminsDashboard.length}
@@ -189,6 +241,8 @@ console.log('getsAllEventByDirectorData.length...',getsAllEventByDirectorData.le
       disApprovedEvents={adminsError?0:disApprovedEventsInAdminsDashboard.length}
       closedEvents={adminsError?0:closedEventsInAdminsDashboard.length}
       successStories={0}
+      data={Data}
+      dataPoint={DataPoint}
       clickToUsersPage={() => {
         window.location = `/dashboard/users`;
       }}
@@ -296,6 +350,12 @@ const Chairman = (props) => {
            <Grid item xs={12} sm={6} md={3}>
            <SummaryPie title="Impacts" data={data} Text={551}
            />
+           </Grid>
+           <Grid item xs={12}>
+             <Graph data={props.data}/>
+           </Grid>
+           <Grid item xs={12}>
+           <Barchat data={props.dataPoint}/>
            </Grid>
            </Grid>
     </Container>

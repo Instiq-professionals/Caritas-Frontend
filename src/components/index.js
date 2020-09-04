@@ -19,6 +19,8 @@ import ReviewCauseTable from "./ReviewCauseTable";
 import ApproveCauseTable from './ApproveCauseTable';
 import ApproveVolunteerTable from './ApproveVolunteerTable';
 import Number from './Number';
+import Graph from './Graph';
+import Barchat from './PieChart';
 
 export {
   CauseItem,
@@ -41,5 +43,7 @@ export {
   ReviewCauseTable,
   ApproveCauseTable,
   ApproveVolunteerTable,
-  Number
+  Number,
+  Graph,
+  Barchat
 };
