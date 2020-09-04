@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
+import ArrowBackSharpIcon from '@material-ui/icons/ArrowBackSharp';
 import { Colors } from "../constants";
 import Zoom from "@material-ui/core/Zoom";
 import { PrimaryAppBar, TableaCard } from "../commons";
@@ -9,7 +9,8 @@ import {  UsersTable } from "../components";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        marginTop:120,
+        marginTop:'200px',
+        marginBottom:'200px',
         marginRight:'2%',
         marginLeft:'2%',
           "& .MuiGrid-justify-xs-center": {
@@ -25,9 +26,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
       },
       icon: {
-        position: 'relative',
-        left: '50%',
-        top: '54px'
+        paddingTop:20
       }
   }));
 
@@ -38,20 +37,21 @@ const ViewALLUsers = () => {
       <PrimaryAppBar/>
     <Zoom in={true} timeout={1000}>
       <div className={classes.root}>
-        <div className={classes.icon}>
-        <DashboardRoundedIcon 
-          onClick={() => {
-            window.location = `/dashboard`;
-          }}
-        />
-        </div>
         <div >
           <TableaCard
             title="Users table"
             subtitle="Listing all users"
-            //subtitle="Une liste de toutes vos transactions jusqu'à présent"
           >
             <Grid container justify="center">
+              <Grid item sm={12}>
+              <div className={classes.icon}>
+                <ArrowBackSharpIcon
+                  onClick={() => {
+                    window.location = `/dashboard`;
+                  }}
+                />
+             </div>
+              </Grid>
               <Grid item sm={12} style={{ minHeight: 400 }}>
                 <Typography variant="h3" align="center">
                   <UsersTable />

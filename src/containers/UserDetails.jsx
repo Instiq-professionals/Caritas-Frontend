@@ -101,9 +101,9 @@ const UsersDetails = (props) => {
   const classes = moreStyles();
 
 
-  let VolunteerIsMounted = props.loading && <CircularProgress disableShrink />;
+  let UserIsMounted = props.loading && <CircularProgress disableShrink />;
   if (props.error) {
-    VolunteerIsMounted = <div>
+    UserIsMounted = <div>
       <ArrowBackSharpIcon 
        onClick={() => {
         window.location = `/dashboard/users`;
@@ -115,7 +115,7 @@ const UsersDetails = (props) => {
     </div>
   }
   if (user) {
-    VolunteerIsMounted = <div>
+    UserIsMounted = <div>
       <ArrowBackSharpIcon 
        onClick={() => {
         window.location = `/dashboard/users`;
@@ -135,7 +135,7 @@ const UsersDetails = (props) => {
                 />
               </Zoom>
               </Grid>
-              <Grid itemxs={12} md={6}>
+              <Grid item xs={12} md={6}>
               <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
                  Role : {user.role[0]}
              </Typography><br/>
@@ -188,7 +188,7 @@ const UsersDetails = (props) => {
           <Typography component="h1" variant="h5" className={classes.Circular}>
           </Typography>
           <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
-            {VolunteerIsMounted}
+            {UserIsMounted}
           </Paper>
         </Container>
     </>

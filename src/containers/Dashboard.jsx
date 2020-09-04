@@ -96,8 +96,8 @@ const Dashboard = (props) => {
     !userIsUser() && props.getAllMyEvents(token);
     cLeader() && props.getEventByCleader(token);
     userIsModerator() && props.getEventByDirector(token)
-    userIsChairman() && props.getCausesAsAdmin(token)
-    userIsChairman() && props.getEventByAdmins(token)
+    (userIsChairman() || userIsAnAdmin()) && props.getCausesAsAdmin(token)
+    (userIsChairman() || userIsAnAdmin()) && props.getEventByAdmins(token)
   },[]);
   const CausesData = props.data;
   const errorMsg = props.error;
@@ -177,7 +177,7 @@ console.log('getsAllEventByDirectorData.length...',getsAllEventByDirectorData.le
       daysLeft={daysLeft?`${daysLeft} days left `:'0'}
       clickToCausesPage={handleCausesPageClick}
       />
-      {userIsChairman() && <Chairman
+      {userIsChairman() || userIsAnAdmin() && <Chairman
       totalCauses={adminsError?0:getAllCausesAsAdmin.length}
       totalEvents={adminsError?0:getAllEventsByAdmins.length}
       pendingCauses={adminsError?0:pendingCausesInAdminsDashboard.length}
@@ -429,80 +429,6 @@ const Summary = (props) => {
   return (
     <Container style={{ marginTop: 200 }}>
       {userIsUser() && (
-        // <Grid container spacing={10}>
-        //   <Grid item xs={12} md={6}>
-        //     <Typography
-        //       variant="h4"
-        //       component="h4"
-        //       className={classes.sectionHead}
-        //     >
-        //       Your Causes
-        //     </Typography>
-        //     <Typography
-        //       variant="body1"
-        //       component="p"
-        //       className={classes.sectionSubhead}
-        //     >
-        //       Here are the causes pioneered by you.
-        //     </Typography>
-        //     <SlideableGridList
-        //       causes={allCauses}
-        //       label="Glad you are here. Create a new cause."
-        //       cols={2}
-        //     />
-        //   </Grid>
-        //   <Grid item xs={12} md={6}>
-        //     <Typography
-        //       variant="h4"
-        //       component="h4"
-        //       className={classes.sectionHead}
-        //     >
-        //       Trending
-        //     </Typography>
-        //     <Typography
-        //       variant="body1"
-        //       component="p"
-        //       className={classes.sectionSubhead}
-        //     >
-        //       Here are the causes making the most impressions
-        //     </Typography>
-        //     <SlideableGridList
-        //       causes={allCauses}
-        //       label="There are no trending causes yet"
-        //       cols={2}
-        //     />
-        //   </Grid>
-        //   <Grid item xs={12} md={9}>
-        //     <Typography
-        //       variant="h4"
-        //       component="h4"
-        //       className={classes.sectionHead}
-        //     >
-        //       Causes you follow
-        //     </Typography>
-        //     <Typography
-        //       variant="body1"
-        //       component="p"
-        //       className={classes.sectionSubhead}
-        //     >
-        //       Here are the causes you have shown interest in
-        //     </Typography>
-        //     <SlideableGridList
-        //       causes={allCauses}
-        //       label="You are not following Any cause at the moment"
-        //       cols={3}
-        //     />
-        //   </Grid>
-
-        //   <Grid
-        //     item
-        //     xs={12}
-        //     md={3}
-        //     className={classes.coronalink}
-        //     onClick={() => (window.location = "/about")}
-        //   ></Grid>
-        // </Grid>
-
         <>
         <Grid container spacing={2}>
            <Grid item xs={12}>
@@ -566,88 +492,6 @@ const Summary = (props) => {
              />
            
         </Grid>
-        </>
-      )}
-
-      {(userIsAnAdmin() )  && (
-        <>
-        <Grid container spacing={2}>
-           <Grid item xs={12}>
-
-             <Typography
-               variant="h4"
-               component="h4"
-               className={classes.sectionHead}
-             >
-               Activity Summary
-             </Typography>
-                          
-           </Grid>
-           <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Total Causes" value="50" />
-           </Grid>
-           <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Pending Causes" value="20" />
-           </Grid>
-           <Grid item xs={12} sm={6} md={3}>
-              <SummaryCard title="Approved Causes" value="30" />
-           </Grid>
-           {(userIsAnAdmin() ) && (
-             <Grid item xs={12} sm={6} md={3}>
-             <SummaryCard title="volunteer Registration Pending" value={props.RegPendingData} />
-          </Grid>
-           )}
-
-        </Grid>
-
-        <Grid container spacing={10}>
-           
-          <Grid item xs={12}>
-
-             <Typography
-               variant="h4"
-               component="h4"
-               className={classes.sectionHead}
-             >
-               Ongoing  Causes
-             </Typography>
-             <Typography
-               variant="body1"
-               component="p"
-               className={classes.sectionSubhead}
-             >
-               Here are the causes pioneered users
-             </Typography>
-                                       
-           </Grid>
-
-          
-             {/* <SlideableGridList
-               causes={allCauses}
-               label="Glad you are here. Create a new cause."
-               cols={4}
-             /> */}
-           
-        </Grid>
-        </>
-      )}
-      {userIsAnAdmin() && (
-        <>
-          <Typography
-            variant="h6"
-            component="h6"
-            style={{
-              color: Colors.appRed,
-              fontWeight: "bold",
-              marginBottom: "30px",
-              marginTop: "50px",
-            }}
-          >
-            Users
-          </Typography>
-          <Grid container spacing={5}>
-            <UsersTable />
-          </Grid>
         </>
       )}
     </Container>

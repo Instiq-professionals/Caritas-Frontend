@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { Colors } from "../constants";
 import { connect } from "react-redux";
-import { PrimaryAppBar } from "../commons";
+import { PrimaryAppBar, TableaCard  } from "../commons";
 import { MyDialog } from "../components";
 import {getAuthenticatedUser} from "../helpers/utils";
 import { cLeader,Volunteer } from "../helpers/utils";
@@ -125,11 +125,12 @@ const MyEventDetails = (props) => {
   let EventIsMounted = props.loading && <CircularProgress disableShrink className={classes.Circular }/>;
   if (singleEvent ) {
     EventIsMounted = <div>
-        <Grid container spacing={5} style={{marginTop: "30px"}}>
+      <TableaCard
+            title={singleEvent.title}
+            //subtitle={singleEvent.description}
+        >
+           <Grid container spacing={5} >
             <Grid item xs={12}>
-            <Typography variant="h6" component="h6" style={{color: "#FC636B", textAlign: "center", fontWeight: "bold"}}>
-                {singleEvent.title}
-            </Typography>
             <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{tcolor: "#FC636B", textAlign: "center"}}>
                 {singleEvent.description}
             </Typography><br/>
@@ -210,6 +211,7 @@ const MyEventDetails = (props) => {
                 </Button>
               </div>}
             </Grid>
+      </TableaCard>
     </div>
   }
   return (
