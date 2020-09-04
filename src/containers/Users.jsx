@@ -45,9 +45,10 @@ const ViewALLUsers = () => {
           }}
         />
         </div>
-        <div className={classes.content}>
+        <div >
           <TableaCard
             title="Users table"
+            subtitle="Listing all users"
             //subtitle="Une liste de toutes vos transactions jusqu'à présent"
           >
             <Grid container justify="center">

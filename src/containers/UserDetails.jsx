@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import { Colors } from "../constants";
 import { connect } from "react-redux";
-import { PrimaryAppBar } from "../commons";
+import { PrimaryAppBar, TableaCard } from "../commons";
 import {getAuthenticatedUser} from "../helpers/utils";
 import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
@@ -121,9 +121,9 @@ const UsersDetails = (props) => {
         window.location = `/dashboard/users`;
       }}
       />
-      <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
-                {`${user.title} ${user.first_name} ${user.last_name} form details`}
-            </Typography>
+      <TableaCard
+            title={`${user.title} ${user.first_name} ${user.last_name} form details`}
+          >
             <Grid container spacing={5} style={{marginTop: "30px"}}>
               <Grid item xs={12} md={6}>
               <Zoom in={true} timeout={1000} mountOnEnter>
@@ -174,6 +174,8 @@ const UsersDetails = (props) => {
              </Typography><br/>
               </Grid>
             </Grid>
+       </TableaCard>
+      
     </div>
   }
   return (
