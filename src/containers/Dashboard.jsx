@@ -7,6 +7,7 @@ import {
   Typography,
   Paper,
 } from "@material-ui/core";
+import { FancyShape } from "../helpers";
 import { userIsUser,cLeader,Volunteer, userIsModerator, userIsAnAdmin, userIsChairman } from "../helpers/utils";
 
 import { Colors } from "../constants";
@@ -307,7 +308,7 @@ const Chairman = (props) => {
                component="h4"
                className={classes.sectionHead}
              >
-               Activity Summary
+               <FancyShape>Activity Summary</FancyShape>
              </Typography>            
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick={props.clickToUsersPage}>
@@ -351,12 +352,12 @@ const Chairman = (props) => {
            <SummaryPie title="Impacts" data={data} Text={551}
            />
            </Grid>
-           <Grid item xs={12}>
-             <Graph data={props.data}/>
-           </Grid>
-           <Grid item xs={12}>
-           <Barchat data={props.dataPoint}/>
-           </Grid>
+             <Grid item xs={12}>
+               <Graph data={props.data}/>
+             </Grid>
+             <Grid item xs={12}>
+               <Barchat data={props.dataPoint}/>
+             </Grid>
            </Grid>
     </Container>
   )

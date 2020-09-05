@@ -10,7 +10,7 @@ class Barchat extends Component {
 		const options = {
 			animationEnabled: true,
 			exportEnabled: true,
-			theme: "dark2", // "light1", "dark1", "dark2"
+			theme: "dark1", // "light1", "dark1", "dark2"
 			title:{
 				text: "Percentage of activity summary"
 			},
