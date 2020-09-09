@@ -59,11 +59,9 @@ export const profile = (token) => {
             }
           })
           .then(res => {
-              console.log('getting my data ' ,res.data);
               dispatch(getProfileSuccess(res.data))
           })
           .catch(err => {
-            console.log('from redux err',err.response.data);
             dispatch(getProfileFail(err.response.data))
           })
     }
@@ -81,11 +79,9 @@ export const getProfileAsAdmin = (token, userId) => {
             }
           })
           .then(res => {
-              console.log('getting user data ' ,res.data);
               dispatch(getUserProfileSuccess(res.data))
           })
           .catch(err => {
-            console.log('from redux err',err.response.data);
             dispatch(getUserProfileFail(err.response.data))
           })
     }

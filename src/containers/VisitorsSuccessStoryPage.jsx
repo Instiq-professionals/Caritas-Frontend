@@ -60,7 +60,6 @@ const AvisitorStoryPage = (props) => {
   const UserData = props.UserData;
   const StoryData = props.StoryData;
   const error = props.error;
-  console.log('here.......1.',StoryData)
   useEffect(() => {
     props.checkSuccessDetails(cause_id);
   }, []);

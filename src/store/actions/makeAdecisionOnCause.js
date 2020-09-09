@@ -33,11 +33,9 @@ export const getCausesForApproval = (token) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(getAllCausesForApprovalSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(getAllCausesApprovalFail(err.response.data))
           })
     }
@@ -76,11 +74,9 @@ export const approveCause  = (token,cause_id) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(makeDecisionOnCauseSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(makeDecisionOnCauseFAIL(err.response.data))
           })
     }
@@ -100,11 +96,9 @@ export const disApproveCause  = (token,cause_id,reason_for_disapproval) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(makeDecisionOnCauseSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(makeDecisionOnCauseFAIL(err.response.data))
           })
     }

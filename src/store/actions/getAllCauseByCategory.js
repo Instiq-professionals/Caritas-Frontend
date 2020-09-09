@@ -30,11 +30,9 @@ export const getAllCausesByCategory = (category) => {
             url: Routes.get_causes_by_category + category,
           })
           .then(res => {
-              console.log('...........',res.data);
               dispatch(getAllCausesByCategorySuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(getAllCausesByCategoryFail(err.response.data))
           })
     }

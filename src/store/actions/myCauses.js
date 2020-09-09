@@ -33,11 +33,9 @@ export const getAllMyCauses = (token) => {
             }
           })
           .then(res => {
-              console.log('...........',res.data);
               dispatch(getAllMyCausesSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(getAllMyCausesFail(err.response.data))
           })
     }
@@ -75,11 +73,9 @@ export const checkCauseDetails = (token,cause_id) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(checkCauseDetailSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(checkCauseDetailFail(err.response.data))
           })
     }
@@ -120,7 +116,6 @@ export const deleteCause = (token,cause_id) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(deleteCauseSuccess(res.data,cause_id))
           })
           .catch(err => {
@@ -197,11 +192,9 @@ export const editCause = (token,cause_id,cause) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(editCauseSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.message);
             dispatch(editCauseFail(err.response.message))
           })
     }

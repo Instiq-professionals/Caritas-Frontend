@@ -5,6 +5,7 @@ import MyDialog from "./MyDialog";
 import MyConfirmationDialog from "./MyConfirmationDialog";
 import MyPromptDialog from "./MyPromptDialog";
 import TableaCard from "./TableCard";
+import CustomizedSnackbars from "./Stickers";
 
 export {
   PrimaryAppBar,
@@ -13,5 +14,6 @@ export {
   MyDialog,
   MyConfirmationDialog,
   MyPromptDialog,
-  TableaCard
+  TableaCard,
+  CustomizedSnackbars
 };

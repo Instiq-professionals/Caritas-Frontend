@@ -53,11 +53,9 @@ export const createMySuccessStory = (token,cause_id,testimonial,uploadFiles) => 
             }
           })
           .then(res => {
-              console.log('...........',res.data);
               dispatch(createMySuccessStorySuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(createMySuccessStoryFail(err.response.data))
           })
     }
@@ -95,11 +93,9 @@ export const getAllMySuccessStories = (token) => {
             }
           })
           .then(res => {
-              console.log('...........',res.data);
               dispatch(getAllMySuccessStoriesSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(getAllMySuccessStoriesFail(err.response.data))
           })
     }
@@ -134,11 +130,9 @@ export const checkSuccessStoryDetails = (cause_id) => {
             url: Routes.get_single_success_story + cause_id,
           })
           .then(res => {
-              console.log(res.data);
               dispatch(checkSuccessStoryDetailSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(checkSuccessStoryDetailFail(err.response.data))
           })
     }
@@ -196,11 +190,9 @@ export const editMySuccessStory = (token,story_id,story) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(editMySuccessStorySuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.message);
             dispatch(editMySuccessStoryFail(err.response.message))
           })
     }
@@ -240,11 +232,9 @@ export const deleteMySuccessStory = (token,story_id) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(deleteMySuccessStorySuccess(res.data,story_id))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(deleteMySuccessStoryFail(err.response.data))
           })
     }
@@ -278,11 +268,9 @@ export const getAllSuccessStories = () => {
             url: Routes.get_all_success_stories,
           })
           .then(res => {
-              console.log('...........',res.data);
               dispatch(getAllSuccessStoriesSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(getAllSuccessStoriesFail(err.response.data))
           })
     }

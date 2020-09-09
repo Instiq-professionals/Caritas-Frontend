@@ -21,6 +21,7 @@ import ApproveVolunteerTable from './ApproveVolunteerTable';
 import Number from './Number';
 import Graph from './Graph';
 import Barchat from './PieChart';
+import AudioPlayer from './ReactAudioPlayer';
 
 export {
   CauseItem,
@@ -45,5 +46,6 @@ export {
   ApproveVolunteerTable,
   Number,
   Graph,
-  Barchat
+  Barchat,
+  AudioPlayer
 };

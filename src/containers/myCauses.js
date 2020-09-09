@@ -109,6 +109,9 @@ const MyCauses = (props) => {
     props.getMyCauses(token);
   },[]);
 
+  const myDate = new Date(); 
+  const day = myDate.getHours() >= 12? "Afernoon": "morning"
+
   const classes = moreStyles();
   const tableClass = useTableStyles();
 
@@ -228,13 +231,6 @@ const MyCauses = (props) => {
     <>
       <PrimaryAppBar />
         <Container style={{ marginTop: 150 }}>
-        <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
-          Good going, {getAuthenticatedUser().first_name}. 
-        </Typography>
-        <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{textAlign: "center"}}>
-          Start the process of adding a new cause
-        </Typography>
-
         <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
        { props.loading && <CircularProgress disableShrink className={classes.Circular }/>}
           {CauseTable}

@@ -26,6 +26,7 @@ import {
   isValidFirstName,
   isValidLastName,
   isValidEmail,
+  isValidPhoneOrEmail,
   isValidPassword,
   isValidPhoneNumber,
   isValidVolunteer
@@ -188,6 +189,7 @@ const Signup = (props) => {
     firstName: "",
     middleName: "",
     lastName: "",
+    reg_credential: "",
     email: "",
     phone: "",
     accountType: "",
@@ -303,55 +305,16 @@ const Signup = (props) => {
 
       console.log("Outcome", outcome);
 
-      if (outcome && outcome.data) {
-        setErrorMessage("");
-        setUser({
-          firstName: "",
-          middleName: "",
-          lastName: "",
-          email: "",
-          phone: "",
-          address: "",
-          accountName: "",
-          accountNumber: "",
-          password: "",
-          confirmPassword: "",
-          dob: ""
-        });
-        setInstitution({
-          name: "",
-          type: "Select Institution Type",
-          staffStrength: 0,
-          RCNumber: "",
-          email: "",
-          phone: "",
-          address: "",
-          state: "",
-          lga: "",
-        });
+      if (outcome && outcome.status) {
+      
+        setDialogTitle(outcome.status);
+        setDialogMessage(outcome.message);
 
-        setUploadFiles({image: null});
-
-        setDialogTitle("Registration Successful");
-        setDialogMessage("Please check your email for verification");
-
-        setPositiveDialog(true);
+        setPositiveDialog(outcome.status === 'Success'?true:false);
 
         setOpenDialog(true);
-        setTimeout(() => (window.location = "/signin"), 5000);
-      } else if (outcome.message) {
-        setDialogTitle("Registration failed");
-        console.log('error point'+ outcome.message)
-        setDialogMessage(
-          outcome.message.includes("400")
-            ? outcome.message
-            : "Please check your Internet connection"
-        );
-
-        setPositiveDialog(false);
-
-        setOpenDialog(true);
-      }
+        outcome.status === 'Success' && setTimeout(() => (window.location = "/signin"), 5000);
+      } 
     }
   };
 
@@ -376,21 +339,9 @@ const Signup = (props) => {
   const handleDOBChange = (event) => {
     setUser({ ...user, dob: event.target.value });
   };
-  // const handleAccountNumberChange = (event) => {
-  //   setUser({ ...user, accountName: event.target.value.trim() });
-  // };
-  // const handleAccountNameChange = (event) => {
-  //   setUser({ ...user, accountName: event.target.value });
-  // };
-  // const handleAccountTypeChange = (event) => {
-  //   setUser({ ...user, accountType: event.target.value });
-  // };
   const handlePasswordChange = (event) => {
     setUser({ ...user, password: event.target.value.trim() });
   };
-  // const handleBankNameChange = (event) => {
-  //   setUser({ ...user, bankName: event.target.value });
-  // };
   const handleGenderChange = (event) => {
     setUser({ ...user, gender: event.target.value });
   };
@@ -466,8 +417,13 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (!isValidEmail(user.email)) {
-      setErrorMessage("Ïnvalid email address");
+    // if (!isValidEmail(user.email)) {
+    //   setErrorMessage("Ïnvalid email address");
+    //   setProgress(false);
+    //   return;
+    // }
+    if (user.phone.length < 1 || !isValidPhoneNumber(user.phone.trim())) {
+      setErrorMessage("Invalid phone number");
       setProgress(false);
       return;
     }
@@ -508,23 +464,31 @@ const Signup = (props) => {
 
     setProgress(true);
 
-    if (user.email.trim() !== "" && !isValidEmail(user.email)) {
-      setErrorMessage("Invalid email address");
-      setProgress(false);
-      return;
-    }
-
-    if (user.phone.trim() !== "" && !isValidPhoneNumber(user.phone)) {
-      setErrorMessage("Invalid phone number");
-      setProgress(false);
-      return;
-    }
-
-    if(user.email.trim() === "" && user.phone.trim() === ""){
+    if (user.reg_credential.trim() === '') {
       setErrorMessage("You must provide a valid phone number if you don't have an email address");
       setProgress(false);
       return;
     }
+    
+    if (user.reg_credential.trim() !== "" && !isValidPhoneOrEmail(user.reg_credential)) {
+      // const msg = isValidPhoneOrEmail(user.reg_credential);
+      // console.log(msg)
+      setErrorMessage("You must provide a valid phone number if you don't have an email address");
+      setProgress(false);
+      return;
+    }
+    
+    // if (user.email.trim() !== "" && !isValidEmail(user.email)) {
+    //   setErrorMessage("Invalid email address");
+    //   setProgress(false);
+    //   return;
+    // }
+
+    // if(user.email.trim() === "" && user.phone.trim() === ""){
+    //   setErrorMessage("You must provide a valid phone number if you don't have an email address");
+    //   setProgress(false);
+    //   return;
+    // }
 
     if (!isValidPassword(user.password.trim())) {
       setErrorMessage("Ïnvalid password");
@@ -705,7 +669,7 @@ const Signup = (props) => {
     if (event) event.preventDefault();
     progress === false ? setProgress(true) : setProgress(progress);
     if (validateVolunteerClick3()) {
-     props.signUpUser(reg_credential,user.email,phone_number,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,uploadFiles.image,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record);
+     props.signUpUser(user.reg_credential,user.email,phone_number,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,uploadFiles.image,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record);
     }
     
   }
@@ -752,7 +716,6 @@ const Signup = (props) => {
     );
   };
 
-  // console.log("selectedType", selectedType);
 
   return (
     <Fragment>
@@ -794,6 +757,18 @@ const Signup = (props) => {
               </div>
               <FormControl className={classes.formControl}>
                 <MyTextField
+                  id="reg_credential"
+                  type="text"
+                  name="reg_credential"
+                  required="required"
+                  label="Enter email or phone number"
+                  placeholder="Enter email or phone number"
+                  value={user.reg_credential}
+                  onChange={event => setUser({ ...user, reg_credential: event.target.value.trim() })}
+                />
+              </FormControl>
+              {/* <FormControl className={classes.formControl}>
+                <MyTextField
                   id="email"
                   type="email"
                   name="email"
@@ -803,19 +778,7 @@ const Signup = (props) => {
                   value={user.email}
                   onChange={handleEmailChange}
                 />
-              </FormControl>
-              <FormControl className={classes.formControl}>
-                <MyTextField
-                  id="phone"
-                  type="phone"
-                  name="phone"
-                  required="required"
-                  label="Phone no"
-                  placeholder="Enter your phone number"
-                  value={user.phone}
-                  onChange={handlePhoneChange}
-                />
-              </FormControl>
+              </FormControl> */}
               <Grid container spacing={3}>
                 <Grid item xs={6}>
                   <FormControl className={classes.formControl}>
@@ -1075,7 +1038,18 @@ const Signup = (props) => {
                     onChange={handleLastNameChange}
                   />
                 </FormControl>
-
+                <FormControl className={classes.formControl}>
+                <MyTextField
+                  id="phone"
+                  type="phone"
+                  name="phone"
+                  required="required"
+                  label="Phone no"
+                  placeholder="Enter your phone number"
+                  value={user.phone}
+                  onChange={handlePhoneChange}
+                />
+              </FormControl>
                 <FormControl className={classes.formControl}>
                   <MyTextField
                     id="address"

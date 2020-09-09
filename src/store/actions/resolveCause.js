@@ -33,11 +33,9 @@ export const getCausesForResolution = (token) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(getAllCausesForResolutionSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(getAllCausesResolutionFail(err.response.data))
           })
     }
@@ -76,11 +74,9 @@ export const resolveCause  = (token,cause_id) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(resolveCauseSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(resolveCauseFAIL(err.response.data))
           })
     }

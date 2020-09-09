@@ -5,7 +5,7 @@ import { getToken } from "../helpers/utils";
 const registerUser = async (user, image, role) => {
   var formData = new FormData();
 
-  formData.append("reg_credential", user.email !== "" ? user.email : user.phone);
+  formData.append("reg_credential", user.reg_credential);
   formData.append("first_name", user.firstName);
   formData.append("last_name", user.lastName);
   formData.append("email", user.email);
@@ -24,12 +24,18 @@ const registerUser = async (user, image, role) => {
     // headers: {"x-auth-token": token}
   })
     .then((res) => {
-      console.log(res.data);
-      return res;
+      console.log({status:res.data.status,message:res.data.message});
+      return {
+        status:res.data.status,
+        message:res.data.message
+      };
     })
     .catch((err) => {
-      console.log(err.response.data.message);
-      return err;
+      console.log({status:err.response.data.status,message:err.response.data.message});
+      return {
+        status:err.response.data.status,
+        message:err.response.data.message
+      };
     });
 };
 

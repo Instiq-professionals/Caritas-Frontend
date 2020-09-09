@@ -91,7 +91,9 @@ const moreStyles = makeStyles((theme) => ({
 const AddCause = () => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const [curUser, setCurUser] = useState(user);
-  console.log('checking...',curUser.role[1])
+  
+  const myDate = new Date(); 
+  const day = myDate.getHours() >= 12? "Afernoon": "morning"
 
   const classes = moreStyles();
   let [page, setPage] = useState(1);
@@ -477,7 +479,7 @@ const AddCause = () => {
       {page === 1 && (
         <Container style={{ marginTop: 150 }}>
         <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
-          Good going, {getAuthenticatedUser().first_name}. 
+          Good {day}, {getAuthenticatedUser().first_name}. 
         </Typography>
         <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{textAlign: "center"}}>
           Start the process of adding a new cause

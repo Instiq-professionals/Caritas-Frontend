@@ -11,6 +11,23 @@ const isValidEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 
+const isValidPhoneOrEmail = (regCredentials) => {
+  const validEmail = /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/;
+  const validPhone = /^(\+234)?(0)?[\d]{10}|(234)?(0)?[\d]{10}|[0][\d]{10}$/;
+
+  if(regCredentials.match(validEmail)){
+    // return as email
+    return validEmail.test(String(regCredentials).toLowerCase())
+  }
+  if(regCredentials.match(validPhone)){
+    // return as phone
+    return validPhone.test(regCredentials)
+  }
+
+  return false
+  // return re.test(String(email).toLowerCase());
+};
+
 const isValidPassword = (password) => {
   return /^(.){4,}$/.test(password);
 };
@@ -44,5 +61,6 @@ export {
   isValidBriefDescription,
   isValidFunds,
   isValidPhoneNumber,
+  isValidPhoneOrEmail,
   isValidVolunteer
 };

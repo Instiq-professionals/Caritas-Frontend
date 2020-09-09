@@ -172,13 +172,6 @@ const EditCause = (props) => {
         {props.editMessage?props.editMessage:'Network error'}
       </MyDialog>
       <Container style={{ marginTop: 150 }}>
-        <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
-          Good going, {getAuthenticatedUser().first_name}. 
-        </Typography>
-        <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{textAlign: "center"}}>
-          Start the process of adding a new cause
-        </Typography>
-
         <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
           <Typography variant="h6" component="h6" style={{textAlign: "center", fontWeight: "bold"}}>
             Edit Your Cause Details

@@ -36,11 +36,9 @@ export const deleteCause = (token,cause_id) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(deleteCauseSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(deleteCauseFail(err.response.data))
           })
     }

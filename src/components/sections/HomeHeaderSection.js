@@ -1,13 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Grid, Typography, Grow, Zoom } from "@material-ui/core";
 import { useStyles } from "../../helpers";
 import { Colors } from "../../constants";
 import { Link } from "react-router-dom";
+import { newsLetter } from "../../services/newsLetter";
+import { CustomizedSnackbars } from "../../commons";
 
 const HomeHeaderSection = () => {
+  const [email, setEmail] = useState('');
+  const [open, setOpen] = React.useState(false);
+  const [dialogTitle, setDialogTitle] = useState("");
+  const [dialogMessage, setDialogMessage] = useState("");
+  const handleSubmit = async (e)=> {
+    e.preventDefault();
+    const outcome = await newsLetter(email);
+    if (outcome && outcome.status) {
+      setEmail(outcome.status==='success' ? '':email);
+      setOpen(true);
+      setDialogTitle(outcome.status==='success'?"success":"error");
+      setDialogMessage(outcome.message)
+    }
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const classes = useStyles();
   return (
     <section className={classes.header}>
+      <CustomizedSnackbars
+       open={open}
+       close={handleClose}
+       title={dialogTitle}
+       message={dialogMessage}
+       />
       <Container>
         <Grid container>
           <Grow in={true} timeout={3000} mountOnEnter>
@@ -97,10 +128,16 @@ const HomeHeaderSection = () => {
                 <input
                   type="email"
                   className={classes.subscribe}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)
+                  }
                   id="sunscribe1"
                   placeholder="Subscribe to our newsletter"
                 />
-                <button className={classes.subscribeButton}>Subscibe</button>
+                <button 
+                className={classes.subscribeButton}
+                onClick={handleSubmit}
+                >Subscibe</button>
               </Grid>
 
               <Grid item xs={12} style={{ marginTop: 60 }}>

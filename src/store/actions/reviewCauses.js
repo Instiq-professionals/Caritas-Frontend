@@ -33,11 +33,9 @@ export const reviewCauses = (token) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(getCausesForReviewSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(getCausesForReviewFail(err.response.data))
           })
     }
@@ -74,11 +72,9 @@ export const reviewCauseDetails = (token,cause_id) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(CauseDetails(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(CauseDetailsFail(err.response.data))
           })
     }
@@ -121,11 +117,9 @@ export const recommendAcourseForApproval  = (reviewer_message,token,cause_id) =>
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(reviewAsingleCauseSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(reviewAsingleCauseFAIL(err.response.data))
           })
     }

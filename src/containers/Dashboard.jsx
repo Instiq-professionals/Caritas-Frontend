@@ -13,7 +13,7 @@ import { userIsUser,cLeader,Volunteer, userIsModerator, userIsAnAdmin, userIsCha
 import { Colors } from "../constants";
 import { connect } from "react-redux";
 import { PrimaryAppBar } from "../commons";
-import { SlideableGridList, Graph, Barchat } from "../components";
+import { SlideableGridList, Graph, Barchat, AudioPlayer } from "../components";
 import {
   getAllCauses,
   getAllUsersAsModerator
@@ -277,6 +277,7 @@ const DataPoint = [{
 };
 
 const Chairman = (props) => {
+  const id = JSON.parse(localStorage.getItem("user")).id;
   const classes = moreStyles();
   let [allUsers, setAllUsers] = useState([]);
 
@@ -309,6 +310,7 @@ const Chairman = (props) => {
                className={classes.sectionHead}
              >
                <FancyShape>Activity Summary</FancyShape>
+               {id === "5f2eb762de05e33a4688e185" && <FancyShape><FancyShape><AudioPlayer /></FancyShape></FancyShape>}
              </Typography>            
            </Grid>
            <Grid item xs={12} sm={6} md={3} onClick={props.clickToUsersPage}>

@@ -60,11 +60,9 @@ export const createAnEvent = (token,content,uploadFiles) => {
             }
           })
           .then(res => {
-              console.log('...........',res.data);
               dispatch(createAnEventSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(createAnEventFail(err.response.data))
           })
     }
@@ -102,11 +100,9 @@ export const getAllMyEvents = (token) => {
             }
           })
           .then(res => {
-              console.log('...........',res.data);
               dispatch(getAllMyEventsSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(getAllMyEventsFail(err.response.data))
           })
     }
@@ -142,11 +138,9 @@ export const checkEventDetails = (event_id) => {
             url: Routes.fetch_all_single_event + event_id,
           })
           .then(res => {
-              console.log(res.data);
               dispatch(checkEventDetailSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(checkEventDetailFail(err.response.data))
           })
     }
@@ -214,11 +208,9 @@ export const editMyEvent = (token,event_id,content) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(editMyEventSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response);
             dispatch(editMyEventFail(err.response.data))
           })
     }
@@ -258,11 +250,9 @@ export const deleteMyEvent = (token,event_id) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(deleteMyEventSuccess(res.data,event_id))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(deleteMyEventFail(err.response.data))
           })
     }
@@ -297,11 +287,9 @@ export const getAllEvents = () => {
             url: Routes.fetch_all_event,
           })
           .then(res => {
-              console.log('...........',res.data);
               dispatch(getAllEventsSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(getAllEventsFail(err.response.data))
           })
     }

@@ -33,11 +33,9 @@ export const getVolunteersForApproval = (token) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(getVolunteerForApprovalSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(getVolunteerForApprovalFail(err.response.data))
           })
     }
@@ -75,11 +73,9 @@ export const checkVolunteerDetails = (token,volunteer_id) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(checkVolunteerDetailSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(checkVolunteerDetailFail(err.response.data))
           })
     }
@@ -118,11 +114,9 @@ export const approveVolunteer  = (token,volunteer_id) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(makeDecisionOnVolunteerSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(makeDecisionOnVolunteerFAIL(err.response.data))
           })
     }
@@ -143,11 +137,9 @@ export const disApproveVolunteer  = (reason_for_disapproval,token,volunteer_id) 
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(makeDecisionOnVolunteerSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(makeDecisionOnVolunteerFAIL(err.response.data))
           })
     }

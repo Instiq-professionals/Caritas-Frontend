@@ -33,11 +33,9 @@ export const getEventByCleader = (token) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(getAllEventByCleaderSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(getEventByCleaderFail(err.response.data))
           })
     }
@@ -76,11 +74,9 @@ export const approveEventByCleader  = (token,event_id) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(makeDecisionOnEventSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(makeDecisionOnEventFAIL(err.response.data))
           })
     }
@@ -100,11 +96,9 @@ export const disApproveEvent  = (token,event_id,reason_for_disapproval) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(makeDecisionOnEventSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(makeDecisionOnEventFAIL(err.response.data))
           })
     }

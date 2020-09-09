@@ -58,11 +58,9 @@ export const getCausesAsAdmin = (token) => {
             }
           })
           .then(res => {
-              console.log('getting my data ' ,res.data);
               dispatch(getCausesSuccess(res.data))
           })
           .catch(err => {
-            console.log('from redux err',err.response.data);
             dispatch(getCausesFail(err.response.data))
           })
     }
@@ -79,11 +77,9 @@ export const getEventsAsAdmin = (token) => {
             }
           })
           .then(res => {
-              console.log('getting user data ' ,res.data);
               dispatch(getEventsSuccess(res.data))
           })
           .catch(err => {
-            console.log('from redux err',err.response.data);
             dispatch(getEventsFail(err.response.data))
           })
     }

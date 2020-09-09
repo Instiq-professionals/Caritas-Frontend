@@ -22,6 +22,7 @@ const Colors = {
 const Routes = {
   register: host + "users/register",
   login: host + "users/login",
+  newsLetter: host + "users/newsletter_subscription",
   user_home: host + "users/home",
 
   get_all_volunteers_for_approval: host + "users/volunteer_applicants",

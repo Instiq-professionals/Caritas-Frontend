@@ -33,11 +33,9 @@ export const getEventForResolution = (token) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(getAllEventForResolutionSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(getAllEventForResolutionFail(err.response.data))
           })
     }
@@ -76,11 +74,9 @@ export const resolveEvent  = (token,event_id) => {
             }
           })
           .then(res => {
-              console.log(res.data);
               dispatch(resolveEventSuccess(res.data))
           })
           .catch(err => {
-            console.log(err.response.data);
             dispatch(resolveEventFAIL(err.response.data))
           })
     }
