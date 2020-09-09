@@ -277,7 +277,7 @@ const DataPoint = [{
 };
 
 const Chairman = (props) => {
-  const id = JSON.parse(localStorage.getItem("user")).id;
+  const id = JSON.parse(localStorage.getItem("user"))._id;
   const classes = moreStyles();
   let [allUsers, setAllUsers] = useState([]);
 
