@@ -32,11 +32,8 @@ const ACauseHeader = (props) => {
 
   const causeId = useParams().id;
 
-  console.log("param id: ", causeId);
-
   const classes2 = moreStyles(props);
 
-  console.log("Cause on page", props.cause);
 
   return (
     <Container>

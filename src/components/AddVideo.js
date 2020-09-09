@@ -60,7 +60,6 @@ class AddVideo extends Component {
 
   handleOnChange(event) {
     const TheFile = event.target.files[0];
-    console.log("Chosen Image", TheFile);
     this.props.setImage(TheFile);
 
     if (TheFile) {

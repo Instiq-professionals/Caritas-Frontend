@@ -60,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
 
 const SlideableGridList = (props) => {
   const classes = useStyles();
-  console.log("received causes", props.causes);
   const isEmpty = props.causes.length === 0;
   return (
     <Grid container>

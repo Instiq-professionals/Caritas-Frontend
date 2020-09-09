@@ -16,6 +16,8 @@ const registerUser = async (user, image, role) => {
   formData.append("title", user.title);
   formData.append("photo", image);
   formData.append("date_of_birth", user.dob);
+  formData.append("secret_question", user.secret_question);
+  formData.append("secret_answer", user.secret_answer);
 
   return await axios({
     method: "post",

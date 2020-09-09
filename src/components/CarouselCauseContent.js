@@ -94,7 +94,6 @@ const useStyles = makeStyles((theme) => ({
 
 const CauseItem = (props) => {
   const classes = useStyles(props);
-  console.log("Inside cause item", props);
   return (
     <Paper
       elevation="4"

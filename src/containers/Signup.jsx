@@ -197,6 +197,8 @@ const Signup = (props) => {
     bankName: "",
     accountName: "",
     accountNumber: "",
+    secret_question: "",
+    secret_answer: "",
     password: "",
     confirmPassword: "",
     dateOfBirth: "",
@@ -698,7 +700,40 @@ const Signup = (props) => {
       </div>
     );
   };
-
+  const phone = /^(\+234)?(0)?[\d]{10}|(234)?(0)?[\d]{10}|[0][\d]{10}$/.test(user.reg_credential);
+   let securityQuestionAndAnswer = null;
+   if (phone) {
+     securityQuestionAndAnswer = <>
+     <Grid item xs={12}>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="secret_question"
+                    type="text"
+                    name="secret_question"
+                    required="required"
+                    label="Secret question"
+                    placeholder="Enter your secret question"
+                    value={user.secret_question}
+                    onChange={(e) => setUser({...user, secret_question:e.target.value})}
+                  />
+                </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="secret_answer"
+                    type="text"
+                    name="secret_answer"
+                    required="required"
+                    label="Secret answer"
+                    placeholder="Enter your secret answer"
+                    value={user.secret_answer}
+                    onChange={(e) => setUser({...user, secret_answer:e.target.value})}
+                  />
+                </FormControl>
+                </Grid>
+     </>
+   }
 
   return (
     <Fragment>
@@ -924,13 +959,14 @@ const Signup = (props) => {
           </div>
           <div className={classes.regForm}>
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} sm={6}>
                 <Grid
                   item
                   xs={12}
                   style={{
                     border: `2px dashed ${Colors.appRed}`,
                     marginTop: "10px",
+                    marginBottom: 20,
                   }}
                 >
                   <AddProfileImage
@@ -949,8 +985,9 @@ const Signup = (props) => {
                     }}
                   />
                 </Grid>
+                {securityQuestionAndAnswer}
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} sm={6}>
                 <FormControl
                   className={classes.formControl}
                   style={{ margin: "10px 0px" }}

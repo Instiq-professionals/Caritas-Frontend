@@ -51,7 +51,6 @@ const CausesSection = (props) => {
     }
     setTheCauses();
   }, []);
- console.log('gbilz.....',allCauses)
   return (
     <section className={classes.corona}>
       <Container>
