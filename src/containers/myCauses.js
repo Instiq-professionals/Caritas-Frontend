@@ -109,8 +109,6 @@ const MyCauses = (props) => {
     props.getMyCauses(token);
   },[]);
 
-  const myDate = new Date(); 
-  const day = myDate.getHours() >= 12? "Afernoon": "morning"
 
   const classes = moreStyles();
   const tableClass = useTableStyles();

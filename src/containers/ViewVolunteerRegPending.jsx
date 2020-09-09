@@ -17,7 +17,6 @@ import {
 import { Colors } from "../constants";
 import { connect } from "react-redux";
 import { PrimaryAppBar } from "../commons";
-import {getAuthenticatedUser} from "../helpers/utils";
 import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
 

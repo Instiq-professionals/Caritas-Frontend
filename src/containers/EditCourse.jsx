@@ -149,7 +149,6 @@ const EditCause = (props) => {
 
   const handleAddImageClick = (event) => {
     event.stopPropagation();
-    console.log("Clicked", event.target);
     let fileInput = event.target.getElementsByTagName("input")[0];
     fileInput.click();
   };

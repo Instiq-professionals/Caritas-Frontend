@@ -22,7 +22,6 @@ import { Colors } from "../constants";
 import { connect } from "react-redux";
 import { PrimaryAppBar } from "../commons";
 
-import {getAuthenticatedUser} from "../helpers/utils";
 import * as actions from '../store/actions/index';
 import Moment from 'react-moment';
 import { baseUrl  } from "../constants";

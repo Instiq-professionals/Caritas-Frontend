@@ -15,7 +15,6 @@ import { connect } from "react-redux";
 import { PrimaryAppBar } from "../commons";
 import { MyDialog } from "../components";
 import { MyConfirmationDialog, MyPromptDialog } from "../commons";
-import {getAuthenticatedUser} from "../helpers/utils";
 import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
 

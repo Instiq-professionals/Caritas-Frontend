@@ -259,7 +259,6 @@ const Signup = (props) => {
     lga: "",
   });
 
-  const  reg_credential =  user.email !== "" ? user.email : user.phone;
   const password = user.password;
 
   const [volunteer, setVolunteer] = useState({
@@ -303,7 +302,6 @@ const Signup = (props) => {
 
       setProgress(false);
 
-      console.log("Outcome", outcome);
 
       if (outcome && outcome.status) {
       
@@ -388,12 +386,10 @@ const Signup = (props) => {
       ...volunteer,
       [name]: e.target.value
     });
-    console.log(volunteer)
  };
 
   const handleAddImageClick = (event) => {
     event.stopPropagation();
-    console.log("Clicked", event.target);
     let fileInput = event.target.getElementsByTagName("input")[0];
     fileInput.click();
   };
@@ -471,24 +467,11 @@ const Signup = (props) => {
     }
     
     if (user.reg_credential.trim() !== "" && !isValidPhoneOrEmail(user.reg_credential)) {
-      // const msg = isValidPhoneOrEmail(user.reg_credential);
-      // console.log(msg)
       setErrorMessage("You must provide a valid phone number if you don't have an email address");
       setProgress(false);
       return;
     }
     
-    // if (user.email.trim() !== "" && !isValidEmail(user.email)) {
-    //   setErrorMessage("Invalid email address");
-    //   setProgress(false);
-    //   return;
-    // }
-
-    // if(user.email.trim() === "" && user.phone.trim() === ""){
-    //   setErrorMessage("You must provide a valid phone number if you don't have an email address");
-    //   setProgress(false);
-    //   return;
-    // }
 
     if (!isValidPassword(user.password.trim())) {
       setErrorMessage("Ïnvalid password");

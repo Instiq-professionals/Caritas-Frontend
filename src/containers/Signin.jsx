@@ -161,7 +161,6 @@ const Signin = () => {
 
       setProgress(false);
 
-      console.log(outcome);
 
       if (outcome && outcome.status === 200) {
         setErrorMessage("");

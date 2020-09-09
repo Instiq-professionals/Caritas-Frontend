@@ -162,7 +162,6 @@ const adminsCauseStatus = [];
 
 const userCausePendingLength = userCauseStatus.filter(element => element === "Awaiting Approval");
 const userApprovedCausesLength = userCauseStatus.filter(element => element === "Approved");
-const volunteerCausePendingLength = volunterCauseStatus.filter(element => element === "Awaiting Approval");
 const pendingCausesInAdminsDashboard = adminsCauseStatus.filter(element => element === "Awaiting Approval");
 const approvedCausesInAdminsDashboard = adminsCauseStatus.filter(element => element === "Approved");
 const disApprovedCausesInAdminsDashboard = adminsCauseStatus.filter(element => element === "Disapproved");
@@ -171,8 +170,6 @@ const approvedEventsInAdminsDashboard = adminsEventsStatus.filter(element => ele
 const pendingEventsInAdminsDashboard = adminsEventsStatus.filter(element => element === "Awaiting approval");
 const disApprovedEventsInAdminsDashboard = adminsEventsStatus.filter(element => element === "Disapproved");
 const closedEventsInAdminsDashboard = adminsEventsStatus.filter(element => element === "Closed");
-//const cLeaderCauseResolvedLength = cLeaderCauseStatus.filter(element => element === "Resolved");
-console.log('getsAllEventByDirectorData.length...',getsAllEventByDirectorData.length);
 
 const Data = [{
   type: "column",
@@ -277,7 +274,7 @@ const DataPoint = [{
 };
 
 const Chairman = (props) => {
-  const id = JSON.parse(localStorage.getItem("user"))._id;
+  const id = JSON.parse(localStorage.getItem("user")).data._id;
   const classes = moreStyles();
   let [allUsers, setAllUsers] = useState([]);
 

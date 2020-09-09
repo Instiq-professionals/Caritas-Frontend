@@ -73,7 +73,6 @@ class AddProfileImage extends Component {
 
   handleOnChange(event) {
     const TheFile = event.target.files[0];
-    console.log("Chosen Image", TheFile);
     this.props.setImage(TheFile);
     // this.props.file = TheFile;
 
@@ -92,7 +91,6 @@ class AddProfileImage extends Component {
 
   render() {
     const { item, title, text, img } = styles;
-    // console.log("The Image", this.state.image);
     return (
       <div
         style={{

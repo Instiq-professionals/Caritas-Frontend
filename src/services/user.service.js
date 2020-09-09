@@ -24,14 +24,12 @@ const registerUser = async (user, image, role) => {
     // headers: {"x-auth-token": token}
   })
     .then((res) => {
-      console.log({status:res.data.status,message:res.data.message});
       return {
         status:res.data.status,
         message:res.data.message
       };
     })
     .catch((err) => {
-      console.log({status:err.response.data.status,message:err.response.data.message});
       return {
         status:err.response.data.status,
         message:err.response.data.message
@@ -47,8 +45,6 @@ const signinUser = async (user) => {
       { "Content-Type": "application/json" }
     )
     .then((res) => {
-      console.log("response", res);
-      console.log("Gotten token", res.headers["x-auth-token"]);
       if (res.status === 200) {
         res.data.token = res.headers["x-auth-token"];
         localStorage.setItem("user", JSON.stringify(res.data));
@@ -56,7 +52,6 @@ const signinUser = async (user) => {
       return res;
     })
     .catch((err) => {
-      console.log(err.response);
       return err;
     });
 };
@@ -65,11 +60,9 @@ const verifyUserEmail = async (token) => {
   return await axios
     .put(Routes.verify_email + token, { "Content-Type": "application/json" })
     .then((res) => {
-      console.log("response", res);
       return res;
     })
     .catch((err) => {
-      console.log(err.response);
       return err.response;
     });
 };
@@ -78,11 +71,9 @@ const forgotPassword = async (email) => {
   return await axios
     .post(Routes.forgot_password, { email: email })
     .then((res) => {
-      console.log("response", res);
       return res;
     })
     .catch((err) => {
-      console.log(err.response);
       return err.response;
     });
 };
@@ -91,11 +82,9 @@ const resetPassword = async (password, token) => {
   return await axios
     .put(Routes.reset_password + token, { password: password })
     .then((res) => {
-      console.log("response", res);
       return res;
     })
     .catch((err) => {
-      console.log(err.response);
       return err.response;
     });
 };
@@ -107,11 +96,9 @@ const getProfile = async (token) => {
     headers: { "x-auth-token": token },
   })
     .then((res) => {
-      console.log("response", res);
       return res;
     })
     .catch((err) => {
-      console.log(err.response);
       return err.response;
     });
 };
@@ -129,11 +116,9 @@ const updateProfile = async (token, profile) => {
     headers: { "x-auth-token": token },
   })
     .then((res) => {
-      console.log("response", res);
       return res;
     })
     .catch((err) => {
-      console.log(err.response);
       return err.response;
     });
 };
@@ -146,11 +131,9 @@ const createSuccessStory = async (cause_id, success_story) => {
     headers: { "x-auth-token": getToken() },
   })
     .then((res) => {
-      console.log("response", res);
       return res;
     })
     .catch((err) => {
-      console.log(err.response);
       return err.response;
     });
 };

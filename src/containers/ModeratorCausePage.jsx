@@ -95,8 +95,6 @@ const ModeratorCausePage = () => {
   const classes = useStyles();
   const classes2 = moreStyles(cause);
 
-  console.log("The param id", id);
-  console.log("cause", cause);
 
   const fetchCause = async (id) => {
     return await getCause(id);
@@ -122,7 +120,6 @@ const ModeratorCausePage = () => {
     setACause();
   }, []);
 
-  console.log("The cause", cause);
 
   return (
     <Fragment>

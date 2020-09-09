@@ -153,7 +153,6 @@ const Profile = () => {
 
   const handleAddImageClick = (event) => {
     event.stopPropagation();
-    console.log("Clicked", event.target);
     let fileInput = event.target.getElementsByTagName("input")[0];
     fileInput.click();
   };
@@ -174,7 +173,6 @@ const Profile = () => {
       }
       let outcome = await updateProfile(getToken(), profile);
       setProgress(false);
-      console.log(outcome);
       if (outcome && outcome.status === 200) {
         setErrorMessage("");
         setDialogTitle("Update Successful");
