@@ -116,3 +116,41 @@ export default function MyPromptDialog(props) {
     </div>
   );
 }
+
+
+export const ApproveDialogue = (props) => {
+  const [amount_approved, setAmountApproved] = useState('');
+  const [approval_comment, setComment] = useState('');
+  const handleClose = () => {
+    props.onClose();
+  };
+
+  return (
+    <div>
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={props.openDialog || false}
+      >
+        <DialogTitle
+          id="customized-dialog-title"
+          onClick={handleClose}
+          style={{ color: props.positiveDialog ? "green" : "red" }}
+        >
+          {props.title}
+        </DialogTitle>
+        <DialogContent dividers>
+          {props.children}
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button autoFocus onClick={props.positive} color="primary">
+            Approve
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}

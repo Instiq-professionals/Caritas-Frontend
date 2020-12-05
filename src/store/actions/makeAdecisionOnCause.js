@@ -63,11 +63,15 @@ export const makeDecisionOnCauseFAIL = (error) => {
     };
 };
 
-export const approveCause  = (token,cause_id) => {
+export const approveCause  = (token,cause_id,amount_approved,approval_comment) => {
     return dispatch => {
         dispatch(makeDecisionOnCauseStart());
+        const formData = new FormData();
+        formData.append("amount_approved", amount_approved);
+        formData.append("approval_comment", approval_comment);
          axios({
             method : 'put',
+            data: formData,
             url: Routes.approve_cause + cause_id,
             headers : {
               'x-auth-token' : token

@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { connect } from 'react-redux';
-import * as actionCreators from '../store/actions/index';
+import { connect } from "react-redux";
+import * as actionCreators from "../store/actions/index";
 // import ReactDom from "react-dom";
 import clsx from "clsx";
 import {
@@ -29,11 +29,11 @@ import {
   isValidPhoneOrEmail,
   isValidPassword,
   isValidPhoneNumber,
-  isValidVolunteer
+  isValidVolunteer,
 } from "../helpers/validator";
 import { MyButton, MyDialog } from "../components";
 import { AddProfileImage } from "../components";
-import TermsAndCondition from "../components/TermsAndCondition"
+import TermsAndCondition from "../components/TermsAndCondition";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -141,7 +141,7 @@ const useStyles = makeStyles((theme) => ({
   },
   checkbox: {
     display: "block",
-    color: Colors.appRed
+    color: Colors.appRed,
   },
   regForm: {
     width: "800px !important",
@@ -167,23 +167,22 @@ const Signup = (props) => {
 
       setOpenDialog(true);
       setTimeout(() => (window.location = "/signin"), 5000);
-     } else if (errorMsg && errorMsg.status) {
+    } else if (errorMsg && errorMsg.status) {
       setDialogTitle(errorMsg.status);
       setDialogMessage(errorMsg.message);
 
       setPositiveDialog(false);
 
       setOpenDialog(true);
-     } else {
-      setDialogTitle('');
-      setDialogMessage('');
+    } else {
+      setDialogTitle("");
+      setDialogMessage("");
 
       setPositiveDialog(false);
 
       setOpenDialog(false);
-     }
-    
-  },[userId,errorMsg]);
+    }
+  }, [userId, errorMsg]);
   const classes = useStyles();
   let [user, setUser] = useState({
     firstName: "",
@@ -205,7 +204,7 @@ const Signup = (props) => {
     title: "Select Title",
     gender: "Select Gender",
     dob: "",
-    agreeToTandC:false
+    agreeToTandC: false,
   });
 
   // let [partner, setPartner] = useState({
@@ -266,33 +265,31 @@ const Signup = (props) => {
   const [volunteer, setVolunteer] = useState({
     first_name: "",
     last_name: "",
-    address:"",
-    date_of_birth:"",
-    local_govt:"",
-    state:"",
-    staff_strength:"",
-    company:"",
-    position:"",
-    guarantor_name:"",
-    guarantor_address:"",
-    guarantor_company:"",
-    guarantor_position:"",
-    highest_education_level:"",
+    address: "",
+    date_of_birth: "",
+    local_govt: "",
+    state: "",
+    staff_strength: "",
+    company: "",
+    position: "",
+    guarantor_name: "",
+    guarantor_address: "",
+    guarantor_company: "",
+    guarantor_position: "",
+    highest_education_level: "",
     role: "Volunteer",
-    photo:uploadFiles.image,
-    phone_number:"",
-    password:user.password,
-    confirmPassword:user.confirmPassword,
-    category : volunteerType,
+    photo: uploadFiles.image,
+    phone_number: "",
+    password: user.password,
+    confirmPassword: user.confirmPassword,
+    category: volunteerType,
     title: "Select Title",
     gender: "Select Gender",
     employment_status: "What is your employment status",
-    relationship_with_guarantor:"Relationship With Guarantor"
+    relationship_with_guarantor: "Relationship With Guarantor",
   });
 
   const handleSubmit = async (event) => {
-
-   
     if (event) event.preventDefault();
 
     progress === false ? setProgress(true) : setProgress(progress);
@@ -304,17 +301,16 @@ const Signup = (props) => {
 
       setProgress(false);
 
-
       if (outcome && outcome.status) {
-      
         setDialogTitle(outcome.status);
         setDialogMessage(outcome.message);
 
-        setPositiveDialog(outcome.status === 'Success'?true:false);
+        setPositiveDialog(outcome.status === "Success" ? true : false);
 
         setOpenDialog(true);
-        outcome.status === 'Success' && setTimeout(() => (window.location = "/signin"), 5000);
-      } 
+        outcome.status === "Success" &&
+          setTimeout(() => (window.location = "/signin"), 5000);
+      }
     }
   };
 
@@ -352,8 +348,8 @@ const Signup = (props) => {
     setUser({ ...user, confirmPassword: event.target.value.trim() });
   };
   const handleCheck = () => {
-    setUser({ ...user, agreeToTandC:!user.agreeToTandC });
-  }
+    setUser({ ...user, agreeToTandC: !user.agreeToTandC });
+  };
   const handleInstitutionNameChange = (event) => {
     setInstitution({ ...institution, name: event.target.value });
   };
@@ -382,13 +378,12 @@ const Signup = (props) => {
     setInstitution({ ...institution, address: event.target.value });
   };
 
-
-  const handleChangeVolunteer =  name => (e) => { 
+  const handleChangeVolunteer = (name) => (e) => {
     setVolunteer({
       ...volunteer,
-      [name]: e.target.value
+      [name]: e.target.value,
     });
- };
+  };
 
   const handleAddImageClick = (event) => {
     event.stopPropagation();
@@ -402,7 +397,6 @@ const Signup = (props) => {
       setVerified(true);
     }
   };
-
 
   const validateSignup = () => {
     if (!isValidFirstName(user.firstName)) {
@@ -462,18 +456,24 @@ const Signup = (props) => {
 
     setProgress(true);
 
-    if (user.reg_credential.trim() === '') {
-      setErrorMessage("You must provide a valid phone number if you don't have an email address");
+    if (user.reg_credential.trim() === "") {
+      setErrorMessage(
+        "You must provide a valid phone number if you don't have an email address"
+      );
       setProgress(false);
       return;
     }
-    
-    if (user.reg_credential.trim() !== "" && !isValidPhoneOrEmail(user.reg_credential)) {
-      setErrorMessage("You must provide a valid phone number if you don't have an email address");
+
+    if (
+      user.reg_credential.trim() !== "" &&
+      !isValidPhoneOrEmail(user.reg_credential)
+    ) {
+      setErrorMessage(
+        "You must provide a valid phone number if you don't have an email address"
+      );
       setProgress(false);
       return;
     }
-    
 
     if (!isValidPassword(user.password.trim())) {
       setErrorMessage("Ïnvalid password");
@@ -481,7 +481,7 @@ const Signup = (props) => {
       return;
     }
 
-    if(user.password.trim() !== user.confirmPassword.trim()){
+    if (user.password.trim() !== user.confirmPassword.trim()) {
       setErrorMessage("Passwords don't match");
       setProgress(false);
       return;
@@ -493,7 +493,7 @@ const Signup = (props) => {
 
     //next page please
     setPage(2);
-  }
+  };
   const validateVolunteerClick1 = () => {
     if (uploadFiles.image === null) {
       setPositiveDialog(false);
@@ -512,41 +512,52 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (!isValidVolunteer(volunteer.first_name.trim()) ||volunteer.first_name === undefined || volunteer.first_name.length<3) {
+    if (
+      !isValidVolunteer(volunteer.first_name.trim()) ||
+      volunteer.first_name === undefined ||
+      volunteer.first_name.length < 3
+    ) {
       setErrorMessage("Ïnvalid First name");
       setProgress(false);
       return;
     }
 
-    if (!isValidVolunteer(volunteer.last_name.trim())||volunteer.last_name === undefined || volunteer.last_name.length<3) {
+    if (
+      !isValidVolunteer(volunteer.last_name.trim()) ||
+      volunteer.last_name === undefined ||
+      volunteer.last_name.length < 3
+    ) {
       setErrorMessage("Ïnvalid Last name");
       setProgress(false);
       return;
     }
-    if (volunteer.date_of_birth.length<3) {
+    if (volunteer.date_of_birth.length < 3) {
       setErrorMessage("Ïnvalid date of birth");
       setProgress(false);
       return;
     }
-    if (!isValidPhoneNumber(volunteer.phone_number.trim()) || volunteer.phone_number === undefined ) {
+    if (
+      !isValidPhoneNumber(volunteer.phone_number.trim()) ||
+      volunteer.phone_number === undefined
+    ) {
       setErrorMessage("Ïnvalid phone number");
       setProgress(false);
       return;
     }
-    if (volunteer.local_govt.length<3) {
+    if (volunteer.local_govt.length < 3) {
       setErrorMessage("Ïnvalid Local government area");
       setProgress(false);
       return;
     }
-    if (volunteer.state.length<3) {
+    if (volunteer.state.length < 3) {
       setErrorMessage("Ïnvalid State");
       setProgress(false);
       return;
     }
     return true;
-  }
+  };
   const validateVolunteerClick2 = () => {
-    if (volunteer.highest_education_level.length<3) {
+    if (volunteer.highest_education_level.length < 3) {
       setErrorMessage("Ïnvalid eduction level");
       setProgress(false);
       return;
@@ -556,27 +567,43 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (!isValidVolunteer(volunteer.guarantor_name.trim())||volunteer.guarantor_name === undefined || volunteer.guarantor_name.length<3) {
+    if (
+      !isValidVolunteer(volunteer.guarantor_name.trim()) ||
+      volunteer.guarantor_name === undefined ||
+      volunteer.guarantor_name.length < 3
+    ) {
       setErrorMessage("Ïnvalid guarantor's first name");
       setProgress(false);
       return;
     }
-    if (!isValidVolunteer(volunteer.guarantor_last_name.trim())||volunteer.guarantor_last_name === undefined || volunteer.guarantor_last_name.length<3) {
+    if (
+      !isValidVolunteer(volunteer.guarantor_last_name.trim()) ||
+      volunteer.guarantor_last_name === undefined ||
+      volunteer.guarantor_last_name.length < 3
+    ) {
       setErrorMessage("Ïnvalid guarantor's last name");
       setProgress(false);
       return;
     }
-    if (volunteer.relationship_with_guarantor === "Relationship With Guarantor") {
+    if (
+      volunteer.relationship_with_guarantor === "Relationship With Guarantor"
+    ) {
       setErrorMessage("Select a valid relationship with guarantor");
       setProgress(false);
       return;
     }
-    if (!isValidEmail(volunteer.guarantor_email.trim()) || volunteer.guarantor_email === undefined ) {
+    if (
+      !isValidEmail(volunteer.guarantor_email.trim()) ||
+      volunteer.guarantor_email === undefined
+    ) {
       setErrorMessage("Ïnvalid guarantor's email address");
       setProgress(false);
       return;
     }
-    if (!isValidPhoneNumber(volunteer.guarantor_phone_number.trim()) || volunteer.guarantor_phone_number === undefined ) {
+    if (
+      !isValidPhoneNumber(volunteer.guarantor_phone_number.trim()) ||
+      volunteer.guarantor_phone_number === undefined
+    ) {
       setErrorMessage("Ïnvalid guarantor's phone number");
       setProgress(false);
       return;
@@ -586,81 +613,132 @@ const Signup = (props) => {
       setProgress(false);
       return;
     }
-    if (volunteer.guarantor_position.length<3) {
+    if (volunteer.guarantor_position.length < 3) {
       setErrorMessage("Provide a valid guarantor's position");
       setProgress(false);
       return;
     }
-    if (volunteer.guarantor_company.length<3) {
+    if (volunteer.guarantor_company.length < 3) {
       setErrorMessage("Provide a valid guarantor's work details");
       setProgress(false);
       return;
     }
     return true;
-  }
+  };
   const validateVolunteerClick3 = () => {
-    if (volunteer.religious_group === undefined || volunteer.religious_group.length<1) {
+    if (
+      volunteer.religious_group === undefined ||
+      volunteer.religious_group.length < 1
+    ) {
       setErrorMessage("Choose if you are in a religious group");
       setProgress(false);
       return;
     }
-    if (volunteer.religious_group === 'Yes' && volunteer.religion === '') {
+    if (volunteer.religious_group === "Yes" && volunteer.religion === "") {
       setErrorMessage("Provide the religious group you belong");
       setProgress(false);
       return;
     }
-    if (volunteer.above_18 === undefined || volunteer.above_18.length<1) {
+    if (volunteer.above_18 === undefined || volunteer.above_18.length < 1) {
       setErrorMessage("State if  you are above 18 years old");
       setProgress(false);
       return;
     }
-    if (volunteer.criminal_record === undefined || volunteer.criminal_record.length<1) {
+    if (
+      volunteer.criminal_record === undefined ||
+      volunteer.criminal_record.length < 1
+    ) {
       setErrorMessage("State if  you have any criminal record");
       setProgress(false);
       return;
     }
-    if (volunteer.agreed === undefined || volunteer.agreed.length<1) {
+    if (volunteer.agreed === undefined || volunteer.agreed.length < 1) {
       setPositiveDialog(false);
       setDialogTitle("Terms and Conditions");
       setDialogMessage(
         `To be able to upload this cause, you must agree to the terms and conditions`
       );
       setOpenDialog(true);
-      return
+      return;
     }
-   return true
-  }
+    return true;
+  };
   const handleVolunteerPageClick = (event) => {
     if (event) event.preventDefault();
-    if (page === 4 && selectedType === "Volunteer" ){
-      if (validateVolunteerClick1()){
+    if (page === 4 && selectedType === "Volunteer") {
+      if (validateVolunteerClick1()) {
         setErrorMessage("");
-        setPage(5)
-      } 
-    } 
-    if (page === 5 && selectedType === "Volunteer" ){
-      if (validateVolunteerClick2()){
+        setPage(5);
+      }
+    }
+    if (page === 5 && selectedType === "Volunteer") {
+      if (validateVolunteerClick2()) {
         setErrorMessage("");
-        setPage(6)
-      } 
-    } 
-  }
+        setPage(6);
+      }
+    }
+  };
 
-  const handleVolunteerSubmit =  (event) => {
-    const {email,first_name,last_name,role,address,phone_number,
-      date_of_birth,local_govt,state,title,staff_strength,photo,
-      category,company,position,religion,guarantor_name,relationship_with_guarantor,
-      guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record} = volunteer;
+  const handleVolunteerSubmit = (event) => {
+    const {
+      email,
+      first_name,
+      last_name,
+      role,
+      address,
+      phone_number,
+      date_of_birth,
+      local_govt,
+      state,
+      title,
+      staff_strength,
+      photo,
+      category,
+      company,
+      position,
+      religion,
+      guarantor_name,
+      relationship_with_guarantor,
+      guarantor_address,
+      guarantor_company,
+      guarantor_position,
+      highest_education_level,
+      criminal_record,
+    } = volunteer;
     if (event) event.preventDefault();
     progress === false ? setProgress(true) : setProgress(progress);
     if (validateVolunteerClick3()) {
-     props.signUpUser(user.reg_credential,user.email,phone_number,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,uploadFiles.image,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record);
+      props.signUpUser(
+        user.reg_credential,
+        user.email,
+        phone_number,
+        password,
+        first_name,
+        last_name,
+        role,
+        address,
+        date_of_birth,
+        local_govt,
+        state,
+        title,
+        staff_strength,
+        uploadFiles.image,
+        category,
+        company,
+        position,
+        religion,
+        guarantor_name,
+        relationship_with_guarantor,
+        guarantor_address,
+        guarantor_company,
+        guarantor_position,
+        highest_education_level,
+        criminal_record
+      );
     }
-    
-  }
+  };
 
-  const TypeSelection = 
-  (props) => {
+  const TypeSelection = (props) => {
     const useStyles = makeStyles((theme) => ({
       root: {
         display: "flex",
@@ -669,11 +747,15 @@ const Signup = (props) => {
         alignItems: "center",
         cursor: "pointer",
         boxShadow:
-          props.type == selectedType || props.type === volunteerType || props.type === partnerType
+          props.type == selectedType ||
+          props.type === volunteerType ||
+          props.type === partnerType
             ? "0px 0px 20px rgba(252, 99, 107, 0.7)"
             : "none",
         backgroundColor:
-          props.type === selectedType || props.type === volunteerType || props.type === partnerType
+          props.type === selectedType ||
+          props.type === volunteerType ||
+          props.type === partnerType
             ? "rgba(255,255,255,.7)"
             : "transparent",
 
@@ -700,40 +782,48 @@ const Signup = (props) => {
       </div>
     );
   };
-  const phone = /^(\+234)?(0)?[\d]{10}|(234)?(0)?[\d]{10}|[0][\d]{10}$/.test(user.reg_credential);
-   let securityQuestionAndAnswer = null;
-   if (phone) {
-     securityQuestionAndAnswer = <>
-     <Grid item xs={12}>
-                <FormControl className={classes.formControl}>
-                  <MyTextField
-                    id="secret_question"
-                    type="text"
-                    name="secret_question"
-                    required="required"
-                    label="Secret question"
-                    placeholder="Enter your secret question"
-                    value={user.secret_question}
-                    onChange={(e) => setUser({...user, secret_question:e.target.value})}
-                  />
-                </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                <FormControl className={classes.formControl}>
-                  <MyTextField
-                    id="secret_answer"
-                    type="text"
-                    name="secret_answer"
-                    required="required"
-                    label="Secret answer"
-                    placeholder="Enter your secret answer"
-                    value={user.secret_answer}
-                    onChange={(e) => setUser({...user, secret_answer:e.target.value})}
-                  />
-                </FormControl>
-                </Grid>
-     </>
-   }
+  const phone = /^(\+234)?(0)?[\d]{10}|(234)?(0)?[\d]{10}|[0][\d]{10}$/.test(
+    user.reg_credential
+  );
+  let securityQuestionAndAnswer = null;
+  if (phone) {
+    securityQuestionAndAnswer = (
+      <>
+        <Grid item xs={12}>
+          <FormControl className={classes.formControl}>
+            <MyTextField
+              id="secret_question"
+              type="text"
+              name="secret_question"
+              required="required"
+              label="Secret question"
+              placeholder="Enter your secret question"
+              value={user.secret_question}
+              onChange={(e) =>
+                setUser({ ...user, secret_question: e.target.value })
+              }
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl className={classes.formControl}>
+            <MyTextField
+              id="secret_answer"
+              type="text"
+              name="secret_answer"
+              required="required"
+              label="Secret answer"
+              placeholder="Enter your secret answer"
+              value={user.secret_answer}
+              onChange={(e) =>
+                setUser({ ...user, secret_answer: e.target.value })
+              }
+            />
+          </FormControl>
+        </Grid>
+      </>
+    );
+  }
 
   return (
     <Fragment>
@@ -751,7 +841,11 @@ const Signup = (props) => {
           <img
             src="/logo-dark.svg"
             alt=""
-            style={{ display: "block", margin: "100px auto 50px auto", width: "80px" }}
+            style={{
+              display: "block",
+              margin: "100px auto 50px auto",
+              width: "80px",
+            }}
           />
 
           <div style={{ textAlign: "center" }}>
@@ -782,7 +876,12 @@ const Signup = (props) => {
                   label="Enter email or phone number"
                   placeholder="Enter email or phone number"
                   value={user.reg_credential}
-                  onChange={event => setUser({ ...user, reg_credential: event.target.value.trim() })}
+                  onChange={(event) =>
+                    setUser({
+                      ...user,
+                      reg_credential: event.target.value.trim(),
+                    })
+                  }
                 />
               </FormControl>
               {/* <FormControl className={classes.formControl}>
@@ -1059,17 +1158,17 @@ const Signup = (props) => {
                   />
                 </FormControl>
                 <FormControl className={classes.formControl}>
-                <MyTextField
-                  id="phone"
-                  type="phone"
-                  name="phone"
-                  required="required"
-                  label="Phone no"
-                  placeholder="Enter your phone number"
-                  value={user.phone}
-                  onChange={handlePhoneChange}
-                />
-              </FormControl>
+                  <MyTextField
+                    id="phone"
+                    type="phone"
+                    name="phone"
+                    required="required"
+                    label="Phone no"
+                    placeholder="Enter your phone number"
+                    value={user.phone}
+                    onChange={handlePhoneChange}
+                  />
+                </FormControl>
                 <FormControl className={classes.formControl}>
                   <MyTextField
                     id="address"
@@ -1097,23 +1196,23 @@ const Signup = (props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-             <TermsAndCondition />
-             </Grid>
-             <Grid item xs={12}>
-             <FormControlLabel
-                    className={classes.checkbox}
-                    style={{ marginTop: "20px" }}
-                    control={
-                      <Checkbox
-                        checked={user.agreeToTandC}
-                        // onChange={handleChange}
-                        name="agreeToTandC"
-                        onChange={handleCheck}
-                      />
-                    }
-                    label={`I agree to the terms and conditions.`}
-                  />
-             </Grid>
+                <TermsAndCondition />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  className={classes.checkbox}
+                  style={{ marginTop: "20px" }}
+                  control={
+                    <Checkbox
+                      checked={user.agreeToTandC}
+                      // onChange={handleChange}
+                      name="agreeToTandC"
+                      onChange={handleCheck}
+                    />
+                  }
+                  label={`I agree to the terms and conditions.`}
+                />
+              </Grid>
               <Grid item xs={12}>
                 <div>
                   <Button
@@ -1147,7 +1246,6 @@ const Signup = (props) => {
               </Grid>
             </Grid>
           </div>
-
         </Container>
       )}
       {page === 3 && selectedType === "Institution" && (
@@ -2016,184 +2114,211 @@ const Signup = (props) => {
             </div>
           </Container>
         )}
-        {page === 3 && selectedType === "Volunteer" && (
-         <Container style={{ marginTop: "100px" }}>
-         <Grid item xs={12} md={6}>
-           <Typography
-             variant="h4"
-             component="h4"
-             className={classes.sectionHead}
-           >
-             What Category are you interested in?
-           </Typography>
-           <Typography
-             variant="body1"
-             component="p"
-             className={classes.sectionSubhead}
-             style={{ width: "300px" }}
-           >
-             Kindly select what category you are signing up for To finish your
-             registration.
-           </Typography>
-         </Grid>
-         <Grid container spacing={5} style={{ marginTop: "100px" }}>
-           <Grid item xs={6} md={3} onClick={()=>setVolunteer({
-             ...volunteer,
-             category:'Food'
-           })}>
-             <TypeSelection
-               image={"/assets/images/icons/food-help.png"}
-               type="Food"
-                action={setVolunteerType}
-             />
-           </Grid>
-           <Grid item xs={6} md={3} onClick={()=>setVolunteer({
-             ...volunteer,
-             category:'Education'
-           })}>
-             <TypeSelection
-               image={"/assets/images/icons/education-help.png"}
-               type="Education"
-               action={setVolunteerType}
-             />
-           </Grid>
-           <Grid item xs={6} md={3} onClick={()=>setVolunteer({
-             ...volunteer,
-             category:'Health'
-           })}>
-             <TypeSelection
-               image={"/assets/images/icons/health-help.png"}
-               type="Health"
-               action={setVolunteerType}
-             />
-           </Grid>
-           <Grid item xs={6} md={3} onClick={()=>setVolunteer({
-             ...volunteer,
-             category:'Human right'
-           })}>
-             <TypeSelection
-               image={"/assets/images/icons/human-rights-help.png"}
-               type="Human right"
-               action={setVolunteerType}
-             />
-           </Grid>
-         </Grid>
-         {(volunteerType !== undefined || volunteerType  !== "") && (
-           <div>
-             <Button
-               onClick={() => setPage(2)}
-               variant="contained"
-               color="default"
-               style={{
-                 marginTop: "100px",
-                 marginBottom: "100px",
-               }}
-             >
-               Back
-             </Button>
-             <Button
-               onClick={() =>setPage(4) }
-               variant="contained"
-               color="primary"
-               style={{
-                 marginTop: "100px",
-                 marginBottom: "100px",
-                 marginLeft: "auto",
-                 color: "white",
-                 float: "right",
-               }}
-             >
-               Continue
-             </Button>
-           </div>
-         )}
-       </Container>
-      )}
-      {page === 4 &&
-        selectedType === "Volunteer" && (
-          <Container style={{ marginTop: "100px" }}>
+      {page === 3 && selectedType === "Volunteer" && (
+        <Container style={{ marginTop: "100px" }}>
+          <Grid item xs={12} md={6}>
             <Typography
               variant="h4"
               component="h4"
               className={classes.sectionHead}
-              style={{ textAlign: "center" }}
             >
-              Complete Volunteer Registration
+              What Category are you interested in?
             </Typography>
             <Typography
               variant="body1"
               component="p"
               className={classes.sectionSubhead}
-              style={{ width: "300px", textAlign: "center", margin: "auto" }}
+              style={{ width: "300px" }}
             >
-              Kindly provide all neccesary details to finish Your registration
-              as a volunteer.
+              Kindly select what category you are signing up for To finish your
+              registration.
             </Typography>
-
-            <div style={{ color: "red", textAlign: "center", margin: 16 }}>
-              {errorMessage}
+          </Grid>
+          <Grid container spacing={5} style={{ marginTop: "100px" }}>
+            <Grid
+              item
+              xs={6}
+              md={3}
+              onClick={() =>
+                setVolunteer({
+                  ...volunteer,
+                  category: "Food",
+                })
+              }
+            >
+              <TypeSelection
+                image={"/assets/images/icons/food-help.png"}
+                type="Food"
+                action={setVolunteerType}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={6}
+              md={3}
+              onClick={() =>
+                setVolunteer({
+                  ...volunteer,
+                  category: "Education",
+                })
+              }
+            >
+              <TypeSelection
+                image={"/assets/images/icons/education-help.png"}
+                type="Education"
+                action={setVolunteerType}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={6}
+              md={3}
+              onClick={() =>
+                setVolunteer({
+                  ...volunteer,
+                  category: "Health",
+                })
+              }
+            >
+              <TypeSelection
+                image={"/assets/images/icons/health-help.png"}
+                type="Health"
+                action={setVolunteerType}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={6}
+              md={3}
+              onClick={() =>
+                setVolunteer({
+                  ...volunteer,
+                  category: "Human right",
+                })
+              }
+            >
+              <TypeSelection
+                image={"/assets/images/icons/human-rights-help.png"}
+                type="Human right"
+                action={setVolunteerType}
+              />
+            </Grid>
+          </Grid>
+          {(volunteerType !== undefined || volunteerType !== "") && (
+            <div>
+              <Button
+                onClick={() => setPage(2)}
+                variant="contained"
+                color="default"
+                style={{
+                  marginTop: "100px",
+                  marginBottom: "100px",
+                }}
+              >
+                Back
+              </Button>
+              <Button
+                onClick={() => setPage(4)}
+                variant="contained"
+                color="primary"
+                style={{
+                  marginTop: "100px",
+                  marginBottom: "100px",
+                  marginLeft: "auto",
+                  color: "white",
+                  float: "right",
+                }}
+              >
+                Continue
+              </Button>
             </div>
-            <div className={classes.regForm}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
-                  <Grid
-                    item
-                    xs={12}
-                    style={{
-                      border: `2px dashed ${Colors.appRed}`,
-                      marginTop: "10px",
+          )}
+        </Container>
+      )}
+      {page === 4 && selectedType === "Volunteer" && (
+        <Container style={{ marginTop: "100px" }}>
+          <Typography
+            variant="h4"
+            component="h4"
+            className={classes.sectionHead}
+            style={{ textAlign: "center" }}
+          >
+            Complete Volunteer Registration
+          </Typography>
+          <Typography
+            variant="body1"
+            component="p"
+            className={classes.sectionSubhead}
+            style={{ width: "300px", textAlign: "center", margin: "auto" }}
+          >
+            Kindly provide all neccesary details to finish Your registration as
+            a volunteer.
+          </Typography>
+
+          <div style={{ color: "red", textAlign: "center", margin: 16 }}>
+            {errorMessage}
+          </div>
+          <div className={classes.regForm}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+                <Grid
+                  item
+                  xs={12}
+                  style={{
+                    border: `2px dashed ${Colors.appRed}`,
+                    marginTop: "10px",
+                  }}
+                >
+                  <AddProfileImage
+                    image="/assets/images/icons/upload-image.png"
+                    title="Upload picture*"
+                    // text="This is image that will portray the cause."
+                    style={{ alignSelf: "flex-start" }}
+                    filename="image"
+                    onClick={handleAddImageClick}
+                    backgroundImage={uploadFiles.image}
+                    setImage={(file) => {
+                      setUploadFiles({
+                        ...uploadFiles,
+                        image: file,
+                      });
                     }}
-                  >
-                    <AddProfileImage
-                      image="/assets/images/icons/upload-image.png"
-                      title="Upload picture*"
-                      // text="This is image that will portray the cause."
-                      style={{ alignSelf: "flex-start" }}
-                      filename="image"
-                      onClick={handleAddImageClick}
-                      backgroundImage={uploadFiles.image}
-                      setImage={(file) => {
-                        setUploadFiles({
-                          ...uploadFiles,
-                          image: file,
-                        });
-                      }}
-                    />
-                  </Grid>
-                  <FormControl
-                    className={classes.formControl}
-                    style={{ margin: "10px 0px" }}
-                  >
-                    <Select
-                      labelId="gender-type"
-                      id="gender"
-                      value={volunteer.gender}
-                      onChange={handleChangeVolunteer("gender")}
-                      variant="outlined"
-                      style={{ width: "100% !important" }}
-                      // margin="dense"
-                      fullWidth
-                    >
-                      <MenuItem value="Select Gender">Select Gender</MenuItem>
-                      <MenuItem value="Male">Male</MenuItem>
-                      <MenuItem value="Female">Female</MenuItem>
-                      <MenuItem value="Other">Other</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <FormControl className={classes.formControl}>
-                    <MyTextField
-                      id="phone_number"
-                      type="phone"
-                      name="phone_number"
-                      required="required"
-                      label="Phone Number"
-                      placeholder="Provide Phone Number"
-                      value={volunteer.phone_number}
-                      onChange={handleChangeVolunteer("phone_number")}
-                    />
-                  </FormControl>
+                  />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <FormControl
+                  className={classes.formControl}
+                  style={{ margin: "10px 0px" }}
+                >
+                  <Select
+                    labelId="gender-type"
+                    id="gender"
+                    value={volunteer.gender}
+                    onChange={handleChangeVolunteer("gender")}
+                    variant="outlined"
+                    style={{ width: "100% !important" }}
+                    // margin="dense"
+                    fullWidth
+                  >
+                    <MenuItem value="Select Gender">Select Gender</MenuItem>
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="phone_number"
+                    type="phone"
+                    name="phone_number"
+                    required="required"
+                    label="Phone Number"
+                    placeholder="Provide Phone Number"
+                    value={volunteer.phone_number}
+                    onChange={handleChangeVolunteer("phone_number")}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
                 <FormControl
                   className={classes.formControl}
                   style={{ margin: "10px 0px" }}
@@ -2218,32 +2343,32 @@ const Signup = (props) => {
                     <MenuItem value="Pastor">Pastor</MenuItem>
                   </Select>
                 </FormControl>
-                  <FormControl className={classes.formControl}>
-                    <MyTextField
-                      id="first_name"
-                      type="text"
-                      name="first_name"
-                      required="required"
-                      label="First name"
-                      placeholder="Enter your first name"
-                      value={volunteer.first_name}
-                      onChange={handleChangeVolunteer("first_name")}
-                    />
-                  </FormControl>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="first_name"
+                    type="text"
+                    name="first_name"
+                    required="required"
+                    label="First name"
+                    placeholder="Enter your first name"
+                    value={volunteer.first_name}
+                    onChange={handleChangeVolunteer("first_name")}
+                  />
+                </FormControl>
 
-                  <FormControl className={classes.formControl}>
-                    <MyTextField
-                      id="last_name"
-                      type="text"
-                      name="last_name"
-                      required="required"
-                      label="Last name"
-                      placeholder="Enter your last name"
-                      value={volunteer.last_name}
-                      onChange={handleChangeVolunteer("last_name")}
-                    />
-                  </FormControl>
-                  <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="last_name"
+                    type="text"
+                    name="last_name"
+                    required="required"
+                    label="Last name"
+                    placeholder="Enter your last name"
+                    value={volunteer.last_name}
+                    onChange={handleChangeVolunteer("last_name")}
+                  />
+                </FormControl>
+                <FormControl className={classes.formControl}>
                   <MyTextField
                     id="dob"
                     type="date"
@@ -2255,80 +2380,79 @@ const Signup = (props) => {
                     onChange={handleChangeVolunteer("date_of_birth")}
                   />
                 </FormControl>
-                  <FormControl className={classes.formControl}>
-                    <MyTextField
-                      id="Address"
-                      type="text"
-                      name="Address"
-                      required="required"
-                      label="Address"
-                      placeholder="Provide Address"
-                      value={volunteer.address}
-                      onChange={handleChangeVolunteer("address")}
-                    />
-                  </FormControl>
-                  <FormControl className={classes.formControl}>
-                    <MyTextField
-                      id="lga"
-                      type="text"
-                      name="lga"
-                      required="required"
-                      label="LGA"
-                      placeholder="Provide LGA"
-                      value={volunteer.local_govt}
-                      onChange={handleChangeVolunteer("local_govt")}
-                    />
-                  </FormControl>
-                  <FormControl className={classes.formControl}>
-                    <MyTextField
-                      id="state"
-                      type="text"
-                      name="state"
-                      required="required"
-                      label="State"
-                      placeholder="Provide State"
-                      value={volunteer.state}
-                      onChange={handleChangeVolunteer("state")}
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <div>
-                    <Button
-                      onClick={() => setPage(3)}
-                      variant="contained"
-                      color="default"
-                      style={{
-                        marginTop: "50px",
-                        marginBottom: "100px",
-                        padding: "10px 50px",
-                      }}
-                    >
-                      Back
-                    </Button>
-                    <Button
-                      onClick={() => handleVolunteerPageClick()}
-                      variant="contained"
-                      color="primary"
-                      style={{
-                        marginTop: "50px",
-                        marginBottom: "100px",
-                        marginLeft: "auto",
-                        color: "white",
-                        float: "right",
-                        padding: "10px 50px",
-                      }}
-                    >
-                      Next
-                    </Button>
-                  </div>
-                </Grid>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="Address"
+                    type="text"
+                    name="Address"
+                    required="required"
+                    label="Address"
+                    placeholder="Provide Address"
+                    value={volunteer.address}
+                    onChange={handleChangeVolunteer("address")}
+                  />
+                </FormControl>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="lga"
+                    type="text"
+                    name="lga"
+                    required="required"
+                    label="LGA"
+                    placeholder="Provide LGA"
+                    value={volunteer.local_govt}
+                    onChange={handleChangeVolunteer("local_govt")}
+                  />
+                </FormControl>
+                <FormControl className={classes.formControl}>
+                  <MyTextField
+                    id="state"
+                    type="text"
+                    name="state"
+                    required="required"
+                    label="State"
+                    placeholder="Provide State"
+                    value={volunteer.state}
+                    onChange={handleChangeVolunteer("state")}
+                  />
+                </FormControl>
               </Grid>
-            </div>
-          </Container>
-        )}
-        {page === 5 &&
-        selectedType === "Volunteer" && (
+              <Grid item xs={12}>
+                <div>
+                  <Button
+                    onClick={() => setPage(3)}
+                    variant="contained"
+                    color="default"
+                    style={{
+                      marginTop: "50px",
+                      marginBottom: "100px",
+                      padding: "10px 50px",
+                    }}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    onClick={() => handleVolunteerPageClick()}
+                    variant="contained"
+                    color="primary"
+                    style={{
+                      marginTop: "50px",
+                      marginBottom: "100px",
+                      marginLeft: "auto",
+                      color: "white",
+                      float: "right",
+                      padding: "10px 50px",
+                    }}
+                  >
+                    Next
+                  </Button>
+                </div>
+              </Grid>
+            </Grid>
+          </div>
+        </Container>
+      )}
+      {page === 5 && selectedType === "Volunteer" && (
         <Container style={{ marginTop: "100px" }}>
           <Typography
             variant="h4"
@@ -2361,7 +2485,7 @@ const Signup = (props) => {
             </Typography>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
-              <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl}>
                   <MyTextField
                     id=" eduction_level"
                     type="text"
@@ -2375,7 +2499,7 @@ const Signup = (props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12} md={6}>
-              <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl}>
                   <Select
                     labelId="employment_status"
                     id="employment_status"
@@ -2386,7 +2510,9 @@ const Signup = (props) => {
                     // margin="dense"
                     fullWidth
                   >
-                    <MenuItem value="What is your employment status">What is your employment status</MenuItem>
+                    <MenuItem value="What is your employment status">
+                      What is your employment status
+                    </MenuItem>
                     <MenuItem value="Employed">Employed</MenuItem>
                     <MenuItem value="Unemployed">Unemployed</MenuItem>
                     <MenuItem value="Self Employed">Self Employed</MenuItem>
@@ -2402,20 +2528,20 @@ const Signup = (props) => {
               Guarantor Details
             </Typography>
             <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={6}>
                 <FormControl className={classes.formControl}>
-                <FormControl className={classes.formControl}>
-                  <MyTextField
-                    id="guarantor_first_name"
-                    type="text"
-                    name="guarantor_first_name"
-                    required="required"
-                    label="First name"
-                    placeholder="Enter your guarantor's first name"
-                    value={volunteer.guarantor_name}
-                    onChange={handleChangeVolunteer("guarantor_name")}
-                  />
-                </FormControl>
+                  <FormControl className={classes.formControl}>
+                    <MyTextField
+                      id="guarantor_first_name"
+                      type="text"
+                      name="guarantor_first_name"
+                      required="required"
+                      label="First name"
+                      placeholder="Enter your guarantor's first name"
+                      value={volunteer.guarantor_name}
+                      onChange={handleChangeVolunteer("guarantor_name")}
+                    />
+                  </FormControl>
                 </FormControl>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -2433,18 +2559,22 @@ const Signup = (props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12} md={6}>
-              <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl}>
                   <Select
                     labelId="relationship_with_guarantor"
                     id="relationship_with_guarantor"
                     value={volunteer.relationship_with_guarantor}
-                    onChange={handleChangeVolunteer("relationship_with_guarantor")}
+                    onChange={handleChangeVolunteer(
+                      "relationship_with_guarantor"
+                    )}
                     variant="outlined"
                     style={{ width: "100% !important" }}
                     // margin="dense"
                     fullWidth
                   >
-                    <MenuItem value="Relationship With Guarantor">How are you related to this person</MenuItem>
+                    <MenuItem value="Relationship With Guarantor">
+                      How are you related to this person
+                    </MenuItem>
                     <MenuItem value="Employer">Employer</MenuItem>
                     <MenuItem value="Family">Family</MenuItem>
                     <MenuItem value="Others">Others</MenuItem>
@@ -2558,8 +2688,7 @@ const Signup = (props) => {
           </div>
         </Container>
       )}
-       {page === 6 &&
-        selectedType === "Volunteer" && (
+      {page === 6 && selectedType === "Volunteer" && (
         <Container style={{ marginTop: "100px" }}>
           <Typography
             variant="h4"
@@ -2582,20 +2711,33 @@ const Signup = (props) => {
           <div style={{ color: "red", textAlign: "center", margin: 16 }}>
             {errorMessage}
           </div>
-          <div className={classes.regForm} >
-           <Grid container spacing={3} >
-             <Grid item xs={12}>
-              <FormControl component="fieldset">
-                <FormLabel component="legend">Do you belong to any social or religious group?</FormLabel>
-                  <RadioGroup aria-label="group" name="religious_group" 
-                  value={volunteer.religious_group} 
-                  onChange={handleChangeVolunteer("religious_group")}>
-                    <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-                    <FormControlLabel value="No" control={<Radio />} label="No" />
+          <div className={classes.regForm}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">
+                    Do you belong to any social or religious group?
+                  </FormLabel>
+                  <RadioGroup
+                    aria-label="group"
+                    name="religious_group"
+                    value={volunteer.religious_group}
+                    onChange={handleChangeVolunteer("religious_group")}
+                  >
+                    <FormControlLabel
+                      value="Yes"
+                      control={<Radio />}
+                      label="Yes"
+                    />
+                    <FormControlLabel
+                      value="No"
+                      control={<Radio />}
+                      label="No"
+                    />
                   </RadioGroup>
-              </FormControl>
-             </Grid>
-             <Grid item xs={12} md={6}>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
                 <FormControl className={classes.formControl}>
                   <MyTextField
                     id="religious_group_name"
@@ -2609,44 +2751,74 @@ const Signup = (props) => {
                   />
                 </FormControl>
               </Grid>
-             <Grid item xs={12}>
-              <FormControl component="fieldset">
-                <FormLabel component="legend">Are you above 18 years of age?</FormLabel>
-                  <RadioGroup aria-label="age" name="above_18"
-                  value={volunteer.above_18} 
-                  onChange={handleChangeVolunteer("above_18")}
-                   >
-                    <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-                    <FormControlLabel value="No" control={<Radio />} label="No" />
-                  </RadioGroup>
-              </FormControl>
-             </Grid>
-             <Grid item xs={12}>
-              <FormControl component="fieldset">
-                <FormLabel component="legend">Have you been involved in any criminal activities?</FormLabel>
-                  <RadioGroup aria-label="criminal record" name="criminal_record" 
-                  value={volunteer.criminal_record} 
-                  onChange={handleChangeVolunteer("criminal_record")}
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">
+                    Are you above 18 years of age?
+                  </FormLabel>
+                  <RadioGroup
+                    aria-label="age"
+                    name="above_18"
+                    value={volunteer.above_18}
+                    onChange={handleChangeVolunteer("above_18")}
                   >
-                    <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-                    <FormControlLabel value="No" control={<Radio />} label="No" />
+                    <FormControlLabel
+                      value="Yes"
+                      control={<Radio />}
+                      label="Yes"
+                    />
+                    <FormControlLabel
+                      value="No"
+                      control={<Radio />}
+                      label="No"
+                    />
                   </RadioGroup>
-              </FormControl>
-             </Grid>
-             <Grid item xs={12}>
-             <TermsAndCondition />
-             </Grid>
-             <Grid item xs={12}>
-              <FormControl component="fieldset">
-                  <RadioGroup aria-label="agreed" name="agreed"
-                  value={volunteer.agreed} 
-                  onChange={handleChangeVolunteer("agreed")}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">
+                    Have you been involved in any criminal activities?
+                  </FormLabel>
+                  <RadioGroup
+                    aria-label="criminal record"
+                    name="criminal_record"
+                    value={volunteer.criminal_record}
+                    onChange={handleChangeVolunteer("criminal_record")}
                   >
-                    <FormControlLabel value="yes" control={<Radio />} label="Agree to Terms and Conditions." />
+                    <FormControlLabel
+                      value="Yes"
+                      control={<Radio />}
+                      label="Yes"
+                    />
+                    <FormControlLabel
+                      value="No"
+                      control={<Radio />}
+                      label="No"
+                    />
                   </RadioGroup>
-              </FormControl>
-             </Grid>
-           </Grid>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <TermsAndCondition />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl component="fieldset">
+                  <RadioGroup
+                    aria-label="agreed"
+                    name="agreed"
+                    value={volunteer.agreed}
+                    onChange={handleChangeVolunteer("agreed")}
+                  >
+                    <FormControlLabel
+                      value="yes"
+                      control={<Radio />}
+                      label="Agree to Terms and Conditions."
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+            </Grid>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <div>
@@ -2693,17 +2865,72 @@ const Signup = (props) => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    userId : state.signup.userId,
-    errorMsg: state.signup.error 
-  }
+    userId: state.signup.userId,
+    errorMsg: state.signup.error,
+  };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    signUpUser: (reg_credential,email,phone_number,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,photo,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record) => dispatch(actionCreators.authSignUp(reg_credential,email,phone_number,password,first_name,last_name,role,address,date_of_birth,local_govt,state,title,staff_strength,photo,category,company,position,religion,guarantor_name,relationship_with_guarantor,guarantor_address,guarantor_company,guarantor_position,highest_education_level,criminal_record))
-  }
-}
+    signUpUser: (
+      reg_credential,
+      email,
+      phone_number,
+      password,
+      first_name,
+      last_name,
+      role,
+      address,
+      date_of_birth,
+      local_govt,
+      state,
+      title,
+      staff_strength,
+      photo,
+      category,
+      company,
+      position,
+      religion,
+      guarantor_name,
+      relationship_with_guarantor,
+      guarantor_address,
+      guarantor_company,
+      guarantor_position,
+      highest_education_level,
+      criminal_record
+    ) =>
+      dispatch(
+        actionCreators.authSignUp(
+          reg_credential,
+          email,
+          phone_number,
+          password,
+          first_name,
+          last_name,
+          role,
+          address,
+          date_of_birth,
+          local_govt,
+          state,
+          title,
+          staff_strength,
+          photo,
+          category,
+          company,
+          position,
+          religion,
+          guarantor_name,
+          relationship_with_guarantor,
+          guarantor_address,
+          guarantor_company,
+          guarantor_position,
+          highest_education_level,
+          criminal_record
+        )
+      ),
+  };
+};
 
-export default connect(mapStateToProps,mapDispatchToProps)(Signup);
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

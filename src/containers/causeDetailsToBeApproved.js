@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Naira from 'react-naira';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Alert from '@material-ui/lab/Alert';
 import {
   Container,
   Grid,
+  TextField,
   Typography,
   Button,
   Paper,
@@ -15,6 +17,7 @@ import { connect } from "react-redux";
 import { PrimaryAppBar } from "../commons";
 import { MyDialog } from "../components";
 import { MyConfirmationDialog, MyPromptDialog } from "../commons";
+import { ApproveDialogue } from "../commons/MyPromptDialog";
 import { baseUrl  } from "../constants";
 import * as actions from '../store/actions/index';
 
@@ -87,6 +90,15 @@ const moreStyles = makeStyles((theme) => ({
       width: "95% !important",
 
     }
+  },
+  comment:{
+    paddingTop: 20,
+    paddingBottom: 20,
+    width: "400px",
+    textAlign: "center",
+    [theme.breakpoints.down('xs')]:{
+      width:'100%'
+    }
   }
 }));
 
@@ -106,10 +118,15 @@ const RecommendAcause = (props) => {
   const [buttonDisApprove, setButtonDisApprove] = useState('Disaprove');
   const [dialogTitle, setDialogTitle] = useState("");
   const [reason_for_disapproval, setReason] = useState('');
+  const [amount_approved, setAmountApproved] = useState('');
+  const [approval_comment, setComment] = useState('');
+  const [approval, setApproval] = useState(false)
 
   let [openDialog, setOpenDialog] = useState(false);
   let [positiveDialog, setPositiveDialog] = useState(false);
 
+
+  const [msg, setMsg] = useState('');
   const [confirm, setConfirm] = useState(false);
   const [disapprove, setDisapprove] = useState(false);
   const [dialogueMsg, setDialogueMsg] = useState('');
@@ -117,7 +134,15 @@ const RecommendAcause = (props) => {
 
   
   const handleApproveSubmit = () => {
-    props.onPressApprove(token,cause_id);
+    if (amount_approved === ''){
+      setMsg('Kindly state the amount the approve for this cause');
+      return
+    }
+    if (approval_comment===''){
+      setMsg('kindly send a message to the user');
+      return
+    }
+    props.onPressApprove(token,cause_id,amount_approved,approval_comment);
     setTimeout(() => (window.location = "/dashboard/approve"), 1000);
   };
   const handleDisApproveSubmit = () => {
@@ -245,13 +270,45 @@ const RecommendAcause = (props) => {
        >
            { props.decisionSpinner && <CircularProgress disableShrink className={classes.Circular}/>}
        </MyPromptDialog>
+       <ApproveDialogue
+        title={''}
+        positiveDialog={true}
+        openDialog={approval}
+        onClose={() => setApproval(false)}
+        positive={() => handleApproveSubmit()}
+       >
+         <div
+            className={classes.comment}
+          >
+            {msg && <Alert severity="warning">{msg}</Alert>}
+            <TextField
+             variant="outlined"
+            label="Amount Approved"
+            type='number'
+            placeholder="you can reset the price here"
+            value={amount_approved}
+            onChange={(e) => setAmountApproved(e.target.value)}
+            style={{ width: "100%" }}
+          /><br /><br />
+            <TextField
+             variant="outlined"
+            multiline
+            label="Comment"
+            placeholder="Approval Comment"
+            rows="3"
+            value={approval_comment}
+            onChange={(e) => setComment(e.target.value)}
+            style={{ width: "100%" }}
+          />
+          </div>
+           { props.decisionSpinner && <CircularProgress disableShrink className={classes.Circular}/>}
+       </ApproveDialogue>
       <MyConfirmationDialog
       openDialog={confirm}
       onClose={() => setConfirm(false)}
-      positive={() => handleApproveSubmit()}
+      positive={() => setApproval(true)}
       >
         {"Are you sure you want to approve this cause?"}
-        { props.decisionSpinner && <CircularProgress disableShrink className={classes.Circular}/>}
       </MyConfirmationDialog>
       <MyDialog
         title="Make a decision"
