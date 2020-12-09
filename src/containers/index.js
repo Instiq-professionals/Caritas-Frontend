@@ -40,6 +40,7 @@ import AllCausesPage from './AllCausesPage';
 import ViewALLCausesByAdmins from './AllCausesForAdmins';
 import ViewAllEventsByAdmins from './AllEventsForAdmins';
 import VisitorsSuccessStoryPage from './VisitorsSuccessStoryPage';
+import AdminCauseView from './admincauseview'
 import NotFound from './NotFound';
 
 export {
@@ -85,5 +86,6 @@ export {
   ModeratorCausePage,
   VerifyEmailPage,
   ResetPassword,
+  AdminCauseView,
   NotFound
 };

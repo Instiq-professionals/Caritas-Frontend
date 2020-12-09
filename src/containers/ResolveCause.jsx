@@ -170,9 +170,17 @@ const Resolvecause = (props) => {
                  Reviewed at : {singleCause.reviewed_at}
              </Typography><br/>
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Reviewer's Message : {singleCause.reviewer_message}
+                Reviewer's comment : {singleCause.reviewer_message}
              </Typography><br/>
                </div>}
+               {singleCause.approval_comment && <div>
+                <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
+                 Amount Approved : {singleCause.amount_approved}
+             </Typography><br/>
+             <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
+             Approval's comment : {singleCause.approval_comment}
+             </Typography><br/>
+                 </div>}
               </Grid>
               <div style={{
                     marginTop: "30px",

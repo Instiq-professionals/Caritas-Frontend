@@ -102,7 +102,7 @@ const moreStyles = makeStyles((theme) => ({
   }
 }));
 
-const RecommendAcause = (props) => {
+const AdminCauseView = (props) => {
   let user = JSON.parse(localStorage.getItem("user")).data;
   const token = JSON.parse(localStorage.getItem("user")).token;
   const singleCause = props.singleCauseDetails;
@@ -154,7 +154,7 @@ const RecommendAcause = (props) => {
       return;
     }
      props.onPressDisApprove(token,cause_id,reason_for_disapproval);
-    //setTimeout(() => (window.location = "/dashboard/approve"), 1000);
+    setTimeout(() => (window.location = "/dashboard/approve"), 1000);
   };
   
   let CauseIsMounted = props.loading && <CircularProgress disableShrink className={classes.Circular}/>;
@@ -167,7 +167,7 @@ const RecommendAcause = (props) => {
               <Grid item md={6}>
               <Zoom in={true} timeout={1000} mountOnEnter>
                 <img
-                style={{height:'100%', width:'100%'}}
+                style={{ width:'100%'}}
                   src={baseUrl + singleCause.cause_photos}
                   alt=""
                   className={classes.heroImage}
@@ -214,143 +214,25 @@ const RecommendAcause = (props) => {
                  Reviewed at : {singleCause.reviewed_at}
              </Typography><br/>
              <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
-                 Reviewer's Message : {singleCause.reviewer_message}
+                 Reviewer's comment : {singleCause.reviewer_message}
              </Typography><br/>
                </div>}
+               {singleCause.approval_comment && <div>
+                <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
+                 Amount Approved : {singleCause.amount_approved}
+             </Typography><br/>
+             <Typography variant="h6" component="h6" style={{ fontWeight: "bold"}}>
+                 Approval's comment : {singleCause.approval_comment}
+             </Typography><br/>
+                 </div>}
               </Grid>
-              <div style={{
-                    marginTop: "30px",
-                    marginBottom: "30px",
-                    textAlign: "center",
-                    width: "100%"
-                  }}>
-                <Button
-                  onClick={() => setOpenDialog(true)}
-                  variant="contained"
-                  color="primary"
-                  style={{
-                    //marginLeft: "auto",
-                    color: "white",
-                    //float: "right",
-                  }}
-                >
-                 Take a decision
-                </Button>
-              </div>
             </Grid>
     </div>
   }
   return (
     <>
       <PrimaryAppBar />
-      <MyDialog
-        title={dialogTitle}
-        openDialog={open}
-        positiveDialog={positiveDialog}
-        onClose={() => setOpen(false)}
-      >
-        {dialogueMsg}
-      </MyDialog>
-      <MyDialog
-        title={props.decision.status?props.decision.status:"network error"}
-        openDialog={props.decision.status?true:false}
-        positiveDialog={true}
-        onClose={() => setOpen(false)}
-      >
-        {props.decision.message}
-      </MyDialog>
-      <MyPromptDialog
-        title={''}
-        positiveDialog={true}
-        change = {(e) => setReason(e.target.value)}
-        openDialog={disapprove}
-        value={reason_for_disapproval}
-        onClose={() => setDisapprove(false)}
-        positive={() => handleDisApproveSubmit()}
-       >
-           { props.decisionSpinner && <CircularProgress disableShrink className={classes.Circular}/>}
-       </MyPromptDialog>
-       <ApproveDialogue
-        title={''}
-        positiveDialog={true}
-        openDialog={approval}
-        onClose={() => setApproval(false)}
-        positive={() => handleApproveSubmit()}
-       >
-         <div
-            className={classes.comment}
-          >
-            {msg && <Alert severity="warning">{msg}</Alert>}
-            <TextField
-             variant="outlined"
-            label="Amount Approved"
-            type='number'
-            placeholder="you can reset the price here"
-            value={amount_approved}
-            onChange={(e) => setAmountApproved(e.target.value)}
-            style={{ width: "100%" }}
-          /><br /><br />
-            <TextField
-             variant="outlined"
-            multiline
-            label="Comment"
-            placeholder="Approval Comment"
-            rows="3"
-            value={approval_comment}
-            onChange={(e) => setComment(e.target.value)}
-            style={{ width: "100%" }}
-          />
-          </div>
-           { props.decisionSpinner && <CircularProgress disableShrink className={classes.Circular}/>}
-       </ApproveDialogue>
-      <MyConfirmationDialog
-      openDialog={confirm}
-      onClose={() => setConfirm(false)}
-      positive={() => setApproval(true)}
-      >
-        {"Are you sure you want to approve this cause?"}
-      </MyConfirmationDialog>
-      <MyDialog
-        title="Make a decision"
-        openDialog={openDialog}
-        positiveDialog={true}
-        onClose={() => setOpenDialog(false)}
-      >
-        { <div>
-            <Button
-                onClick={() => setDisapprove(true)}
-                variant="contained"
-                color="primary"
-                style={{
-                  //marginLeft: "auto",
-                  color: "white",
-                }}
-              >
-                {buttonDisApprove}
-              </Button>
-              <Button
-                onClick={() =>  setConfirm(true)}
-                variant="contained"
-                color="primary"
-                style={{
-                  marginLeft: "21px",
-                  color: "white",
-                  //float: "right",
-                }}
-              >
-                {buttonApprove}
-              </Button>
-        </div>}
-      </MyDialog>
         <Container style={{ marginTop: 150 }}>
-          {/* <Typography variant="h4" component="h4" className={classes.sectionHead} style={{textAlign: "center"}}>
-            Good going, {getAuthenticatedUser().first_name}. 
-          </Typography>
-          <Typography variant="body1" component="p" className={classes.sectionSubhead} style={{textAlign: "center"}}>
-            Start the process of adding a new cause
-          </Typography>
-          <Typography component="h1" variant="h5" className={classes.Circular}>
-          </Typography> */}
           <Paper elevation={0} className={classes.causeCreation} style={{marginBottom: "100px"}}>
             {CauseIsMounted}
           </Paper>
@@ -378,9 +260,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getAsingleCauseDetails : (token,id) => dispatch(actions.reviewCauseDetails(token,id)),
-    onPressApprove :  (token,cause_id,amount_approved,approval_comment) => dispatch(actions.approveCause(token,cause_id,amount_approved,approval_comment)),
+    onPressApprove :  (token,cause_id) => dispatch(actions.approveCause(token,cause_id)),
     onPressDisApprove :  (token,cause_id,reason) => dispatch(actions.disApproveCause(token,cause_id,reason)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecommendAcause);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminCauseView);

@@ -389,7 +389,7 @@ export default function CausesTable(props) {
                         style={{backgroundColor:'#FC636B',color:'#fff'}}
                           margin="dense"
                           onClick={() => {
-                            window.location = `/cause/${aUser._id}`;
+                            window.location = `/dashboard/viewCauseAsAleader/${aUser._id}`;
                           }}
                         >
                           View

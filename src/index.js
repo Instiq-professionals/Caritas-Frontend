@@ -43,6 +43,7 @@ import {
   ModeratorCausePage,
   VerifyEmailPage,
   ResetPassword,
+  AdminCauseView,
   NotFound
 } from "./containers";
 import * as serviceWorker from "./serviceWorker";
@@ -203,6 +204,7 @@ const App = () => {
             <AdminAndChairmanRoute exact path="/dashboard/user/:id" component={UserDetails}/>
             <AdminAndChairmanRoute exact path="/dashboard/viewCausesAsAleader" component={ViewALLCausesByAdmins}/>
             <AdminAndChairmanRoute exact path="/dashboard/viewEventsAsAleader" component={ViewAllEventsByAdmins}/>
+            <AdminAndChairmanRoute exact path="/dashboard/viewCauseAsAleader/:id" component={AdminCauseView}/>
             <Route  component={NotFound} />
           </Switch>
         </BrowserRouter>
